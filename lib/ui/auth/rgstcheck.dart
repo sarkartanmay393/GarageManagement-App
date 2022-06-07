@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './tabview.dart';
+import '../tabview.dart';
 
 class RgstCheck extends StatefulWidget {
   static const routeName = "rgstcheck";
@@ -128,7 +128,8 @@ class _RgstCheckState extends State<RgstCheck> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(TabView.routeName, arguments: _choiceIndex);
+                    Navigator.of(context)
+                        .pushNamed(TabView.routeName, arguments: _choiceIndex);
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(

@@ -1,10 +1,10 @@
-import 'package:bee/screens/vanprofile.dart';
 import 'package:flutter/material.dart';
 
-import 'helppage.dart';
-import 'homepage.dart';
-import 'inventory.dart';
-import 'profilepage.dart';
+import 'help/helppage.dart';
+import 'home/homepage.dart';
+import 'inventory/inventory.dart';
+import 'profile/profilepage.dart';
+import 'profile/vanprofile.dart';
 
 class TabView extends StatefulWidget {
   static const routeName = "Tab";

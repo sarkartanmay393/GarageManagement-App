@@ -1,6 +1,7 @@
-import 'package:bee/screens/rgstcheck.dart';
 import 'package:flutter/material.dart';
 import 'package:country_icons/country_icons.dart';
+
+import 'rgstcheck.dart';
 
 enum CurrState {
   //

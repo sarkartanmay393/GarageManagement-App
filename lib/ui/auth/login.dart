@@ -1,6 +1,7 @@
-import 'package:bee/screens/tabview.dart';
 import 'package:flutter/material.dart';
 import 'package:country_icons/country_icons.dart';
+
+import '../tabview.dart';
 
 class LoginPage extends StatelessWidget {
   static const routeName = "login";

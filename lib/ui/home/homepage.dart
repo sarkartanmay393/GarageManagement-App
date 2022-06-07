@@ -1,10 +1,8 @@
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/categories.dart';
-import '../widgets/homecard.dart';
-import '../widgets/services.dart';
+import './widgets/services.dart';
+import './widgets/categories.dart';
+import './widgets/homecard.dart';
 
 class HomePage extends StatelessWidget {
   static const routeName = "HomePage";

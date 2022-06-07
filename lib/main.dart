@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import './screens/login.dart';
-import '/screens/rgstcheck.dart';
-import './screens/signup.dart';
-import 'screens/homepage.dart';
-import 'screens/profilepage.dart';
-import 'screens/tabview.dart';
+import 'ui/auth/login.dart';
+import 'ui/auth/rgstcheck.dart';
+import 'ui/auth/signup.dart';
+import 'ui/home/homepage.dart';
+import 'ui/profile/profilepage.dart';
+import 'ui/tabview.dart';
 
 void main() {
   runApp(const MyApp());

@@ -4,6 +4,7 @@ import 'package:navigation_history_observer/navigation_history_observer.dart';
 import 'help/helppage.dart';
 import 'home/homepage.dart';
 import 'inventory/inventory.dart';
+import 'menu/menu.dart';
 import 'profiles/vanprofile.dart';
 
 class TowingTabView extends StatefulWidget {
@@ -41,8 +42,12 @@ class _TowingTabView extends State<TowingTabView> {
 
   @override
   void initState() {
-    if (navHistory.next!.settings.name == "rgstcheck") {
-      selectedIndex = 3;
+    try {
+      if (navHistory.next!.settings.name == "rgstcheck") {
+        selectedIndex = 3;
+      }
+    } catch (err) {
+      print(err);
     }
     super.initState();
   }
@@ -76,9 +81,12 @@ class _TowingTabView extends State<TowingTabView> {
               color: Colors.white,
             ),
           ),
+          actions: [
+            // Text("currentLocation"),
+          ],
         ),
       ),
-      drawer: const Drawer(),
+      drawer: Menu(),
       body: diffItems[selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         elevation: 2,

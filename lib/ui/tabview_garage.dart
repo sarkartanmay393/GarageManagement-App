@@ -4,6 +4,7 @@ import 'package:navigation_history_observer/navigation_history_observer.dart';
 import 'help/helppage.dart';
 import 'home/homepage.dart';
 import 'inventory/inventory.dart';
+import 'menu/menu.dart';
 import 'profiles/profilepage.dart';
 
 class GarageTabView extends StatefulWidget {
@@ -78,7 +79,7 @@ class _GarageTabView extends State<GarageTabView> {
           ),
         ),
       ),
-      drawer: const Drawer(),
+      drawer: Menu(),
       body: diffItems[selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         elevation: 2,

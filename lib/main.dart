@@ -6,7 +6,6 @@ import 'ui/auth/login/login.dart';
 import 'ui/auth/signup/rgstcheck.dart';
 import 'ui/auth/signup/signup.dart';
 import 'ui/home/homepage.dart';
-import 'ui/profiles/profilepage.dart';
 import 'ui/tabview_garage.dart';
 
 void main() {
@@ -21,6 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'BEE',
       theme: ThemeData(
+        useMaterial3: true,
         primaryColor: const Color.fromARGB(255, 255, 42, 42),
         backgroundColor: Colors.grey.shade100,
         canvasColor: Colors.grey.shade100,
@@ -41,6 +41,8 @@ class MyApp extends StatelessWidget {
             color: Colors.white,
           ),
         ),
+        
+        
       ),
       home: LoginPage(),
       routes: {

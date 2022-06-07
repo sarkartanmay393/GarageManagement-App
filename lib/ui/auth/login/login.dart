@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../tabview_garage.dart';
+import '../../tabview_towing.dart';
 
 class LoginPage extends StatelessWidget {
   static const routeName = "login";
@@ -12,7 +12,7 @@ class LoginPage extends StatelessWidget {
 
   void get_otp_button(BuildContext ctx) {
     _phoneNumber = _controller.text;
-    // Navigator.of(ctx).pushNamed(TabView.routeName, arguments: "fromLogin");
+    Navigator.of(ctx).pushReplacementNamed(TowingTabView.routeName);
   }
 
   @override

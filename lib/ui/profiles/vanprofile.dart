@@ -26,13 +26,13 @@ class _VanProfilePageState extends State<VanProfilePage> {
   }
 
   Map<String, String> ProfileInfo = {
-    "Driver Name": "Sukanto Garage",
-    "Driver Phone": "7834729223",
-    "Owner Name": "Somebody Singh",
-    "Owner Phone": "9876543210",
+    "Driver Name": "",
+    "Driver Phone": "",
+    "Owner Name": "",
+    "Owner Phone": "",
     "Owner License": "",
-    "Gender": "Male",
-    "Birthday": "23/12/2002",
+    "Gender": "",
+    "Birthday": "",
     "Email": "dumydata@tanmay.com",
   };
 
@@ -535,6 +535,9 @@ class _VanProfilePageState extends State<VanProfilePage> {
                       color: Colors.white,
                     ),
                   ),
+                ),
+                const SizedBox(
+                  height: 8,
                 ),
               ],
             ),

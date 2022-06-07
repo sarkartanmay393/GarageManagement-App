@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:navigation_history_observer/navigation_history_observer.dart';
 
 import 'help/helppage.dart';
 import 'home/homepage.dart';
 import 'inventory/inventory.dart';
-import 'profile/profilepage.dart';
-import 'profile/vanprofile.dart';
+import 'profiles/profilepage.dart';
 
-class TabView extends StatefulWidget {
-  static const routeName = "Tab";
-  TabView({Key? key}) : super(key: key);
+class GarageTabView extends StatefulWidget {
+  static const routeName = "GarageTab";
+  const GarageTabView({Key? key}) : super(key: key);
 
   @override
-  State<TabView> createState() => _TabViewState();
+  State<GarageTabView> createState() => _GarageTabView();
 }
 
-class _TabViewState extends State<TabView> {
+class _GarageTabView extends State<GarageTabView> {
+  //
+  NavigationHistoryObserver navHistory = NavigationHistoryObserver();
+
+  final _key = GlobalKey<ScaffoldState>();
   int selectedIndex = 0;
+
+  //
 
   void selecter(int value) {
     setState(() {
@@ -23,32 +29,29 @@ class _TabViewState extends State<TabView> {
     });
   }
 
-  static String ref = "";
+  // to get the next page from rgst check.
 
   List<Widget> diffItems = [
     HomePage(), // 0
     HelpPage(), // 1
     InventoryPage(), // 2
     ProfilePage(), // 3
+    // porblem here
   ];
 
-  final _key = GlobalKey<ScaffoldState>();
   @override
   void initState() {
-    // TODO: implement initState
+    if (navHistory.next!.settings.name == "rgstcheck") {
+      selectedIndex = 3;
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final idx = ModalRoute.of(context)!.settings.arguments;
-    if (idx == 1) {
-      diffItems.removeLast();
-      diffItems.add(VanProfilePage());
-    }
-    idx != -1 ? selectedIndex = 3 : selectedIndex = 0;
 
+    //
     return Scaffold(
       key: _key,
       resizeToAvoidBottomInset: false,

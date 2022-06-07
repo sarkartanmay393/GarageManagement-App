@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   country_icons: ^2.0.2
   image_picker: ^0.8.5+3
+  navigation_history_observer: ^1.1.0
 
 dev_dependencies:
   flutter_test:

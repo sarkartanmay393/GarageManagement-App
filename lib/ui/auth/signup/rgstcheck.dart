@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../tabview.dart';
+import '../../tabview_garage.dart';
+import '../../tabview_towing.dart';
 
 class RgstCheck extends StatefulWidget {
   static const routeName = "rgstcheck";
@@ -16,9 +17,11 @@ class _RgstCheckState extends State<RgstCheck> {
     "Towing Van",
     "Garage",
   ];
+  var userPref = "";
   var _choiceIndex = 0;
 
   Widget chipBuilder(String name, int index) {
+    // builds each chip for selection.
     return ChoiceChip(
       label: Text(_choices[index]),
       selected: _choiceIndex == index,
@@ -45,11 +48,23 @@ class _RgstCheckState extends State<RgstCheck> {
     );
   }
 
+  void submitButton() {
+    if (_choiceIndex == 0) {
+      print("Towing Van");
+      Navigator.of(context)
+          .popAndPushNamed(TowingTabView.routeName, arguments: userPref);
+    } else {
+      print("Garage");
+      Navigator.of(context)
+          .popAndPushNamed(GarageTabView.routeName, arguments: userPref);
+    }
+    // print(userPref);
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
-    ///
+    //
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -127,10 +142,7 @@ class _RgstCheckState extends State<RgstCheck> {
                   height: 25,
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(TabView.routeName, arguments: _choiceIndex);
-                  },
+                  onPressed: submitButton,
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
                       Theme.of(context).primaryColor,

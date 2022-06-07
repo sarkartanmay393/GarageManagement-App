@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:country_icons/country_icons.dart';
 
-import '../tabview.dart';
+import '../../tabview_garage.dart';
 
 class LoginPage extends StatelessWidget {
   static const routeName = "login";
@@ -10,6 +9,11 @@ class LoginPage extends StatelessWidget {
 
   final _controller = TextEditingController();
   String _phoneNumber = "";
+
+  void get_otp_button(BuildContext ctx) {
+    _phoneNumber = _controller.text;
+    // Navigator.of(ctx).pushNamed(TabView.routeName, arguments: "fromLogin");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,10 +133,7 @@ class LoginPage extends StatelessWidget {
               height: 5,
             ),
             ElevatedButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .pushNamed(TabView.routeName, arguments: -1);
-              },
+              onPressed: () => get_otp_button(context),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
                   Theme.of(context).primaryColor,

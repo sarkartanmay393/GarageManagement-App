@@ -30,10 +30,11 @@ class HomePage extends StatelessWidget {
                     hintText: "Search Here",
                     hintStyle: TextStyle(
                       fontSize: 12,
+                      // fontWeight: FontWeight.w300,
                     ),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 2,
+                    contentPadding: EdgeInsets.only(
+                      left: 10,
+                      bottom: 11,
                     ),
                   ),
                   // textInputAction: TextInputAction.search,
@@ -55,6 +56,7 @@ class HomePage extends StatelessWidget {
                     iconSize: 15,
                     onPressed: () {},
                     icon: const Icon(Icons.search_outlined),
+                    tooltip: "Search",
                   ),
                 ),
               ],

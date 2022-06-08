@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:navigation_history_observer/navigation_history_observer.dart';
 
+import 'widgets/topcontainer.dart';
+
 class VanProfilePage extends StatefulWidget {
   static const routeName = "VanProfilePage";
 
@@ -41,6 +43,20 @@ class _VanProfilePageState extends State<VanProfilePage> {
   XFile? profileImage;
   void profileImageSelecter() async {
     var dp = await _picker.pickImage(source: ImageSource.gallery);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          "Profile Picture Updated !",
+          style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+        ),
+        elevation: 2,
+        duration: Duration(milliseconds: 1500),
+      ),
+    );
+    // showing snackbar code.
     setState(() {
       if (dp != null) profileImage = dp;
     });
@@ -93,6 +109,20 @@ class _VanProfilePageState extends State<VanProfilePage> {
   void FormSaver() {
     // _formKey.currentState?.validate();
     _formKey.currentState!.save();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          "Details Updated !",
+          style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+        ),
+        elevation: 2,
+        duration: const Duration(milliseconds: 1500),
+      ),
+    );
+    // showing snackbar code.
     setState(() {
       fromCheck = false;
       setterState();
@@ -544,57 +574,21 @@ class _VanProfilePageState extends State<VanProfilePage> {
           )
         : Column(
             children: [
-              const SizedBox(
-                height: 2,
-              ),
-              Container(
-                height: 190,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color.fromARGB(172, 244, 67, 54), Colors.white],
-                    stops: [0.30, 0.54],
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                  ),
-                ),
-                // color: Colors.red,
-                child: Center(
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 45,
-                    child: CircleAvatar(
-                      radius: 42,
-                      backgroundColor: Colors.white,
-                      backgroundImage: profileImage != null
-                          ? FileImage(File(profileImage!.path))
-                          : null,
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            bottom: -12,
-                            right: -12,
-                            child: IconButton(
-                              color: Colors.cyan.shade300,
-                              splashColor: Colors.red,
-                              tooltip: "Change Profile Picture",
-                              onPressed: profileImageSelecter,
-                              icon: const Icon(
-                                Icons.camera_alt_sharp,
-                                size: 14,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+              // const SizedBox(
+              //   height: 8,
+              // ),
+              TopContainer(
+                profileImageSelecter: profileImageSelecter,
+                profileImage: profileImage,
               ),
               Column(
                 //padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
                 children: [
                   ListTile(
-                    leading: const Icon(Icons.car_crash_outlined),
+                    leading: const Icon(
+                      Icons.car_crash_outlined,
+                      color: Colors.red,
+                    ),
                     title: const Text(
                       "Driver Name",
                       style: TextStyle(
@@ -616,7 +610,10 @@ class _VanProfilePageState extends State<VanProfilePage> {
                     ),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.question_mark_rounded),
+                    leading: const Icon(
+                      Icons.question_mark_rounded,
+                      color: Colors.red,
+                    ),
                     title: const Text(
                       "Gender",
                       style: TextStyle(
@@ -638,7 +635,10 @@ class _VanProfilePageState extends State<VanProfilePage> {
                     ),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.date_range_outlined),
+                    leading: const Icon(
+                      Icons.date_range_outlined,
+                      color: Colors.red,
+                    ),
                     title: const Text(
                       "Birthdate",
                       style: TextStyle(
@@ -660,7 +660,10 @@ class _VanProfilePageState extends State<VanProfilePage> {
                     ),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.email_outlined),
+                    leading: const Icon(
+                      Icons.email_outlined,
+                      color: Colors.red,
+                    ),
                     title: const Text(
                       "Email",
                       style: TextStyle(
@@ -682,7 +685,10 @@ class _VanProfilePageState extends State<VanProfilePage> {
                     ),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.phone_callback_outlined),
+                    leading: const Icon(
+                      Icons.phone_callback_outlined,
+                      color: Colors.red,
+                    ),
                     title: const Text(
                       "Driver Number",
                       style: TextStyle(

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:navigation_history_observer/navigation_history_observer.dart';
 
+import 'widgets/topcontainer.dart';
+
 class ProfilePage extends StatefulWidget {
   static const routeName = "ProfilePage";
 
@@ -678,51 +680,9 @@ class _ProfilePageState extends State<ProfilePage> {
     } else {
       return Column(
         children: [
-          const SizedBox(
-            height: 2,
-          ),
-          Container(
-            height: 190,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color.fromARGB(172, 244, 67, 54), Colors.white],
-                stops: [0.30, 0.54],
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-              ),
-            ),
-            // color: Colors.red,
-            child: Center(
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                radius: 45,
-                child: CircleAvatar(
-                  radius: 42,
-                  backgroundColor: Colors.white,
-                  backgroundImage: profileImage != null
-                      ? FileImage(File(profileImage!.path))
-                      : null,
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        bottom: -12,
-                        right: -12,
-                        child: IconButton(
-                          color: Colors.cyan.shade300,
-                          splashColor: Colors.red,
-                          tooltip: "Change Profile Picture",
-                          onPressed: profileImageSelecter,
-                          icon: const Icon(
-                            Icons.camera_alt_sharp,
-                            size: 14,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+          TopContainer(
+            profileImageSelecter: profileImageSelecter,
+            profileImage: profileImage,
           ),
           Column(
             //padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),

@@ -6,6 +6,7 @@ import 'ui/auth/login/login.dart';
 import 'ui/auth/signup/rgstcheck.dart';
 import 'ui/auth/signup/signup.dart';
 import 'ui/home/homepage.dart';
+import 'ui/pickcity/pick_city.dart';
 import 'ui/tabview_garage.dart';
 
 void main() {
@@ -41,8 +42,6 @@ class MyApp extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        
-        
       ),
       home: LoginPage(),
       routes: {
@@ -52,6 +51,7 @@ class MyApp extends StatelessWidget {
         GarageTabView.routeName: (context) => GarageTabView(),
         TowingTabView.routeName: (context) => TowingTabView(),
         HomePage.routeName: (context) => HomePage(),
+        PickCity.routeName: (context) => PickCity(),
       },
       navigatorObservers: [NavigationHistoryObserver()],
       debugShowCheckedModeBanner: false,

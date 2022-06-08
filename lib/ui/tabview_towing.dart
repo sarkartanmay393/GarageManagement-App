@@ -5,6 +5,7 @@ import 'help/helppage.dart';
 import 'home/homepage.dart';
 import 'inventory/inventory.dart';
 import 'menu/menu.dart';
+import 'pickcity/pick_city.dart';
 import 'profiles/vanprofile.dart';
 
 class TowingTabView extends StatefulWidget {
@@ -82,7 +83,26 @@ class _TowingTabView extends State<TowingTabView> {
             ),
           ),
           actions: [
-            // Text("currentLocation"),
+            TextButton.icon(
+              onPressed: () {
+                Navigator.of(context).pushNamed(PickCity.routeName);
+              },
+              icon: const Icon(
+                Icons.maps_home_work,
+                size: 12,
+                color: Colors.white,
+              ),
+              label: Text(
+                "Jalpaiguri",
+                style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+              ),
+              style: const ButtonStyle(
+                  // fixedSize: MaterialStateProperty.all(Size(32, 2)),
+                  ),
+            ),
           ],
         ),
       ),

@@ -77,6 +77,13 @@ class _GarageTabView extends State<GarageTabView> {
               color: Colors.white,
             ),
           ),
+          actions: [
+            TextButton.icon(
+              onPressed: () {},
+              icon: Icon(Icons.maps_home_work),
+              label: Text("Jalpaiguri"),
+            ),
+          ],
         ),
       ),
       drawer: Menu(),

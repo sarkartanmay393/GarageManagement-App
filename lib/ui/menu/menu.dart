@@ -21,10 +21,7 @@ class _MenuState extends State<Menu> {
   String currentLocation = "";
 
   Future<void> changeLocationButton() async {
-    //call this async method from whereever you need
-    // GeoCode gc = GeoCode();
     String error;
-
     try {
       LocationData currentPostion = await location.getLocation();
       List<geo.Placemark> placemarks = await geo.placemarkFromCoordinates(

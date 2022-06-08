@@ -8,9 +8,9 @@ class PossibleCities extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      height: size.height - 2 * (size.height * 0.07) - 100,
+      height: size.height - 350,
       child: GridView.builder(
-        physics: NeverScrollableScrollPhysics(),
+        // physics: NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
         ),
@@ -21,14 +21,13 @@ class PossibleCities extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
               ),
-              margin: EdgeInsets.all(6),
+              margin: const EdgeInsets.all(6),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FittedBox(
-                    child: Container(
-                      child: Image.network("src"),
-                    ),
+                  Container(
+                    height: 45,
+                    child: Image.network("src"),
                   ),
                   Text("Dhupguri"),
                 ],

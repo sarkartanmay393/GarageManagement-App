@@ -5,6 +5,8 @@ import 'help/helppage.dart';
 import 'home/homepage.dart';
 import 'inventory/inventory.dart';
 import 'menu/menu.dart';
+import 'notification/notifications.dart';
+import 'pickcity/pick_city.dart';
 import 'profiles/profilepage.dart';
 
 class GarageTabView extends StatefulWidget {
@@ -48,6 +50,7 @@ class _GarageTabView extends State<GarageTabView> {
     super.initState();
   }
 
+  var notificationCount = 10;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -60,13 +63,30 @@ class _GarageTabView extends State<GarageTabView> {
         preferredSize: Size(double.infinity, size.height * 0.07),
         child: AppBar(
           backgroundColor: Colors.red,
-          title: Text(
-            "BEE",
-            style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
+          title: Row(
+            children: [
+              Text(
+                "BEE",
+                style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (ctx) => Notifications()),
+                  );
+                },
+                icon: notificationCount != 0
+                    ? Icon(Icons.notifications_active_outlined)
+                    : Icon(Icons.notifications_none_outlined),
+                color: Colors.white,
+                iconSize: 20,
+                tooltip: "Notifications",
+              ),
+            ],
           ),
           leading: IconButton(
             onPressed: () {
@@ -79,9 +99,24 @@ class _GarageTabView extends State<GarageTabView> {
           ),
           actions: [
             TextButton.icon(
-              onPressed: () {},
-              icon: Icon(Icons.maps_home_work),
-              label: Text("Jalpaiguri"),
+              onPressed: () {
+                Navigator.of(context).pushNamed(PickCity.routeName);
+              },
+              icon: const Icon(
+                Icons.maps_home_work,
+                size: 12,
+                color: Colors.white,
+              ),
+              label: Text(
+                "Jalpaiguri",
+                style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+              ),
+              style: const ButtonStyle(
+                  // fixedSize: MaterialStateProperty.all(Size(32, 2)),
+                  ),
             ),
           ],
         ),

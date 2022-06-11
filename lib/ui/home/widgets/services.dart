@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:auto_route/auto_route.dart';
+
+import '../../../routes/router.gr.dart';
+import '../../services_request/services_request.dart';
 
 class Services extends StatelessWidget {
   const Services({Key? key}) : super(key: key);
@@ -21,13 +25,13 @@ class Services extends StatelessWidget {
           height: 2,
         ),
         Container(
-          margin: EdgeInsets.all(4),
+          margin: const EdgeInsets.all(4),
           height: 250,
           child: GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 5,
             ),
-            itemBuilder: (_, i) => InkWell(
+            itemBuilder: (ctx, i) => InkWell(
               borderRadius: BorderRadius.circular(20),
               onTap: () {},
               child: Card(
@@ -36,7 +40,7 @@ class Services extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  margin: EdgeInsets.all(6),
+                  margin: const EdgeInsets.all(6),
                   // color: Colors.amber,
                   child: Column(
                     children: [

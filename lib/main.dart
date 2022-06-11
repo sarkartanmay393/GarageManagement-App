@@ -1,24 +1,18 @@
-import 'package:bee/ui/tabview_towing.dart';
 import 'package:flutter/material.dart';
-import 'package:navigation_history_observer/navigation_history_observer.dart';
 
-import 'ui/auth/login/login.dart';
-import 'ui/auth/signup/rgstcheck.dart';
-import 'ui/auth/signup/signup.dart';
-import 'ui/home/homepage.dart';
-import 'ui/pickcity/pick_city.dart';
-import 'ui/tabview_garage.dart';
+import './routes/router.gr.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
+  final _appRouter = AppRouter();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'BEE',
       theme: ThemeData(
         useMaterial3: true,
@@ -43,18 +37,22 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: LoginPage(),
-      routes: {
-        LoginPage.routeName: (context) => LoginPage(),
-        SignupPage.routeName: (context) => SignupPage(),
-        RgstCheck.routeName: (context) => RgstCheck(),
-        GarageTabView.routeName: (context) => GarageTabView(),
-        TowingTabView.routeName: (context) => TowingTabView(),
-        HomePage.routeName: (context) => HomePage(),
-        PickCity.routeName: (context) => PickCity(),
-      },
-      navigatorObservers: [NavigationHistoryObserver()],
+      // home: LoginPage(),
+      // routes: {
+      //   LoginPage.routeName: (context) => LoginPage(),
+      //   SignupPage.routeName: (context) => SignupPage(),
+      //   RgstCheck.routeName: (context) => RgstCheck(),
+      //   GarageTabView.routeName: (context) => GarageTabView(),
+      //   TowingTabView.routeName: (context) => TowingTabView(),
+      //   // HomePage.routeName: (context) => HomePage(),
+      //   PickCity.routeName: (context) => PickCity(),
+      //   // ServicesRequest.routeName: (context) => ServicesRequest(),
+      //   BookingHistory.routeName: (context) => BookingHistory(),
+      // },
+      // navigatorObservers: [NavigationHistoryObserver()],
       debugShowCheckedModeBanner: false,
+      routerDelegate: _appRouter.delegate(),
+      routeInformationParser: _appRouter.defaultRouteParser(),
     );
   }
 }

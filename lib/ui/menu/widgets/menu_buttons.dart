@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MenuButtons extends StatelessWidget {
-  const MenuButtons({
+  MenuButtons({
     Key? key,
   }) : super(key: key);
 

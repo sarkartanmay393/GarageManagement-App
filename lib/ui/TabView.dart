@@ -1,65 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:navigation_history_observer/navigation_history_observer.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:geocoding/geocoding.dart';
 
-import 'help/helppage.dart';
-import 'home/homepage.dart';
-import 'inventory/inventory.dart';
+import '../routes/router.gr.dart';
 import 'menu/menu.dart';
-import 'notification/notifications.dart';
-import 'pickcity/pick_city.dart';
-import 'profiles/profilepage.dart';
 
-class GarageTabView extends StatefulWidget {
-  static const routeName = "GarageTab";
-  const GarageTabView({Key? key}) : super(key: key);
+class TabView extends StatefulWidget {
+  const TabView({Key? key}) : super(key: key);
 
   @override
-  State<GarageTabView> createState() => _GarageTabView();
+  State<TabView> createState() => _TabView();
 }
 
-class _GarageTabView extends State<GarageTabView> {
-  //
-  NavigationHistoryObserver navHistory = NavigationHistoryObserver();
-
+class _TabView extends State<TabView> {
   final _key = GlobalKey<ScaffoldState>();
-  int selectedIndex = 0;
-
-  //
-
-  void selecter(int value) {
-    setState(() {
-      selectedIndex = value;
-    });
-  }
-
-  // to get the next page from rgst check.
-
-  List<Widget> diffItems = [
-    HomePage(), // 0
-    HelpPage(), // 1
-    InventoryPage(), // 2
-    ProfilePage(), // 3
-    // porblem here
-  ];
-
-  @override
-  void initState() {
-    if (navHistory.next!.settings.name == "rgstcheck") {
-      selectedIndex = 3;
-    }
-    super.initState();
-  }
-
   var notificationCount = 10;
+  Placemark pm = Placemark(locality: "Jalpaigiuri");
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
-    //
-    return Scaffold(
-      key: _key,
+    return AutoTabsScaffold(
+      scaffoldKey: _key,
       resizeToAvoidBottomInset: false,
-      appBar: PreferredSize(
+      appBarBuilder: (_, tab) => PreferredSize(
         preferredSize: Size(double.infinity, size.height * 0.07),
         child: AppBar(
           backgroundColor: Colors.red,
@@ -75,13 +39,13 @@ class _GarageTabView extends State<GarageTabView> {
               ),
               IconButton(
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (ctx) => Notifications()),
-                  );
+                  context.router.isRoot
+                      ? context.router.push(const Notifications())
+                      : context.router.popAndPush(const Notifications());
                 },
                 icon: notificationCount != 0
-                    ? Icon(Icons.notifications_active_outlined)
-                    : Icon(Icons.notifications_none_outlined),
+                    ? const Icon(Icons.notifications_active_outlined)
+                    : const Icon(Icons.notifications_none_outlined),
                 color: Colors.white,
                 iconSize: 20,
                 tooltip: "Notifications",
@@ -99,36 +63,37 @@ class _GarageTabView extends State<GarageTabView> {
           ),
           actions: [
             TextButton.icon(
-              onPressed: () {
-                Navigator.of(context).pushNamed(PickCity.routeName);
-              },
+              onPressed: () {},
               icon: const Icon(
                 Icons.maps_home_work,
                 size: 12,
                 color: Colors.white,
               ),
               label: Text(
-                "Jalpaiguri",
+                "${pm.locality}",
                 style: Theme.of(context).textTheme.displaySmall!.copyWith(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
               ),
-              style: const ButtonStyle(
-                  // fixedSize: MaterialStateProperty.all(Size(32, 2)),
-                  ),
+              style: const ButtonStyle(),
             ),
           ],
         ),
       ),
+      routes: const [
+        HomeRouter(),
+        HelpsRouter(),
+        InventoryRouter(),
+        VProfileRouter(),
+      ],
       drawer: Menu(),
-      body: diffItems[selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBuilder: (_, tabsRouter) => BottomNavigationBar(
         elevation: 2,
         backgroundColor: Colors.white,
-        currentIndex: selectedIndex,
+        currentIndex: tabsRouter.activeIndex,
+        onTap: tabsRouter.setActiveIndex,
         type: BottomNavigationBarType.fixed,
-        onTap: (val) => selecter(val),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),

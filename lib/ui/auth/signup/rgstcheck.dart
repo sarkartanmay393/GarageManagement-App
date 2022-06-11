@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../tabview_garage.dart';
-import '../../tabview_towing.dart';
+import '../../TabView.dart';
 
 class RgstCheck extends StatefulWidget {
-  static const routeName = "rgstcheck";
-
   const RgstCheck({Key? key}) : super(key: key);
 
   @override
@@ -51,12 +48,10 @@ class _RgstCheckState extends State<RgstCheck> {
   void submitButton() {
     if (_choiceIndex == 0) {
       print("Towing Van");
-      Navigator.of(context)
-          .popAndPushNamed(TowingTabView.routeName, arguments: userPref);
+      // Navigator.of(context)
+      //     .popAndPushNamed(TowingTabView.routeName, arguments: userPref);
     } else {
       print("Garage");
-      Navigator.of(context)
-          .popAndPushNamed(GarageTabView.routeName, arguments: userPref);
     }
     // print(userPref);
   }

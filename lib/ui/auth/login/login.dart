@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:auto_route/auto_route.dart';
 
-import '../../tabview_towing.dart';
+import '../../../routes/router.gr.dart';
 
 class LoginPage extends StatelessWidget {
-  static const routeName = "login";
-
   LoginPage({Key? key}) : super(key: key);
 
   final _controller = TextEditingController();
   String _phoneNumber = "";
-
   void get_otp_button(BuildContext ctx) {
     _phoneNumber = _controller.text;
-    Navigator.of(ctx).pushReplacementNamed(TowingTabView.routeName);
+    ctx.navigateTo(const TabView(children: [HomeRouter()]));
   }
 
   @override
@@ -198,9 +196,7 @@ class LoginPage extends StatelessWidget {
                       fontWeight: FontWeight.w400),
                 ),
                 TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed("signup");
-                  },
+                  onPressed: () {},
                   style: ButtonStyle(
                     splashFactory:
                         InkSparkle.constantTurbulenceSeedSplashFactory,

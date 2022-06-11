@@ -5,7 +5,6 @@ import './widgets/categories.dart';
 import './widgets/homecard.dart';
 
 class HomePage extends StatelessWidget {
-  static const routeName = "HomePage";
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -64,7 +63,7 @@ class HomePage extends StatelessWidget {
           ),
           const homecard(),
           const Categories(),
-          const Services(),
+          Services(),
         ],
       ),
     );

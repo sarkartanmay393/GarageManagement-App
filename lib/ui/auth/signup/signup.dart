@@ -34,7 +34,7 @@ class _SignupPageState extends State<SignupPage> {
       _formKey.currentState!.save();
     }
     print(CreateInfo);
-    Navigator.of(context).pushNamed(RgstCheck.routeName);
+    // Navigator.of(context).pushNamed(RgstCheck.routeName);
   }
 
   @override

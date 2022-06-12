@@ -1,7 +1,9 @@
+import 'package:bee/ui/booking/bookinghistory.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class MenuButtons extends StatelessWidget {
-  MenuButtons({
+  const MenuButtons({
     Key? key,
   }) : super(key: key);
 
@@ -16,7 +18,16 @@ class MenuButtons extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              // Navigator.of(context).pushNamed(BookingHistory.routeName);
+              pushNewScreenWithRouteSettings(
+                context,
+                settings: const RouteSettings(name: BookingHistory.routeName),
+                screen: BookingHistory(),
+                withNavBar: true,
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+              );
+            },
             style: ButtonStyle(
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 // splashFactory: NoSplash.splashFactory,

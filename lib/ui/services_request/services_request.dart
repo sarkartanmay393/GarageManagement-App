@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
+import '../notification/notifications.dart';
 import './widgets/SRCard.dart';
 
 class ServicesRequest extends StatefulWidget {
-  // String serviceId; @PathParam() required this.serviceId
+  static const routeName = "ServiceRequest";
   const ServicesRequest({Key? key}) : super(key: key);
 
   @override
@@ -30,53 +32,100 @@ class _ServicesRequestState extends State<ServicesRequest> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return SizedBox(
-      height: size.height - (size.height * 0.1),
-      // padding: const EdgeInsets.all(12),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context, rootNavigator: true).pop();
-                },
-                icon: const Icon(Icons.navigate_before_outlined),
-              ),
-              SizedBox(
-                height: 40,
-                width: 40,
-                child: Card(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.navigate_before_outlined),
-                  ),
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size(double.infinity, size.height * 0.07),
+        child: AppBar(
+          backgroundColor: Colors.red,
+          centerTitle: true,
+          title: Text(
+            "Service Request",
+            style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
                 ),
-              ),
-              const SizedBox(
-                width: 12,
-              ),
-              Text(
-                "Services Request",
-                style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                      color: Colors.black87,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-              )
-            ],
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-            height: size.height * 0.83,
-            child: ListView.builder(
-              itemBuilder: (ctx, i) => SRCard(size, info),
-              itemCount: 5,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_new_outlined,
+              color: Colors.white,
+              size: 18,
             ),
           ),
-        ],
+          actions: [
+            IconButton(
+              onPressed: () {
+                pushNewScreenWithRouteSettings(
+                  context,
+                  settings: const RouteSettings(name: Notifications.routeName),
+                  screen: const Notifications(),
+                  withNavBar: true,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(builder: (ctx) => Notifications()),
+                // );
+              },
+              icon: const Icon(
+                Icons.notifications_active_outlined,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: SizedBox(
+        height: size.height - (size.height * 0.1),
+        // padding: const EdgeInsets.all(12),
+        child: Column(
+          children: [
+            // Row(
+            //   children: [
+            //     IconButton(
+            //       onPressed: () {
+            //         Navigator.of(context, rootNavigator: true).pop();
+            //       },
+            //       icon: const Icon(Icons.navigate_before_outlined),
+            //     ),
+            //     SizedBox(
+            //       height: 40,
+            //       width: 40,
+            //       child: Card(
+            //         margin:
+            //             const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+            //         child: IconButton(
+            //           onPressed: () {},
+            //           icon: const Icon(Icons.navigate_before_outlined),
+            //         ),
+            //       ),
+            //     ),
+            //     const SizedBox(
+            //       width: 12,
+            //     ),
+            //     Text(
+            //       "Services Request",
+            //       style: Theme.of(context).textTheme.displaySmall!.copyWith(
+            //             color: Colors.black87,
+            //             fontSize: 14,
+            //             fontWeight: FontWeight.w500,
+            //           ),
+            //     )
+            //   ],
+            // ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              height: size.height * 0.825,
+              child: ListView.builder(
+                itemBuilder: (ctx, i) => SRCard(size, info),
+                itemCount: 5,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

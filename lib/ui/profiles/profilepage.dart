@@ -7,6 +7,8 @@ import 'package:navigation_history_observer/navigation_history_observer.dart';
 import 'widgets/topcontainer.dart';
 
 class ProfilePage extends StatefulWidget {
+  static const routeName = "ProfilePage";
+
   const ProfilePage({Key? key}) : super(key: key);
 
   @override

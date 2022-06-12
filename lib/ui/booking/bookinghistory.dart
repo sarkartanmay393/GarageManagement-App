@@ -1,123 +1,114 @@
+import 'package:bee/ui/booking/widgets/Rejected.dart';
+import 'package:bee/ui/booking/widgets/completed.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import '../notification/notifications.dart';
-import '../pickcity/pick_city.dart';
-import 'widgets/completed.dart';
-import 'widgets/processing.dart';
-import 'widgets/rejected.dart';
+import 'widgets/Proccessing.dart';
 
 class BookingHistory extends StatelessWidget {
+  static const routeName = 'booking';
   BookingHistory({Key? key}) : super(key: key);
 
   Placemark pm = Placemark(locality: "Jalpaiguri");
   var notificationCount = 0;
+  final _pages = [];
+
+  Widget _tabBuilder(String name) {
+    return Tab(
+      text: name,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size(double.infinity, size.height * 0.07),
-        child: AppBar(
-          backgroundColor: Colors.red,
-          title: Row(
-            children: [
-              Text(
-                "BEE",
-                style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (ctx) => Notifications()),
-                  );
-                },
-                icon: notificationCount != 0
-                    ? const Icon(Icons.notifications_active_outlined)
-                    : const Icon(Icons.notifications_none_outlined),
-                color: Colors.white,
-                iconSize: 20,
-                tooltip: "Notifications",
-              ),
-            ],
-          ),
-          leading: IconButton(
-            onPressed: () {
-              // _key.currentState!.openDrawer();
-            },
-            icon: const Icon(
-              Icons.menu_book_rounded,
-              color: Colors.white,
-            ),
-          ),
-          actions: [
-            TextButton.icon(
-              onPressed: () {
-                Navigator.of(context).pushNamed(PickCity.routeName);
-              },
-              icon: const Icon(
-                Icons.maps_home_work,
-                size: 12,
-                color: Colors.white,
-              ),
-              label: Text(
-                "${pm.locality}",
-                style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-              ),
-              style: const ButtonStyle(
-                  // fixedSize: MaterialStateProperty.all(Size(32, 2)),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size(double.infinity, size.height * 0.12),
+          child: AppBar(
+            backgroundColor: Colors.red,
+            centerTitle: true,
+            title: Text(
+              "Booking History",
+              style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
                   ),
             ),
-          ],
-        ),
-      ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 18,
-          ),
-          Row(
-            children: [
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios_new_outlined,
+                color: Colors.white,
+                size: 18,
+              ),
+            ),
+            actions: [
               IconButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(builder: (ctx) => const Notifications()),
+                  // );
+                  pushNewScreenWithRouteSettings(
+                    context,
+                    settings:
+                        const RouteSettings(name: Notifications.routeName),
+                    screen: const Notifications(),
+                    withNavBar: true,
+                    pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                  );
                 },
                 icon: const Icon(
-                  Icons.navigate_before_outlined,
-                  size: 28,
-                  color: Colors.black,
+                  Icons.notifications_active_outlined,
+                  color: Colors.white,
                 ),
               ),
-              Text(
-                "Booking History",
-                style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                      fontSize: 16,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.35,
-                    ),
-              ),
             ],
+            bottom: TabBar(
+              tabs: [
+                _tabBuilder("Processing"),
+                _tabBuilder("Completed"),
+                _tabBuilder("Rejected"),
+              ],
+            ),
           ),
-          //
-          TabBar(
-            tabs: [
-              processing(),
-              completed(),
-              rejected(),
-            ],
-            // controller: ,
-          )
-        ],
+        ),
+        body: TabBarView(
+          children: [
+            Processing(),
+            Completed(),
+            Rejected(),
+          ],
+        ),
       ),
     );
   }
 }
+
+// Tab(
+//                   child: Card(
+//                     shape: RoundedRectangleBorder(
+//                       borderRadius: BorderRadius.circular(2),
+//                     ),
+//                     child: Padding(
+//                       padding: const EdgeInsets.symmetric(
+//                           horizontal: 12.0, vertical: 5.5),
+//                       child: Text(
+//                         "Rejected",
+//                         style:
+//                             Theme.of(context).textTheme.displaySmall!.copyWith(
+//                                   color: Colors.black,
+//                                   fontSize: 13,
+//                                   fontWeight: FontWeight.normal,
+//                                 ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),

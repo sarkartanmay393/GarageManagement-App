@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
-import '../routes/router.gr.dart';
-import 'menu/menu.dart';
+import '../state/provider.dart';
+import 'help/helppage.dart';
+import 'home/homepage.dart';
+import 'inventory/inventory.dart';
+import 'profiles/profilepage.dart';
+import 'profiles/vanprofile.dart';
 
 class TabView extends StatefulWidget {
+  static const routeName = "TowingVanTab";
   const TabView({Key? key}) : super(key: key);
 
   @override
@@ -13,106 +18,100 @@ class TabView extends StatefulWidget {
 }
 
 class _TabView extends State<TabView> {
-  final _key = GlobalKey<ScaffoldState>();
-  var notificationCount = 10;
-  Placemark pm = Placemark(locality: "Jalpaigiuri");
+  // NavigationHistoryObserver navHistory = NavigationHistoryObserver();
+
+  // final _key = GlobalKey<ScaffoldState>();
+
+  // int selectedIndex = 0;
+
+  // void selecter(int value) {
+  //   setState(() {
+  //     selectedIndex = value;
+  //   });
+  // }
+
+  // Placemark pm = Placemark(locality: "Jalpaiguri");
+
+  // List<Widget> diffItems = [
+  //   HomePage(), // 0
+  //   HelpPage(), // 1
+  //   InventoryPage(), // 2
+  //   VanProfilePage(), // 3
+  //   // porblem here
+  // ];
+
+  // @override
+  // void initState() {
+  //   try {
+  //     if (navHistory.next!.settings.name == "rgstcheck") {
+  //       selectedIndex = 3;
+  //     }
+  //     pm = CurrentLocation.getLocation() as Placemark;
+  //   } catch (err) {
+  //     print(err);
+  //   }
+  //   super.initState();
+  // }
+
+  // var notificationCount = 10;
+  final _controller = PersistentTabController(initialIndex: 0);
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return AutoTabsScaffold(
-      scaffoldKey: _key,
-      resizeToAvoidBottomInset: false,
-      appBarBuilder: (_, tab) => PreferredSize(
-        preferredSize: Size(double.infinity, size.height * 0.07),
-        child: AppBar(
-          backgroundColor: Colors.red,
-          title: Row(
-            children: [
-              Text(
-                "BEE",
-                style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-              IconButton(
-                onPressed: () {
-                  context.router.isRoot
-                      ? context.router.push(const Notifications())
-                      : context.router.popAndPush(const Notifications());
-                },
-                icon: notificationCount != 0
-                    ? const Icon(Icons.notifications_active_outlined)
-                    : const Icon(Icons.notifications_none_outlined),
-                color: Colors.white,
-                iconSize: 20,
-                tooltip: "Notifications",
-              ),
-            ],
-          ),
-          leading: IconButton(
-            onPressed: () {
-              _key.currentState!.openDrawer();
-            },
-            icon: const Icon(
-              Icons.menu_book_rounded,
-              color: Colors.white,
-            ),
-          ),
-          actions: [
-            TextButton.icon(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.maps_home_work,
-                size: 12,
-                color: Colors.white,
-              ),
-              label: Text(
-                "${pm.locality}",
-                style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-              ),
-              style: const ButtonStyle(),
-            ),
-          ],
-        ),
-      ),
-      routes: const [
-        HomeRouter(),
-        HelpsRouter(),
-        InventoryRouter(),
-        VProfileRouter(),
+    var IF = Provider.of<InfoFlower>(context, listen: false);
+    return PersistentTabView(
+      context,
+      controller: _controller,
+      screens: [
+        HomePage(), // 0
+        const HelpPage(), // 1
+        const InventoryPage(), // 2
+        IF.userType.index == 0 ? const ProfilePage() : const VanProfilePage()
       ],
-      drawer: Menu(),
-      bottomNavigationBuilder: (_, tabsRouter) => BottomNavigationBar(
-        elevation: 2,
-        backgroundColor: Colors.white,
-        currentIndex: tabsRouter.activeIndex,
-        onTap: tabsRouter.setActiveIndex,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.help_center_outlined),
-            label: "Get Help",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.inventory_2_outlined),
-            label: "Inventory",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_outlined),
-            label: "Account",
-          ),
-        ],
+      items: [
+        PersistentBottomNavBarItem(
+          icon: const Icon(Icons.home_outlined),
+          title: "Home",
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(Icons.help_center_outlined),
+          title: "Get Help",
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(Icons.inventory_2_outlined),
+          title: "Inventory",
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(Icons.account_circle_outlined),
+          title: "Account",
+        ),
+      ],
+      confineInSafeArea: true,
+      // backgroundColor: Colors.white, // Default is Colors.white.
+      handleAndroidBackButtonPress: true, // Default is true.
+      resizeToAvoidBottomInset:
+          true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+      stateManagement: true, // Default is true.
+      hideNavigationBarWhenKeyboardShows:
+          true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
+      decoration: NavBarDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        colorBehindNavBar: Colors.white,
       ),
+      popAllScreensOnTapOfSelectedTab: true,
+      popActionScreens: PopActionScreensType.all,
+      itemAnimationProperties: const ItemAnimationProperties(
+        // Navigation Bar's items animation properties.
+        duration: Duration(milliseconds: 200),
+        curve: Curves.ease,
+      ),
+      screenTransitionAnimation: const ScreenTransitionAnimation(
+        // Screen transition animation on change of selected tab.
+        animateTabTransition: true,
+        curve: Curves.ease,
+        duration: Duration(milliseconds: 200),
+      ),
+      navBarStyle: NavBarStyle.style3,
     );
   }
 }

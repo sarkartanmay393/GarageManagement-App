@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:auto_route/auto_route.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-import '../../../routes/router.gr.dart';
 import '../../services_request/services_request.dart';
 
 class Services extends StatelessWidget {
@@ -25,22 +24,32 @@ class Services extends StatelessWidget {
           height: 2,
         ),
         Container(
-          margin: const EdgeInsets.all(4),
+          margin: EdgeInsets.all(4),
           height: 250,
           child: GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 5,
             ),
-            itemBuilder: (ctx, i) => InkWell(
+            itemBuilder: (_, i) => InkWell(
               borderRadius: BorderRadius.circular(20),
-              onTap: () {},
+              onTap: () {
+                // Navigator.of(context).pushNamed(ServicesRequest.routeName);
+                pushNewScreenWithRouteSettings(
+                  context,
+                  settings:
+                      const RouteSettings(name: ServicesRequest.routeName),
+                  screen: const ServicesRequest(),
+                  withNavBar: true,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                );
+              },
               child: Card(
                 elevation: 2.8,
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  margin: const EdgeInsets.all(6),
+                  margin: EdgeInsets.all(6),
                   // color: Colors.amber,
                   child: Column(
                     children: [

@@ -1,8 +1,13 @@
+import 'package:bee/state/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
 import '../../TabView.dart';
 
 class RgstCheck extends StatefulWidget {
+  static const routeName = "rgstcheck";
+
   const RgstCheck({Key? key}) : super(key: key);
 
   @override
@@ -45,13 +50,31 @@ class _RgstCheckState extends State<RgstCheck> {
     );
   }
 
-  void submitButton() {
+  void submitButton(BuildContext ctx) {
     if (_choiceIndex == 0) {
       print("Towing Van");
       // Navigator.of(context)
-      //     .popAndPushNamed(TowingTabView.routeName, arguments: userPref);
+      //     .popAndPushNamed(TabView.routeName, arguments: userPref);
+      pushNewScreenWithRouteSettings(
+        context,
+        settings: const RouteSettings(name: TabView.routeName),
+        screen: const TabView(),
+        withNavBar: true,
+        pageTransitionAnimation: PageTransitionAnimation.cupertino,
+      );
     } else {
       print("Garage");
+      var IF = Provider.of<InfoFlower>(ctx, listen: false);
+      IF.userTypeSetter("Garage");
+      // Navigator.of(context)
+      //     .popAndPushNamed(GarageTabView.routeName, arguments: userPref);
+      pushNewScreenWithRouteSettings(
+        context,
+        settings: const RouteSettings(name: TabView.routeName),
+        screen: const TabView(),
+        withNavBar: true,
+        pageTransitionAnimation: PageTransitionAnimation.cupertino,
+      );
     }
     // print(userPref);
   }
@@ -137,7 +160,7 @@ class _RgstCheckState extends State<RgstCheck> {
                   height: 25,
                 ),
                 ElevatedButton(
-                  onPressed: submitButton,
+                  onPressed: () => submitButton(context),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
                       Theme.of(context).primaryColor,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import 'widgets/detect_city.dart';
 import 'widgets/posible_cities.dart';
@@ -24,37 +25,14 @@ class PickCity extends StatelessWidget {
                 ),
           ),
           centerTitle: true,
-          leading: Container(
-            alignment: AlignmentDirectional.center,
-            margin: const EdgeInsets.only(
-              left: 12,
-              right: 12,
-              top: 11,
-              bottom: 11,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(45),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              size: 18,
               color: Colors.white,
-              boxShadow: const [
-                BoxShadow(
-                  color: Color.fromARGB(111, 8, 8, 8),
-                  blurRadius: 3,
-                  spreadRadius: 1.2,
-                )
-              ],
-            ),
-            child: FittedBox(
-              child: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  print(Navigator.of(context).canPop());
-                },
-                icon: Icon(
-                  Icons.navigate_before_rounded,
-                  color: Colors.grey.shade600,
-                ),
-                splashColor: Colors.red,
-              ),
             ),
           ),
         ),

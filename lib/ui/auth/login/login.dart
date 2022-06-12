@@ -1,16 +1,20 @@
+import 'package:bee/state/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_route/auto_route.dart';
-
-import '../../../routes/router.gr.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
+  static const routeName = "login";
+
   LoginPage({Key? key}) : super(key: key);
 
   final _controller = TextEditingController();
   String _phoneNumber = "";
+
   void get_otp_button(BuildContext ctx) {
     _phoneNumber = _controller.text;
-    ctx.navigateTo(const TabView(children: [HomeRouter()]));
+    // Navigator.of(ctx).pushReplacementNamed(TabView.routeName);
+    var IF = Provider.of<InfoFlower>(ctx, listen: false);
+    IF.stateChanger();
   }
 
   @override
@@ -196,7 +200,9 @@ class LoginPage extends StatelessWidget {
                       fontWeight: FontWeight.w400),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed("signup");
+                  },
                   style: ButtonStyle(
                     splashFactory:
                         InkSparkle.constantTurbulenceSeedSplashFactory,

@@ -1,8 +1,10 @@
+import 'package:bee/state/provider.dart';
 import 'package:bee/ui/booking/widgets/Rejected.dart';
 import 'package:bee/ui/booking/widgets/completed.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
 import '../notification/notifications.dart';
 import 'widgets/Proccessing.dart';
@@ -24,6 +26,7 @@ class BookingHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    var InfoFlow = Provider.of<InfoFlower>(context);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -53,9 +56,9 @@ class BookingHistory extends StatelessWidget {
             actions: [
               IconButton(
                 onPressed: () {
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(builder: (ctx) => const Notifications()),
-                  // );
+                  // Navigator.of(context).popUntil(ModalRoute.withName("/"));
+                  // Navigator.of(context).popUntil(
+                  //     (route) => route.settings.name == "ScreenToPopBackTo");
                   pushNewScreenWithRouteSettings(
                     context,
                     settings:
@@ -64,11 +67,16 @@ class BookingHistory extends StatelessWidget {
                     withNavBar: true,
                     pageTransitionAnimation: PageTransitionAnimation.cupertino,
                   );
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(builder: (ctx) => Notifications()),
+                  // );
                 },
-                icon: const Icon(
-                  Icons.notifications_active_outlined,
-                  color: Colors.white,
-                ),
+                icon: InfoFlow.notificationCount != 0
+                    ? const Icon(Icons.notifications_active_outlined)
+                    : const Icon(Icons.notifications_none_outlined),
+                color: Colors.white,
+                iconSize: 20,
+                tooltip: "Notifications",
               ),
             ],
             bottom: TabBar(

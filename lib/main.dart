@@ -3,15 +3,16 @@ import 'package:bee/ui/booking/bookinghistory.dart';
 import 'package:bee/ui/services_request/services_request.dart';
 import 'package:bee/ui/TabView.dart';
 import 'package:flutter/material.dart';
-import 'package:navigation_history_observer/navigation_history_observer.dart';
 import 'package:provider/provider.dart';
 
+import 'ui/T&C/terms.dart';
 import 'ui/auth/login/login.dart';
 import 'ui/auth/signup/rgstcheck.dart';
 import 'ui/auth/signup/signup.dart';
 import 'ui/home/homepage.dart';
 import 'ui/pickcity/pick_city.dart';
 import 'ui/TabView.dart';
+import 'ui/revenue/revenue_stats.dart';
 
 void main() {
   runApp(const MyApp());
@@ -65,6 +66,8 @@ class MyApp extends StatelessWidget {
           PickCity.routeName: (context) => const PickCity(),
           BookingHistory.routeName: (context) => BookingHistory(),
           ServicesRequest.routeName: (context) => const ServicesRequest(),
+          RevenueStats.routeName: (context) => RevenueStats(),
+          TermsAndConditions.routeName: (context) => TermsAndConditions(),
         },
         // navigatorObservers: [NavigationHistoryObserver()],
 

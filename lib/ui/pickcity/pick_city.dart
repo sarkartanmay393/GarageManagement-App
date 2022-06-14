@@ -12,7 +12,7 @@ class PickCity extends StatefulWidget {
 }
 
 class _PickCityState extends State<PickCity> {
-  bool doSearch = true;
+  bool doSearch = false;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

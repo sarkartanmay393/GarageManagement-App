@@ -1,6 +1,9 @@
 import 'package:bee/ui/booking/bookinghistory.dart';
+import 'package:bee/ui/revenue/revenue_stats.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+
+import '../../T&C/terms.dart';
 
 class MenuButtons extends StatelessWidget {
   const MenuButtons({
@@ -87,7 +90,15 @@ class MenuButtons extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              pushNewScreenWithRouteSettings(
+                context,
+                settings: const RouteSettings(name: RevenueStats.routeName),
+                screen: RevenueStats(),
+                withNavBar: true,
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+              );
+            },
             style: ButtonStyle(
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 // splashFactory: NoSplash.splashFactory,
@@ -132,7 +143,15 @@ class MenuButtons extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              pushNewScreenWithRouteSettings(
+                context,
+                screen: TermsAndConditions(),
+                settings: const RouteSettings(
+                  name: TermsAndConditions.routeName,
+                ),
+              );
+            },
             style: ButtonStyle(
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 // splashFactory: NoSplash.splashFactory,

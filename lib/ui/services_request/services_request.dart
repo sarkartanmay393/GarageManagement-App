@@ -1,6 +1,8 @@
+import 'package:bee/state/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
 import '../notification/notifications.dart';
 import './widgets/SRCard.dart';
@@ -32,6 +34,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    var InfoFlow = Provider.of<InfoFlower>(context);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(double.infinity, size.height * 0.07),
@@ -59,6 +62,9 @@ class _ServicesRequestState extends State<ServicesRequest> {
           actions: [
             IconButton(
               onPressed: () {
+                // Navigator.of(context).popUntil(ModalRoute.withName("/"));
+                // Navigator.of(context).popUntil(
+                //     (route) => route.settings.name == "ScreenToPopBackTo");
                 pushNewScreenWithRouteSettings(
                   context,
                   settings: const RouteSettings(name: Notifications.routeName),
@@ -70,10 +76,12 @@ class _ServicesRequestState extends State<ServicesRequest> {
                 //   MaterialPageRoute(builder: (ctx) => Notifications()),
                 // );
               },
-              icon: const Icon(
-                Icons.notifications_active_outlined,
-                color: Colors.white,
-              ),
+              icon: InfoFlow.notificationCount != 0
+                  ? const Icon(Icons.notifications_active_outlined)
+                  : const Icon(Icons.notifications_none_outlined),
+              color: Colors.white,
+              iconSize: 20,
+              tooltip: "Notifications",
             ),
           ],
         ),

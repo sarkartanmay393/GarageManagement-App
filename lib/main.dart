@@ -1,18 +1,18 @@
-import 'package:bee/state/provider.dart';
-import 'package:bee/ui/booking/bookinghistory.dart';
-import 'package:bee/ui/services_request/services_request.dart';
-import 'package:bee/ui/TabView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'ui/T&C/terms.dart';
+import 'state/provider.dart';
 import 'ui/auth/login/login.dart';
 import 'ui/auth/signup/rgstcheck.dart';
 import 'ui/auth/signup/signup.dart';
+import 'ui/booking/bookinghistory.dart';
 import 'ui/home/homepage.dart';
 import 'ui/pickcity/pick_city.dart';
 import 'ui/TabView.dart';
+import 'ui/privacy/PrivacyPolicy.dart';
 import 'ui/revenue/revenue_stats.dart';
+import 'ui/services_request/services_request.dart';
+import 'ui/terms/terms.dart';
 
 void main() {
   runApp(const MyApp());
@@ -68,6 +68,7 @@ class MyApp extends StatelessWidget {
           ServicesRequest.routeName: (context) => const ServicesRequest(),
           RevenueStats.routeName: (context) => RevenueStats(),
           TermsAndConditions.routeName: (context) => TermsAndConditions(),
+          PrivacyPolicy.routeName: (context) => PrivacyPolicy(),
         },
         // navigatorObservers: [NavigationHistoryObserver()],
 

@@ -1,9 +1,10 @@
-import 'package:bee/ui/booking/bookinghistory.dart';
-import 'package:bee/ui/revenue/revenue_stats.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-import '../../T&C/terms.dart';
+import '../../booking/bookinghistory.dart';
+import '../../privacy/PrivacyPolicy.dart';
+import '../../revenue/revenue_stats.dart';
+import '../../terms/terms.dart';
 
 class MenuButtons extends StatelessWidget {
   const MenuButtons({
@@ -166,7 +167,13 @@ class MenuButtons extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              pushNewScreenWithRouteSettings(
+                context,
+                screen: PrivacyPolicy(),
+                settings: const RouteSettings(name: PrivacyPolicy.routeName),
+              );
+            },
             style: ButtonStyle(
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 // splashFactory: NoSplash.splashFactory,

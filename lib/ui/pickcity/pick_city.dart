@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import 'widgets/detect_city.dart';
 import 'widgets/posible_cities.dart';
@@ -35,6 +34,16 @@ class PickCity extends StatelessWidget {
               color: Colors.white,
             ),
           ),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.search,
+                color: Colors.white,
+                size: 18,
+              ),
+            ),
+          ],
         ),
       ),
       body: Column(

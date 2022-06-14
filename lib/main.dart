@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         home: Consumer<InfoFlower>(
-          builder: (ctx, IF, _) => IF.isLogin ? TabView() : LoginPage(),
+          builder: (ctx, IF, _) => IF.isLogin ? const TabView() : LoginPage(),
         ),
         routes: {
           LoginPage.routeName: (context) => LoginPage(),

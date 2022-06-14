@@ -1,9 +1,10 @@
-import 'package:bee/ui/menu/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
-import '../../helper/LocationGetter.dart';
+import '../../state/provider.dart';
+import '../menu/menu.dart';
 import '../notification/notifications.dart';
 import '../pickcity/pick_city.dart';
 import './widgets/services.dart';
@@ -21,6 +22,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    var InfoFlow = Provider.of<InfoFlower>(context);
     return Scaffold(
       key: _key,
       appBar: PreferredSize(
@@ -54,7 +56,7 @@ class HomePage extends StatelessWidget {
                   //   MaterialPageRoute(builder: (ctx) => Notifications()),
                   // );
                 },
-                icon: notificationsCount != 0
+                icon: InfoFlow.notificationCount != 0
                     ? const Icon(Icons.notifications_active_outlined)
                     : const Icon(Icons.notifications_none_outlined),
                 color: Colors.white,

@@ -64,8 +64,8 @@ class _TabView extends State<TabView> {
       controller: _controller,
       screens: [
         HomePage(), // 0
-        const HelpPage(), // 1
-        const InventoryPage(), // 2
+        HelpPage(), // 1
+        InventoryPage(), // 2
         IF.userType.index == 0 ? const ProfilePage() : const VanProfilePage()
       ],
       items: [

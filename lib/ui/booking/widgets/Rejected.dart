@@ -1,3 +1,4 @@
+import 'package:bee/ui/booking/widgets/widgets/rejected_card.dart';
 import 'package:flutter/material.dart';
 
 import 'widgets/completed_card.dart';
@@ -24,7 +25,7 @@ class Rejected extends StatelessWidget {
         itemBuilder: (ctx, i) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: completed_card(size, info),
+            child: rejected_card(size, info),
           );
         });
   }

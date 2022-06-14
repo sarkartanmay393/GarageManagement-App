@@ -16,7 +16,6 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   bool isOnline = false;
-
   Location location = Location();
   String currentLocation = "";
 
@@ -121,7 +120,7 @@ class _MenuState extends State<Menu> {
                 ],
               ),
             ),
-            MenuButtons(),
+            const MenuButtons(),
           ],
         ));
   }

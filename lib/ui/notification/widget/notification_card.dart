@@ -16,7 +16,7 @@ class NotificationCard extends StatelessWidget {
               "Headline",
               style: Theme.of(context).textTheme.displayMedium!.copyWith(
                     fontSize: 19,
-                    color: Color.fromARGB(216, 20, 20, 20),
+                    color: const Color.fromARGB(216, 20, 20, 20),
                     fontWeight: FontWeight.w600,
                   ),
             ),
@@ -24,7 +24,7 @@ class NotificationCard extends StatelessWidget {
               "Important Insights.",
               style: Theme.of(context).textTheme.displayMedium!.copyWith(
                     fontSize: 16,
-                    color: Color.fromARGB(216, 20, 20, 20),
+                    color: const Color.fromARGB(216, 20, 20, 20),
                     fontWeight: FontWeight.w400,
                   ),
             ),

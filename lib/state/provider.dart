@@ -7,7 +7,7 @@ enum UserType {
 
 class InfoFlower with ChangeNotifier {
   bool _isLogin = false;
-  int _notificationsCount = 0;
+  int _notificationsCount = 12;
   UserType _userType = UserType.TowingVan;
 
   bool get isLogin {

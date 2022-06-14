@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../state/provider.dart';
 import 'widget/notification_card.dart';
 
 // Not completed yet.
@@ -13,11 +15,10 @@ class Notifications extends StatefulWidget {
 }
 
 class _NotificationsState extends State<Notifications> {
-  var notificationCount = 50;
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    var InfoFlow = Provider.of<InfoFlower>(context);
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size(double.infinity, size.height * 0.07),
@@ -62,13 +63,11 @@ class _NotificationsState extends State<Notifications> {
               ),
             ),
             actions: [
-              if (notificationCount > 0)
+              if (InfoFlow.notificationCount > 0)
                 TextButton.icon(
                   onPressed: () {
                     // Navigator.of(context).pushNamed(PickCity.routeName);
-                    setState(() {
-                      notificationCount = 0;
-                    });
+                    InfoFlow.notificationClearer();
                   },
                   icon: const Icon(
                     // Icons.maps_home_work,
@@ -122,10 +121,10 @@ class _NotificationsState extends State<Notifications> {
           const Divider(height: 0.5),
           SizedBox(
             height: size.height - (size.height * 0.07 + 85),
-            child: notificationCount > 0
+            child: InfoFlow.notificationCount > 0
                 ? ListView.builder(
                     itemBuilder: (ctx, i) => const NotificationCard(),
-                    itemCount: notificationCount,
+                    itemCount: InfoFlow.notificationCount,
                   )
                 : Center(
                     child: Text(

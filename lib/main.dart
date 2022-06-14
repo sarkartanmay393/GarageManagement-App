@@ -66,7 +66,8 @@ class MyApp extends StatelessWidget {
           BookingHistory.routeName: (context) => BookingHistory(),
           ServicesRequest.routeName: (context) => const ServicesRequest(),
         },
-        navigatorObservers: [NavigationHistoryObserver()],
+        // navigatorObservers: [NavigationHistoryObserver()],
+
         debugShowCheckedModeBanner: false,
       ),
     );

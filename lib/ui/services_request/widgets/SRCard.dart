@@ -337,94 +337,119 @@ class _SRCardState extends State<SRCard> {
                 if (srOpt == Option.None)
                   Wrap(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Order Number : ${widget.info["orderId"]!}",
-                            style: Theme.of(context)
-                                .textTheme
-                                .displaySmall!
-                                .copyWith(
-                                  color: Colors.black54,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                          ),
-                          Text(
-                            "Self-Deliver",
-                            style: Theme.of(context)
-                                .textTheme
-                                .displaySmall!
-                                .copyWith(
-                                  color: Colors.black54,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                          ),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Order Number : ${widget.info["orderId"]!}",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displaySmall!
+                                  .copyWith(
+                                    color: Colors.black54,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
+                            Text(
+                              "Self-Deliver",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displaySmall!
+                                  .copyWith(
+                                    color: Colors.black54,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
+                          ],
+                        ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              setState(() {
-                                srOpt = Option.Accept;
-                                // cardHeight = widget.size.height * 0.3;
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.abc,
-                              size: 12,
-                              color: Colors.white,
-                            ),
-                            label: Text(
-                              "Accept",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displaySmall!
-                                  .copyWith(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
+                          SizedBox(
+                            height: widget.size.height * 0.04,
+                            width: widget.size.width * 0.2,
+                            child: FittedBox(
+                              child: ElevatedButton.icon(
+                                onPressed: () {
+                                  setState(() {
+                                    srOpt = Option.Accept;
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.abc,
+                                  size: 12,
+                                  color: Colors.white,
+                                ),
+                                label: Text(
+                                  "Verify",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displaySmall!
+                                      .copyWith(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.red,
+                                  fixedSize: Size(
+                                    widget.size.width * 0.25,
+                                    widget.size.height * 0.01,
                                   ),
-                            ),
-                            style: ButtonStyle(
-                              // fixedSize: MaterialStateProperty.all(Size(40, 10)),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.red),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                           SizedBox(
-                            width: (widget.size.height * 0.26) * 0.05,
+                            width: widget.size.height * 0.01,
                           ),
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              setState(() {
-                                srOpt = Option.Reject;
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.abc,
-                              color: Colors.white,
-                              size: 12,
-                            ),
-                            label: Text(
-                              "Reject",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displaySmall!
-                                  .copyWith(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
+                          SizedBox(
+                            height: widget.size.height * 0.04,
+                            width: widget.size.width * 0.2,
+                            child: FittedBox(
+                              child: ElevatedButton.icon(
+                                onPressed: () {
+                                  setState(() {
+                                    srOpt = Option.Reject;
+                                    // cardHeight = widget.size.height * 0.3;
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.abc,
+                                  size: 12,
+                                  color: Colors.white,
+                                ),
+                                label: Text(
+                                  "Reject",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displaySmall!
+                                      .copyWith(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.red,
+                                  fixedSize: Size(
+                                    widget.size.width * 0.25,
+                                    widget.size.height * 0.01,
                                   ),
-                            ),
-                            style: ButtonStyle(
-                              // fixedSize: MaterialStateProperty.all(Size(40, 15)),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.red),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ],

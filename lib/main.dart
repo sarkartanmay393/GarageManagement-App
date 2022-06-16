@@ -1,5 +1,7 @@
 import 'package:bee/ui/completed/CompletedVehicle.dart';
+import 'package:bee/ui/services_request/addService.dart';
 import 'package:bee/ui/track/track.dart';
+import 'package:bee/ui/verification/ImageVerification.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +16,8 @@ import 'ui/pickcity/pick_city.dart';
 import 'ui/TabView.dart';
 import 'ui/privacy/PrivacyPolicy.dart';
 import 'ui/revenue/revenue_stats.dart';
+import 'ui/services_request/removeService.dart';
+import 'ui/services_request/serviceManagement.dart';
 import 'ui/services_request/services_request.dart';
 import 'ui/terms/terms.dart';
 import 'ui/track/IndividualTrack.dart';
@@ -77,6 +81,10 @@ class MyApp extends StatelessWidget {
           AddNewPage.routeName: (context) => AddNewPage(),
           Track.routeName: (context) => Track(),
           IndividualTrackPage.routeName: (context) => IndividualTrackPage(),
+          ServiceManagementPage.routeName: (context) => ServiceManagementPage(),
+          AddServicePage.routeName: (context) => AddServicePage(),
+          RemoveServicePage.routeName: (context) => RemoveServicePage(),
+          ImageVerificationPage.routeName: (context) => ImageVerificationPage(),
         },
         // navigatorObservers: [NavigationHistoryObserver()],
 

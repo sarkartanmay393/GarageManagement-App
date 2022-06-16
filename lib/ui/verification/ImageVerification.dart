@@ -1,21 +1,21 @@
-import 'package:bee/state/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
+import '../../state/provider.dart';
 import '../notification/notifications.dart';
-import './widgets/SRCard.dart';
+import 'widgets/imgVerifyCard.dart';
 
-class ServicesRequest extends StatefulWidget {
-  static const routeName = "ServiceRequest";
-  const ServicesRequest({Key? key}) : super(key: key);
+class ImageVerificationPage extends StatefulWidget {
+  static const routeName = "ImageVerificationPage";
+  const ImageVerificationPage({Key? key}) : super(key: key);
 
   @override
-  State<ServicesRequest> createState() => _ServicesRequestState();
+  State<ImageVerificationPage> createState() => _ImageVerificationPageState();
 }
 
-class _ServicesRequestState extends State<ServicesRequest> {
+class _ImageVerificationPageState extends State<ImageVerificationPage> {
   Map<String, String> info = {
     "serialno": "1",
     "name": "Tanmay Sarkar",
@@ -29,7 +29,6 @@ class _ServicesRequestState extends State<ServicesRequest> {
   };
 
   Placemark pm = Placemark(locality: "Jalpaiguri");
-  var notificationCount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
           backgroundColor: Colors.red,
           centerTitle: true,
           title: Text(
-            "Service Request",
+            "Image Verification ",
             style: Theme.of(context).textTheme.displayMedium!.copyWith(
                   fontSize: 16,
                   color: Colors.white,
@@ -92,10 +91,48 @@ class _ServicesRequestState extends State<ServicesRequest> {
         child: Column(
           children: [
             Container(
+              height: size.height * 0.06,
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              decoration: BoxDecoration(
+                border: Border.all(width: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              alignment: Alignment.center,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.8,
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Search by Order ID",
+                        hintStyle: TextStyle(
+                          fontSize: 12,
+                          // fontWeight: FontWeight.w300,
+                        ),
+                        contentPadding: EdgeInsets.only(
+                          left: 10,
+                          // bottom: 11,
+                        ),
+                      ),
+                      // textInputAction: TextInputAction.search,
+                    ),
+                  ),
+                  Expanded(
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.search_rounded),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              height: size.height * 0.825,
+              height: size.height - (size.height * 0.25),
               child: ListView.builder(
-                itemBuilder: (ctx, i) => SRCard(size, info),
+                itemBuilder: (ctx, i) => ImageVerifyCard(size, info),
                 itemCount: 5,
               ),
             ),

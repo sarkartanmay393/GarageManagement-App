@@ -34,10 +34,11 @@ class TrackIndividualCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(width: 0.2),
+        borderRadius: BorderRadius.circular(12),
       ),
       height: size.height * 0.4,
       width: double.infinity,
-      padding: const EdgeInsets.all(6),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

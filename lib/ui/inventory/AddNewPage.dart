@@ -26,11 +26,8 @@ class _AddNewPageState extends State<AddNewPage> {
   Placemark pm = Placemark(locality: "Jalpaiguri");
 
   final _picker = ImagePicker();
-
   File? image1;
-
   bool image1marker = false;
-
   void selectImage1() async {
     var img = await _picker.pickImage(
       source: ImageSource.gallery,

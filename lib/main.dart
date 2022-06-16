@@ -1,4 +1,5 @@
 import 'package:bee/ui/completed/CompletedVehicle.dart';
+import 'package:bee/ui/track/track.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,7 @@ import 'ui/privacy/PrivacyPolicy.dart';
 import 'ui/revenue/revenue_stats.dart';
 import 'ui/services_request/services_request.dart';
 import 'ui/terms/terms.dart';
+import 'ui/track/IndividualTrack.dart';
 
 void main() {
   runApp(const MyApp());
@@ -73,6 +75,8 @@ class MyApp extends StatelessWidget {
           PrivacyPolicy.routeName: (context) => PrivacyPolicy(),
           CompletedVehicle.routeName: (context) => CompletedVehicle(),
           AddNewPage.routeName: (context) => AddNewPage(),
+          Track.routeName: (context) => Track(),
+          IndividualTrackPage.routeName: (context) => IndividualTrackPage(),
         },
         // navigatorObservers: [NavigationHistoryObserver()],
 

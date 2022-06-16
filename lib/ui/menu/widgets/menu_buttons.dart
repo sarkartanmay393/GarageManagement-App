@@ -6,6 +6,7 @@ import '../../completed/CompletedVehicle.dart';
 import '../../privacy/PrivacyPolicy.dart';
 import '../../revenue/revenue_stats.dart';
 import '../../terms/terms.dart';
+import '../../track/track.dart';
 
 class MenuButtons extends StatelessWidget {
   const MenuButtons({
@@ -85,7 +86,13 @@ class MenuButtons extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              pushNewScreenWithRouteSettings(
+                context,
+                screen: Track(),
+                settings: const RouteSettings(name: Track.routeName),
+              );
+            },
             style: ButtonStyle(
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 // splashFactory: NoSplash.splashFactory,

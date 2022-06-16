@@ -28,9 +28,10 @@ class _SRCardState extends State<SRCard> {
       padding: const EdgeInsets.all(4),
       height: widget.size.height * 0.26,
       decoration: BoxDecoration(
-          color: Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(width: 0.25)),
+        color: Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(width: 0.25),
+      ),
       child: srOpt == Option.Reject
           ? Column(
               children: [
@@ -38,7 +39,7 @@ class _SRCardState extends State<SRCard> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
-                    height: 60,
+                    height: (widget.size.height * 0.26) * 0.43,
                     child: DottedBorder(
                       strokeWidth: 0.4,
                       child: TextFormField(
@@ -80,7 +81,7 @@ class _SRCardState extends State<SRCard> {
           : Column(
               children: [
                 Container(
-                  height: 22,
+                  height: (widget.size.height * 0.26) * 0.12,
                   padding: const EdgeInsets.only(
                     top: 5,
                     left: 5,
@@ -132,14 +133,14 @@ class _SRCardState extends State<SRCard> {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
+                SizedBox(
+                  height: (widget.size.height * 0.26) * 0.02,
                 ),
                 DottedBorder(
                   color: Colors.black87,
                   strokeWidth: 0.2,
                   child: Container(
-                    height: 22,
+                    height: (widget.size.height * 0.26) * 0.12,
                     padding: const EdgeInsets.only(
                       top: 5,
                       left: 5,
@@ -197,8 +198,8 @@ class _SRCardState extends State<SRCard> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 2,
+                SizedBox(
+                  height: (widget.size.height * 0.26) * 0.01,
                 ),
                 Row(
                   children: [
@@ -207,7 +208,7 @@ class _SRCardState extends State<SRCard> {
                       strokeWidth: 0.8,
                       child: Container(
                         padding: const EdgeInsets.all(2.5),
-                        height: 60,
+                        height: (widget.size.height * 0.26) * 0.3,
                         width: 90,
                         // color: Colors.black12,
                         child: Column(
@@ -223,20 +224,20 @@ class _SRCardState extends State<SRCard> {
                                     fontWeight: FontWeight.w500,
                                   ),
                             ),
-                            const SizedBox(
-                              height: 2.5,
+                            SizedBox(
+                              height: (widget.size.height * 0.26) * 0.01,
                             ),
                             Row(
                               children: [
                                 SizedBox(
-                                  height: 35,
+                                  height: (widget.size.height * 0.26) * 0.15,
                                   width: 45,
                                   child: Image.network(
                                       widget.info["vehicalImage"]!,
                                       fit: BoxFit.fill),
                                 ),
-                                const SizedBox(
-                                  width: 2.5,
+                                SizedBox(
+                                  width: (widget.size.height * 0.26) * 0.01,
                                 ),
                                 Column(
                                   children: [
@@ -273,15 +274,15 @@ class _SRCardState extends State<SRCard> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 6,
+                    SizedBox(
+                      width: (widget.size.height * 0.26) * 0.02,
                     ),
                     Expanded(
                       child: DottedBorder(
                         color: Colors.black12,
                         strokeWidth: 0.8,
                         child: Container(
-                          height: 60,
+                          height: (widget.size.height * 0.26) * 0.3,
                           // width: 90,
                           child: Column(
                             children: [
@@ -297,8 +298,8 @@ class _SRCardState extends State<SRCard> {
                                     ),
                               ),
                               const Divider(height: 1),
-                              const SizedBox(
-                                height: 2,
+                              SizedBox(
+                                height: (widget.size.height * 0.26) * 0.01,
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -330,8 +331,8 @@ class _SRCardState extends State<SRCard> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 4,
+                SizedBox(
+                  height: (widget.size.height * 0.26) * 0.02,
                 ),
                 if (srOpt == Option.None)
                   Wrap(
@@ -395,8 +396,8 @@ class _SRCardState extends State<SRCard> {
                                   MaterialStateProperty.all(Colors.red),
                             ),
                           ),
-                          const SizedBox(
-                            width: 12,
+                          SizedBox(
+                            width: (widget.size.height * 0.26) * 0.05,
                           ),
                           ElevatedButton.icon(
                             onPressed: () {
@@ -483,11 +484,11 @@ class _SRCardState extends State<SRCard> {
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              width: 12,
+                            SizedBox(
+                              width: (widget.size.height * 0.26) * 0.05,
                             ),
                             SizedBox(
-                              height: 25,
+                              height: (widget.size.height * 0.26) * 0.15,
                               // width: ,
                               child: ElevatedButton(
                                 onPressed: () {},

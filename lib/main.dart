@@ -1,3 +1,4 @@
+import 'package:bee/ui/completed/CompletedVehicle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,6 +8,7 @@ import 'ui/auth/signup/rgstcheck.dart';
 import 'ui/auth/signup/signup.dart';
 import 'ui/booking/bookinghistory.dart';
 import 'ui/home/homepage.dart';
+import 'ui/inventory/AddNewPage.dart';
 import 'ui/pickcity/pick_city.dart';
 import 'ui/TabView.dart';
 import 'ui/privacy/PrivacyPolicy.dart';
@@ -69,6 +71,8 @@ class MyApp extends StatelessWidget {
           RevenueStats.routeName: (context) => RevenueStats(),
           TermsAndConditions.routeName: (context) => TermsAndConditions(),
           PrivacyPolicy.routeName: (context) => PrivacyPolicy(),
+          CompletedVehicle.routeName: (context) => CompletedVehicle(),
+          AddNewPage.routeName: (context) => AddNewPage(),
         },
         // navigatorObservers: [NavigationHistoryObserver()],
 

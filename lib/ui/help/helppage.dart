@@ -10,13 +10,22 @@ import '../notification/notifications.dart';
 import '../pickcity/pick_city.dart';
 import 'widgets/help_form.dart';
 
-class HelpPage extends StatelessWidget {
+class HelpPage extends StatefulWidget {
   static const routeName = "Help";
   HelpPage({Key? key}) : super(key: key);
 
+  @override
+  State<HelpPage> createState() => _HelpPageState();
+}
+
+class _HelpPageState extends State<HelpPage> {
   final _key = GlobalKey<ScaffoldState>();
+
   Placemark pm = Placemark(locality: "Jalpaiguri");
+
   var notificationsCount = 12;
+
+  bool loadMore = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +33,7 @@ class HelpPage extends StatelessWidget {
     var InfoFlow = Provider.of<InfoFlower>(context);
 
     return Scaffold(
+      key: _key,
       appBar: PreferredSize(
         preferredSize: Size(double.infinity, size.height * 0.07),
         child: AppBar(
@@ -217,18 +227,69 @@ class HelpPage extends StatelessWidget {
                 ],
               ),
             ),
+            if (loadMore)
+              Column(
+                children: const [
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 3.0, horizontal: 12.0),
+                    child: ExpansionTileCard(
+                      elevation: 2,
+                      // contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                      initialElevation: 2,
+                      title: Text("Lorem Ipsum Dolor Sit?"),
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 8,
+                          ),
+                          child: Text(
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna  Lorem ipsum dolor sit amet, consectetur adipiscing elit ut Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna  Lorem ipsum dolor sit amet, consectetur adipiscing elit ut ",
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 3.0, horizontal: 12.0),
+                    child: ExpansionTileCard(
+                      elevation: 2,
+                      // contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                      initialElevation: 2,
+                      title: Text("Lorem Ipsum Dolor Sit?"),
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 8,
+                          ),
+                          child: Text(
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna  Lorem ipsum dolor sit amet, consectetur adipiscing elit ut Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna  Lorem ipsum dolor sit amet, consectetur adipiscing elit ut ",
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             const SizedBox(
               height: 6,
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  loadMore = !loadMore;
+                });
+              },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
               child: Text(
-                "Load More",
+                loadMore ? "Hide Extra" : "Load More",
                 style: Theme.of(context).textTheme.displayMedium!.copyWith(
                       fontSize: 14,
                       color: Colors.black,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import '../../booking/bookinghistory.dart';
+import '../../completed/CompletedVehicle.dart';
 import '../../privacy/PrivacyPolicy.dart';
 import '../../revenue/revenue_stats.dart';
 import '../../terms/terms.dart';
@@ -46,7 +47,15 @@ class MenuButtons extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              pushNewScreenWithRouteSettings(
+                context,
+                settings: const RouteSettings(name: CompletedVehicle.routeName),
+                screen: CompletedVehicle(),
+                withNavBar: true,
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+              );
+            },
             style: ButtonStyle(
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 // splashFactory: NoSplash.splashFactory,

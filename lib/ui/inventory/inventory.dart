@@ -7,13 +7,25 @@ import '../../state/provider.dart';
 import '../menu/menu.dart';
 import '../notification/notifications.dart';
 import '../pickcity/pick_city.dart';
+import 'AddNewPage.dart';
+import 'widgets/InventoryCard.dart';
 
 class InventoryPage extends StatelessWidget {
   static const routeName = "Inventory";
   InventoryPage({Key? key}) : super(key: key);
+
+  //
   final _key = GlobalKey<ScaffoldState>();
   Placemark pm = Placemark(locality: "Jalpaiguri");
-  var notificationsCount = 12;
+
+  Map<String, String> info = {
+    "image": "",
+    "code": "01231",
+    "name": "Servre Oil",
+    "price": "600",
+    "type": "Engine Oil",
+    "stocks": "60",
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +33,7 @@ class InventoryPage extends StatelessWidget {
     var InfoFlow = Provider.of<InfoFlower>(context);
 
     return Scaffold(
+      key: _key,
       appBar: PreferredSize(
         preferredSize: Size(double.infinity, size.height * 0.07),
         child: AppBar(
@@ -102,7 +115,101 @@ class InventoryPage extends StatelessWidget {
         ),
       ),
       drawer: Menu(),
-      body: Container(),
+      body: Column(
+        children: [
+          SizedBox(
+            height: size.height * 0.01,
+          ),
+          Container(
+            // alignment: Alignment.centerRight,
+            margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+            height: size.height * 0.05,
+            decoration: BoxDecoration(
+                border: Border.all(width: 0.2),
+                borderRadius: BorderRadius.circular(12)),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: size.width * 0.8,
+                  child: const TextField(
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Search Here",
+                        contentPadding: EdgeInsets.only(left: 8)),
+                  ),
+                ),
+                Expanded(
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.search),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: size.height * 0.01,
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "All Products",
+                  style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                        fontSize: 18,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
+                ),
+                const Spacer(),
+                Card(
+                  elevation: 2,
+                  child: IconButton(
+                    tooltip: "Add",
+                    onPressed: () {
+                      pushNewScreenWithRouteSettings(
+                        context,
+                        screen: AddNewPage(),
+                        settings:
+                            const RouteSettings(name: AddNewPage.routeName),
+                      );
+                    },
+                    icon: const Icon(Icons.add),
+                  ),
+                ),
+                Card(
+                  elevation: 2,
+                  child: IconButton(
+                    tooltip: "Filter",
+                    onPressed: () {},
+                    icon: const Icon(Icons.fire_hydrant_alt_rounded),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: size.height * 0.01,
+          ),
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                ),
+                itemBuilder: (_, i) => InventoryCard(info),
+                itemCount: 8,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: size.height * 0.02,
+          ),
+        ],
+      ),
     );
   }
 }

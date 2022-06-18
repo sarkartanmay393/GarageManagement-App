@@ -111,7 +111,6 @@ class HomePage extends StatelessWidget {
           children: [
             Container(
               margin: const EdgeInsets.all(15),
-              height: 40,
               decoration: BoxDecoration(
                   border: Border.all(
                     width: 0.8,
@@ -130,7 +129,6 @@ class HomePage extends StatelessWidget {
                       ),
                       contentPadding: EdgeInsets.only(
                         left: 10,
-                        bottom: 11,
                       ),
                     ),
                     // textInputAction: TextInputAction.search,

@@ -35,6 +35,7 @@ class _ImageVerificationPageState extends State<ImageVerificationPage> {
     final size = MediaQuery.of(context).size;
     var InfoFlow = Provider.of<InfoFlower>(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: Size(double.infinity, size.height * 0.07),
         child: AppBar(

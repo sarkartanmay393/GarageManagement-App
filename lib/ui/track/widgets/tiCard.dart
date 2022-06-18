@@ -45,13 +45,15 @@ class TrackIndividualCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 maxRadius: 30,
                 minRadius: 26,
-                child: Container(
-                  width: size.width * 0.1,
-                  height: size.height * 0.08,
-                ),
+                backgroundImage: NetworkImage(
+                    "https://tesla-cdn.thron.com/delivery/public/image/tesla/3863f3e5-546a-4b22-bcbc-1f8ee0479744/bvlatuR/std/1200x628/MX-Social"),
+                // child: Container(
+                //   width: size.width * 0.1,
+                //   height: size.height * 0.08,
+                // ),
               ),
               // Image.network(
               //   "src",

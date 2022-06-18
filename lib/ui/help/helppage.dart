@@ -120,7 +120,6 @@ class _HelpPageState extends State<HelpPage> {
           children: [
             Container(
               margin: const EdgeInsets.all(15),
-              height: 40,
               decoration: BoxDecoration(
                   border: Border.all(
                     width: 0.8,
@@ -139,7 +138,6 @@ class _HelpPageState extends State<HelpPage> {
                       ),
                       contentPadding: EdgeInsets.only(
                         left: 10,
-                        bottom: 11,
                       ),
                     ),
                     // textInputAction: TextInputAction.search,

@@ -117,31 +117,48 @@ class InventoryPage extends StatelessWidget {
       drawer: Menu(),
       body: Column(
         children: [
-          SizedBox(
-            height: size.height * 0.01,
-          ),
           Container(
-            // alignment: Alignment.centerRight,
-            margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
-            height: size.height * 0.05,
+            margin: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-                border: Border.all(width: 0.2),
-                borderRadius: BorderRadius.circular(12)),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: size.width * 0.8,
-                  child: const TextField(
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Search Here",
-                        contentPadding: EdgeInsets.only(left: 8)),
-                  ),
+                border: Border.all(
+                  width: 0.8,
                 ),
-                Expanded(
+                borderRadius: BorderRadius.circular(12)),
+            child: Stack(
+              alignment: Alignment.centerRight,
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Search Here",
+                    hintStyle: TextStyle(
+                      fontSize: 12,
+                      // fontWeight: FontWeight.w300,
+                    ),
+                    contentPadding: EdgeInsets.only(
+                      left: 10,
+                    ),
+                  ),
+                  // textInputAction: TextInputAction.search,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(
+                      width: 0.5,
+                    ),
+                    color: Colors.grey.shade300,
+                  ),
+                  height: 30,
+                  width: 30,
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 9,
+                  ),
                   child: IconButton(
+                    iconSize: 15,
                     onPressed: () {},
-                    icon: const Icon(Icons.search),
+                    icon: const Icon(Icons.search_outlined),
+                    tooltip: "Search",
                   ),
                 ),
               ],

@@ -66,6 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       if (img != null) {
         image1 = File(img.path);
+        print(img.path);
         image1marker = true;
       }
     });

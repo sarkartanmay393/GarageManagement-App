@@ -117,7 +117,7 @@ class ServiceManagementPage extends StatelessWidget {
                 colors: [Colors.red, Colors.grey.shade100],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                stops: [0.3, 0.55],
+                stops: [0.0, 0.55],
               ),
             ),
             child: Padding(

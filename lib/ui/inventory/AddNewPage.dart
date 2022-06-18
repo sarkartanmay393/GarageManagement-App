@@ -3,13 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
+import '../../helper/formBarMaker.dart';
 import '../../state/provider.dart';
 import '../menu/menu.dart';
-import '../notification/notifications.dart';
-import '../pickcity/pick_city.dart';
 
 class AddNewPage extends StatefulWidget {
   static const routeName = "AddNewInventoryItemPage";
@@ -110,51 +108,46 @@ class _AddNewPageState extends State<AddNewPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      inputBar("Product ID", context),
-                      inputBar("Product Name", context),
-                      inputBar("Price", context),
-                      Wrap(
-                        children: [
-                          Text(
-                            "Category",
-                            style: Theme.of(context)
-                                .textTheme
-                                .displayMedium!
-                                .copyWith(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(
-                                top: 5, bottom: 12, right: 8),
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 0.2),
-                            ),
-                            padding: const EdgeInsets.only(left: 8),
-                            child: TextFormField(
-                              readOnly: true,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Select Category",
-                              ),
-                            ),
-                          ),
-                        ],
+                      FormBar.inputBarWithLabel(
+                        name: "Product ID",
+                        context: context,
+                        onSaveStorage: "",
+                        initVal: "",
+                      ),
+                      FormBar.inputBarWithLabel(
+                        name: "Product Name",
+                        context: context,
+                        onSaveStorage: "",
+                        initVal: "",
+                      ),
+                      FormBar.inputBarWithLabel(
+                        name: "Price",
+                        context: context,
+                        onSaveStorage: "",
+                        initVal: "",
+                      ),
+                      FormBar.inputBarWithLabel(
+                        name: "Catagory",
+                        context: context,
+                        onSaveStorage: "",
+                        initVal: "",
+                        readOnlyRef: true,
                       ),
                       Wrap(
                         children: [
-                          Text(
-                            "Quantities",
-                            style: Theme.of(context)
-                                .textTheme
-                                .displayMedium!
-                                .copyWith(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0),
+                            child: Text(
+                              "Quantities",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displayMedium!
+                                  .copyWith(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
                           ),
                           Row(
                             children: [
@@ -162,16 +155,12 @@ class _AddNewPageState extends State<AddNewPage> {
                                 width: size.width * 0.45,
                                 margin:
                                     const EdgeInsets.only(top: 5, bottom: 12),
-                                decoration: BoxDecoration(
-                                  border: Border.all(width: 0.2),
-                                ),
-                                padding: const EdgeInsets.only(left: 8),
-                                child: TextFormField(
-                                  decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Availble Stocks",
-                                  ),
-                                  keyboardType: TextInputType.number,
+                                child: FormBar.inputBar(
+                                  name: "Available",
+                                  context: context,
+                                  onSaveStorage: "",
+                                  initVal: "",
+                                  keyboardTypeRef: TextInputType.number,
                                 ),
                               ),
                               const Spacer(),
@@ -179,32 +168,31 @@ class _AddNewPageState extends State<AddNewPage> {
                                 width: size.width * 0.45,
                                 margin: const EdgeInsets.only(
                                     top: 5, bottom: 12, right: 8),
-                                decoration: BoxDecoration(
-                                  border: Border.all(width: 0.2),
-                                ),
-                                padding: const EdgeInsets.only(
-                                  left: 8,
-                                ),
-                                child: TextFormField(
-                                  decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "In Hand",
-                                  ),
-                                  keyboardType: TextInputType.number,
+                                child: FormBar.inputBar(
+                                  name: "In Hands",
+                                  context: context,
+                                  onSaveStorage: "",
+                                  initVal: "",
+                                  keyboardTypeRef: TextInputType.number,
                                 ),
                               ),
                             ],
                           ),
                         ],
                       ),
-                      Text(
-                        "Add Photos",
-                        style:
-                            Theme.of(context).textTheme.displayMedium!.copyWith(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5.0, bottom: 5.0),
+                        child: Text(
+                          "Add Photos",
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium!
+                              .copyWith(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                        ),
                       ),
                       InkWell(
                         onTap: selectImage1,
@@ -217,6 +205,7 @@ class _AddNewPageState extends State<AddNewPage> {
                           width: 75,
                           decoration: BoxDecoration(
                             border: Border.all(width: 0.8),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                           child: image1marker
                               ? Image.file(
@@ -225,6 +214,9 @@ class _AddNewPageState extends State<AddNewPage> {
                                 )
                               : const Icon(Icons.add),
                         ),
+                      ),
+                      const SizedBox(
+                        height: 12,
                       ),
                       Center(
                         child: ElevatedButton(

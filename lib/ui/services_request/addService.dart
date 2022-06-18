@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
+import '../../helper/formBarMaker.dart';
 import '../../state/provider.dart';
 import '../pickcity/pick_city.dart';
 
@@ -25,47 +26,33 @@ class _AddServicePageState extends State<AddServicePage> {
   final _picker = ImagePicker();
 
   File? image1;
+  File? image2;
+  File? image3;
 
   bool image1marker = false;
+  bool image2marker = false;
+  bool image3marker = false;
 
   void selectImage1() async {
-    var img = await _picker.pickImage(
-      source: ImageSource.gallery,
-    );
+    var imgList = await _picker.pickMultiImage(
+        // source: ImageSource.gallery,
+        );
     setState(() {
-      if (img != null) {
-        image1 = File(img.path);
-        image1marker = true;
+      if (imgList != null) {
+        if (imgList.length == 1) {
+          image1 = File(imgList[0].path);
+          image1marker = true;
+        }
+        if (imgList.length == 2) {
+          image2 = File(imgList[1].path);
+          image2marker = true;
+        }
+        if (imgList.length == 3) {
+          image3 = File(imgList[2].path);
+          image3marker = true;
+        }
       }
     });
-  }
-
-  Widget inputBar(String name, BuildContext context) {
-    return Wrap(
-      children: [
-        Text(
-          name,
-          style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                fontSize: 14,
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-              ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 7, bottom: 12, right: 8),
-          decoration: BoxDecoration(
-            border: Border.all(width: 0.2),
-          ),
-          padding: const EdgeInsets.only(left: 8),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: "Enter $name",
-            ),
-          ),
-        ),
-      ],
-    );
   }
 
   @override
@@ -132,37 +119,43 @@ class _AddServicePageState extends State<AddServicePage> {
           margin: const EdgeInsets.all(12),
           child: Column(
             children: [
-              inputBar("Service Name", context),
-              Wrap(
-                children: [
-                  Text(
-                    "Service Category",
-                    style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                          fontSize: 14,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 7, bottom: 12, right: 8),
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 0.2),
-                    ),
-                    padding: const EdgeInsets.only(left: 8),
-                    child: TextFormField(
-                      readOnly: true,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Select Category",
-                      ),
-                    ),
-                  ),
-                ],
+              FormBar.inputBarWithLabel(
+                name: "Service Name",
+                context: context,
+                initVal: "",
+                onSaveStorage: "",
               ),
-              inputBar("Service Specification", context),
-              inputBar("Time Taken for Completion", context),
-              inputBar("Actual Price", context),
-              inputBar("Discounted Price", context),
+              FormBar.inputBarWithLabel(
+                name: "Service Catergory",
+                context: context,
+                onSaveStorage: "",
+                initVal: "",
+                readOnlyRef: true,
+              ),
+              FormBar.inputBarWithLabel(
+                name: "Service Specification",
+                context: context,
+                initVal: "",
+                onSaveStorage: "",
+              ),
+              FormBar.inputBarWithLabel(
+                name: "Time Taken for Completion",
+                context: context,
+                initVal: "",
+                onSaveStorage: "",
+              ),
+              FormBar.inputBarWithLabel(
+                name: "Actual Price",
+                context: context,
+                initVal: "",
+                onSaveStorage: "",
+              ),
+              FormBar.inputBarWithLabel(
+                name: "Discounted Price",
+                context: context,
+                initVal: "",
+                onSaveStorage: "",
+              ),
               Text(
                 "Add Photos",
                 style: Theme.of(context).textTheme.displayMedium!.copyWith(
@@ -171,34 +164,86 @@ class _AddServicePageState extends State<AddServicePage> {
                       fontWeight: FontWeight.w500,
                     ),
               ),
-              InkWell(
-                onTap: selectImage1,
-                child: Container(
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 5,
-                    horizontal: 9,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: selectImage1,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 5,
+                        horizontal: 9,
+                      ),
+                      height: 75,
+                      width: 75,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 0.8),
+                      ),
+                      child: image1marker
+                          ? Image.file(
+                              image1!,
+                              fit: BoxFit.cover,
+                            )
+                          : const Icon(Icons.add),
+                    ),
                   ),
-                  height: 75,
-                  width: 75,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 0.8),
+                  InkWell(
+                    onTap: selectImage1,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 5,
+                        horizontal: 9,
+                      ),
+                      height: 75,
+                      width: 75,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 0.8),
+                      ),
+                      child: image1marker
+                          ? Image.file(
+                              image1!,
+                              fit: BoxFit.cover,
+                            )
+                          : const Icon(Icons.add),
+                    ),
                   ),
-                  child: image1marker
-                      ? Image.file(
-                          image1!,
-                          fit: BoxFit.cover,
-                        )
-                      : const Icon(Icons.add),
-                ),
+                  InkWell(
+                    onTap: selectImage1,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 5,
+                        horizontal: 9,
+                      ),
+                      height: 75,
+                      width: 75,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 0.8),
+                      ),
+                      child: image1marker
+                          ? Image.file(
+                              image1!,
+                              fit: BoxFit.cover,
+                            )
+                          : const Icon(Icons.add),
+                    ),
+                  ),
+                ],
               ),
+              const Divider(),
               Container(
                 height: size.height * 0.05,
                 margin: const EdgeInsets.symmetric(vertical: 5),
                 decoration: BoxDecoration(
                   border: Border.all(width: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.red.shade500,
+                  backgroundBlendMode: BlendMode.difference,
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(
+                    // vertical: 2,
+                    horizontal: 15,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -211,7 +256,7 @@ class _AddServicePageState extends State<AddServicePage> {
                                   fontWeight: FontWeight.w500,
                                 ),
                       ),
-                      Text("Rs. 4000"),
+                      const Text("Rs. 4000"),
                     ],
                   ),
                 ),

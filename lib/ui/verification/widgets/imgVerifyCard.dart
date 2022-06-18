@@ -181,7 +181,7 @@ class _ImageVerifyCardState extends State<ImageVerifyCard> {
                             Padding(
                               padding: const EdgeInsets.all(1.0),
                               child: SizedBox(
-                                height: (widget.size.height * 0.26) * 0.2,
+                                height: (widget.size.height * 0.26) * 0.18,
                                 width: widget.size.width * 0.4 * 0.5,
                                 child: FittedBox(
                                   child: Image.network(
@@ -310,106 +310,125 @@ class _ImageVerifyCardState extends State<ImageVerifyCard> {
             ),
             Expanded(
               child: FittedBox(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Order Number : ${widget.info["orderId"]!}",
-                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                            color: Colors.black54,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                    SizedBox(
-                      width: widget.size.width * 0.02,
-                    ),
-                    SizedBox(
-                      height: widget.size.height * 0.04,
-                      width: widget.size.width * 0.2,
-                      child: FittedBox(
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            setState(() {
-                              srOpt = Option.Accept;
-                              // cardHeight = widget.size.height * 0.3;
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.abc,
-                            size: 12,
-                            color: Colors.white,
-                          ),
-                          label: Text(
-                            "Verify",
-                            style: Theme.of(context)
-                                .textTheme
-                                .displaySmall!
-                                .copyWith(
-                                  color: Colors.white,
-                                  fontSize: 14,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Order Number : ${widget.info["orderId"]!}",
+                        style:
+                            Theme.of(context).textTheme.displaySmall!.copyWith(
+                                  color: Colors.black54,
+                                  fontSize: 10,
                                   fontWeight: FontWeight.w500,
                                 ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.red,
-                            fixedSize: Size(
-                              widget.size.width * 0.25,
-                              widget.size.height * 0.01,
+                      ),
+                      SizedBox(
+                        width: widget.size.width * 0.02,
+                      ),
+                      SizedBox(
+                        height: widget.size.height * 0.04,
+                        width: widget.size.width * 0.2,
+                        child: FittedBox(
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              setState(() {
+                                srOpt = Option.Accept;
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Padding(
+                                    padding: EdgeInsets.all(12.0),
+                                    child: Text("Verification Accepted"),
+                                  ),
+                                ));
+                                // cardHeight = widget.size.height * 0.3;
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.abc,
+                              size: 12,
+                              color: Colors.white,
                             ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                            label: Text(
+                              "Verify",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displaySmall!
+                                  .copyWith(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              primary: Colors.red,
+                              fixedSize: Size(
+                                widget.size.width * 0.25,
+                                widget.size.height * 0.01,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: widget.size.height * 0.01,
-                    ),
-                    SizedBox(
-                      height: widget.size.height * 0.04,
-                      width: widget.size.width * 0.2,
-                      child: FittedBox(
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            setState(() {
-                              srOpt = Option.Reject;
-
-                              // cardHeight = widget.size.height * 0.3;
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.abc,
-                            size: 12,
-                            color: Colors.white,
-                          ),
-                          label: Text(
-                            "Reject",
-                            style: Theme.of(context)
-                                .textTheme
-                                .displaySmall!
-                                .copyWith(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.red,
-                            fixedSize: Size(
-                              widget.size.width * 0.25,
-                              widget.size.height * 0.01,
+                      SizedBox(
+                        width: widget.size.height * 0.01,
+                      ),
+                      SizedBox(
+                        height: widget.size.height * 0.04,
+                        width: widget.size.width * 0.2,
+                        child: FittedBox(
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              setState(() {
+                                srOpt = Option.Reject;
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Padding(
+                                    padding: EdgeInsets.all(12.0),
+                                    child: Text("Verification Rejected"),
+                                  ),
+                                ));
+                                // cardHeight = widget.size.height * 0.3;
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.abc,
+                              size: 12,
+                              color: Colors.white,
                             ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                            label: Text(
+                              "Reject",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displaySmall!
+                                  .copyWith(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              primary: Colors.red,
+                              fixedSize: Size(
+                                widget.size.width * 0.25,
+                                widget.size.height * 0.01,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    //
-                  ],
+                      //
+                    ],
+                  ),
                 ),
               ),
             ),

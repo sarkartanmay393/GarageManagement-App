@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../state/provider.dart';
 
 import '../pickcity/pick_city.dart';
+import 'widgets/RemoveCard.dart';
 
 class RemoveServicePage extends StatelessWidget {
   static const routeName = "RemoveServicePage";
@@ -13,6 +14,16 @@ class RemoveServicePage extends StatelessWidget {
 
   final _key = GlobalKey<ScaffoldState>();
   Placemark pm = Placemark(locality: "Jalpaiguri");
+
+  Map<String, String> ServiceInfo = {
+    "imageLink":
+        "https://tesla-cdn.thron.com/delivery/public/image/tesla/3863f3e5-546a-4b22-bcbc-1f8ee0479744/bvlatuR/std/1200x628/MX-Social",
+    "name": "Complete Checkup",
+    "price": "999",
+    "discountedPrice": "499",
+    "timeTakes": "3Hours",
+    "features": "Losem Somes",
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +86,54 @@ class RemoveServicePage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [],
+          children: [
+            Container(
+              height: size.height * 0.06,
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              decoration: BoxDecoration(
+                border: Border.all(width: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              alignment: Alignment.center,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.8,
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Search by Order ID",
+                        hintStyle: TextStyle(
+                          fontSize: 12,
+                          // fontWeight: FontWeight.w300,
+                        ),
+                        contentPadding: EdgeInsets.only(
+                          left: 10,
+                          // bottom: 11,
+                        ),
+                      ),
+                      // textInputAction: TextInputAction.search,
+                    ),
+                  ),
+                  Expanded(
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.search_rounded),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 12),
+              height: size.height * 0.82,
+              child: ListView.builder(
+                itemBuilder: (_, i) => RemoveCard(size, ServiceInfo),
+                itemCount: 12,
+              ),
+            ),
+          ],
         ),
       ),
     );

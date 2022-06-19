@@ -249,18 +249,29 @@ class rejected_card extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(
-            height: 8,
-          ),
-          Text(
-            "Rejected",
-            style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                color: Colors.red, fontWeight: FontWeight.w500, fontSize: 15),
-          ),
-          Text(
-            "Reason : no valid reason",
-            style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                fontWeight: FontWeight.w500, fontSize: 15, color: Colors.black),
+          // const SizedBox(
+          //   height: 8,
+          // ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Rejected",
+                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                      color: Colors.red,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16),
+                ),
+                Text(
+                  "Reason : no valid reason",
+                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                      color: Colors.black),
+                ),
+              ],
+            ),
           ),
         ],
       ),

@@ -7,6 +7,7 @@ import 'package:navigation_history_observer/navigation_history_observer.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
+import '../../helper/formBarMaker.dart';
 import '../../state/provider.dart';
 import '../menu/menu.dart';
 import '../notification/notifications.dart';
@@ -218,10 +219,27 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: size.width * 0.1,
                           width: size.height * 0.053,
                           child: Card(
+                            elevation: 0,
+                            color: Colors.black45,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: const BorderSide(
+                                color: Colors.black45,
+                                width: 1.2,
+                              ),
+                            ),
                             child: IconButton(
                               splashColor: Colors.red,
                               icon: const Icon(
                                 Icons.arrow_back_ios_new_outlined,
+                                color: Colors.white,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.white,
+                                    blurRadius: 12,
+                                    offset: Offset(1, 1),
+                                  ),
+                                ],
                               ),
                               iconSize: 12,
                               onPressed: setterState,
@@ -231,10 +249,15 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(
                           width: size.width * 0.04,
                         ),
-                        const Text(
+                        Text(
                           "Fill details",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium!
+                              .copyWith(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
                         ),
                       ],
                     ),
@@ -245,364 +268,115 @@ class _ProfilePageState extends State<ProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         //
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: size.width * 0.05, bottom: 2),
-                          child: const Text(
-                            "Full Name",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 2,
+                          ),
+                          child: FormBar.inputBarWithLabel(
+                            name: "Full Name",
+                            context: context,
+                            onSaveStorage: ProfileInfo["Person Name"]!,
+                            initVal: ProfileInfo["Person Name"]!,
+                            // hintText: "Tanmay Sarkar",
                           ),
                         ),
+
                         Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.2),
-                          ),
                           margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 5,
+                            horizontal: 12,
+                            vertical: 2,
                           ),
-                          // padding: const EdgeInsets.symmetric(vertical: 16),
-                          height: size.height * 0.065,
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                              hintText: "Tanmay Sarkar",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 12,
-                              ),
-                            ),
-                            onSaved: (val) {
-                              ProfileInfo["Person Name"] = val!;
-                            },
-                            initialValue: ProfileInfo['Person Name'],
+                          child: FormBar.inputBarWithLabel(
+                            name: "Phone Number",
+                            context: context,
+                            onSaveStorage: ProfileInfo["Phone"]!,
+                            initVal: ProfileInfo["Phone"]!,
+                            // hintText: "Tanmay Sarkar",
                           ),
                         ),
 
                         //
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 18,
-                            bottom: 2,
-                            top: 8,
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 2,
                           ),
-                          child: Text(
-                            "Phone Number",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
+                          child: FormBar.inputBarWithLabel(
+                            name: "Email",
+                            context: context,
+                            onSaveStorage: ProfileInfo["Email"]!,
+                            initVal: ProfileInfo["Email"]!,
                           ),
                         ),
+                        //
                         Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.2),
-                          ),
                           margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 5,
+                            horizontal: 12,
+                            vertical: 2,
                           ),
-                          // padding: const EdgeInsets.symmetric(vertical: 16),
-                          height: size.height * 0.065,
-                          child: TextFormField(
-                            validator: ((value) {
-                              if (value!.length != 10) {
-                                return "Only 10 Digits.";
-                              }
-                              return null;
-                            }),
-                            onSaved: (val) {
-                              if (val != null) {
-                                ProfileInfo['Phone'] = val;
-                              }
-                            },
-                            initialValue: ProfileInfo["Phone"],
-                            decoration: const InputDecoration(
-                              hintText: "",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 12,
-                              ),
-                            ),
+                          child: FormBar.inputBarWithLabel(
+                            name: "Garage Name",
+                            context: context,
+                            onSaveStorage: ProfileInfo["Garage Name"]!,
+                            initVal: ProfileInfo["Garage Name"]!,
+                          ),
+                        ),
+                        //
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 2,
+                          ),
+                          child: FormBar.inputBarWithLabel(
+                            name: "Garage Registetration Number",
+                            context: context,
+                            onSaveStorage:
+                                ProfileInfo["Garage Registetration Number"]!,
+                            initVal:
+                                ProfileInfo["Garage Registetration Number"]!,
+                          ),
+                        ),
+                        //
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 2,
+                          ),
+                          child: FormBar.inputBarWithLabel(
+                            name: "Garage Address",
+                            context: context,
+                            onSaveStorage: ProfileInfo["Garage Address"]!,
+                            initVal: ProfileInfo["Garage Address"]!,
+                          ),
+                        ),
+                        //
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 2,
+                          ),
+                          child: FormBar.inputBarWithLabel(
+                            name: "State",
+                            context: context,
+                            onSaveStorage: ProfileInfo["State"]!,
+                            initVal: ProfileInfo["State"]!,
+                          ),
+                        ),
+                        //
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 2,
+                          ),
+                          child: FormBar.inputBarWithLabel(
+                            name: "City",
+                            context: context,
+                            onSaveStorage: ProfileInfo["City"]!,
+                            initVal: ProfileInfo["City"]!,
                           ),
                         ),
 
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 18,
-                            bottom: 2,
-                            top: 8,
-                          ),
-                          child: Text(
-                            "Email",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.2),
-                          ),
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 5,
-                          ),
-                          // padding: const EdgeInsets.symmetric(vertical: 16),
-                          height: size.height * 0.065,
-                          child: TextFormField(
-                            onSaved: (val) {
-                              if (val != null) {
-                                ProfileInfo['Email'] = val;
-                              }
-                            },
-                            validator: (val) {
-                              if (!RegExp(
-                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                  .hasMatch(val!)) {
-                                return "Enter valid email.";
-                              }
-                              return null;
-                            },
-                            initialValue: ProfileInfo["Email"],
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: const InputDecoration(
-                              hintText: "sarkartanmay393@gmail.com",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 12,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 18,
-                            bottom: 2,
-                            top: 8,
-                          ),
-                          child: Text(
-                            "Garage Name",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.2),
-                          ),
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 5,
-                          ),
-                          // padding: const EdgeInsets.symmetric(vertical: 16),
-                          height: size.height * 0.065,
-                          child: TextFormField(
-                            onSaved: (val) {
-                              if (val != null) {
-                                ProfileInfo['Garage Name'] = val;
-                              }
-                            },
-                            validator: (val) {
-                              return null;
-                            },
-                            initialValue: ProfileInfo["Garage Name"],
-                            decoration: const InputDecoration(
-                              hintText: "",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 12,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 18,
-                            bottom: 2,
-                            top: 8,
-                          ),
-                          child: Text(
-                            "Garage Registetration Number",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.2),
-                          ),
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 5,
-                          ),
-                          // padding: const EdgeInsets.symmetric(vertical: 16),
-                          height: size.height * 0.065,
-                          child: TextFormField(
-                            onSaved: (newValue) {
-                              ProfileInfo['Garage Registetration Number'] =
-                                  newValue!;
-                            },
-                            validator: (val) {
-                              return null;
-                            },
-                            initialValue:
-                                ProfileInfo['Garage Registetration Number'],
-                            decoration: const InputDecoration(
-                              hintText: "",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 12,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 18,
-                            bottom: 2,
-                            top: 8,
-                          ),
-                          child: Text(
-                            "Garage Address",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.2),
-                          ),
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 5,
-                          ),
-                          // padding: const EdgeInsets.symmetric(vertical: 16),
-                          height: size.height * 0.065,
-                          child: TextFormField(
-                            onSaved: (val) {
-                              ProfileInfo["Garage Address"] = val!;
-                            },
-                            validator: (_) {
-                              return null;
-                            },
-                            initialValue: ProfileInfo['Garage Address'],
-                            decoration: const InputDecoration(
-                              hintText: "...",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 12,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 18,
-                            bottom: 2,
-                            top: 8,
-                          ),
-                          child: Text(
-                            "State",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.2),
-                          ),
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 5,
-                          ),
-                          // padding: const EdgeInsets.symmetric(vertical: 16),
-                          height: size.height * 0.065,
-                          child: TextFormField(
-                            onSaved: (val) {
-                              ProfileInfo["State"] = val!;
-                            },
-                            validator: (_) {
-                              return null;
-                            },
-                            initialValue: ProfileInfo['State'],
-                            decoration: const InputDecoration(
-                              hintText: "West Bengal",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 12,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 18,
-                            bottom: 2,
-                            top: 8,
-                          ),
-                          child: Text(
-                            "City",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.2),
-                          ),
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 5,
-                          ),
-                          // padding: const EdgeInsets.symmetric(vertical: 16),
-                          height: size.height * 0.065,
-                          child: TextFormField(
-                            onSaved: (val) {
-                              ProfileInfo["City"] = val!;
-                            },
-                            validator: (_) {
-                              return null;
-                            },
-                            initialValue: ProfileInfo['City'],
-                            decoration: const InputDecoration(
-                              hintText: "",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 12,
-                              ),
-                            ),
-                          ),
-                        ),
                         // Image Inputs
 
                         const Padding(
@@ -638,6 +412,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   width: 75,
                                   decoration: BoxDecoration(
                                     border: Border.all(width: 0.8),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: image1marker
                                       ? Image.file(
@@ -658,6 +433,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   width: 75,
                                   decoration: BoxDecoration(
                                     border: Border.all(width: 0.8),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: image2marker
                                       ? Image.file(
@@ -678,6 +454,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   width: 75,
                                   decoration: BoxDecoration(
                                     border: Border.all(width: 0.8),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: image3marker
                                       ? Image.file(
@@ -722,6 +499,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 width: 75,
                                 decoration: BoxDecoration(
                                   border: Border.all(width: 0.8),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: const Icon(Icons.add),
                               ),
@@ -734,6 +512,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 width: 75,
                                 decoration: BoxDecoration(
                                   border: Border.all(width: 0.8),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: const Icon(Icons.add),
                               ),
@@ -746,6 +525,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 width: 75,
                                 decoration: BoxDecoration(
                                   border: Border.all(width: 0.8),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: const Icon(Icons.add),
                               ),
@@ -762,7 +542,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     onPressed: FormSaver,
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.red),
-                      fixedSize: MaterialStateProperty.all(const Size(350, 12)),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      fixedSize: MaterialStateProperty.all(Size(
+                        size.width * 0.85,
+                        size.height * 0.05,
+                      )),
                     ),
                     child: const Text(
                       "Update",
@@ -772,7 +556,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   const SizedBox(
-                    height: 8,
+                    height: 22,
                   ),
                 ],
               ),

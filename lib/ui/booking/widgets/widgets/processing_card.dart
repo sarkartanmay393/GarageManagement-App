@@ -250,29 +250,31 @@ class processing_card extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(
-            height: 8,
-          ),
-          CircleAvatar(
-            radius: 28,
-            backgroundColor: Theme.of(context).backgroundColor,
-            child: FittedBox(
-              child: Column(
-                children: [
-                  const Icon(
-                    Icons.timer_outlined,
-                  ),
-                  Text(
-                    "2Hours",
-                    style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 9),
-                  )
-                ],
+          // const SizedBox(
+          //   height: 8,
+          // ),
+          Expanded(
+            child: CircleAvatar(
+              radius: 28,
+              backgroundColor: Theme.of(context).backgroundColor,
+              child: FittedBox(
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.timer_outlined,
+                    ),
+                    Text(
+                      "2Hours",
+                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 9),
+                    )
+                  ],
+                ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

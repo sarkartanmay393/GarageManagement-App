@@ -17,7 +17,7 @@ class FormBar {
           child: Text(
             name,
             style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                  fontSize: 14,
+                  fontSize: 15,
                   color: Colors.black,
                   fontWeight: FontWeight.w500,
                 ),

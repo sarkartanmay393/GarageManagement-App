@@ -364,10 +364,11 @@ class _SignupPageState extends State<SignupPage> {
             ),
             const Spacer(),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  width: size.width * 0.25,
-                ),
+                // SizedBox(
+                //   width: size.width * 0.25,
+                // ),
                 Text(
                   "Don’t have an account?",
                   style: Theme.of(context).textTheme.displaySmall!.copyWith(

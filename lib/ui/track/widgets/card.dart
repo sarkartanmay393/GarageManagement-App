@@ -21,7 +21,7 @@ class _track_vehicleState extends State<track_vehicle> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {\
+      onTap: () {
         pushNewScreenWithRouteSettings(
           context,
           screen: IndividualTrackPage(),

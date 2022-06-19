@@ -12,11 +12,12 @@ import 'ui/auth/signup/signup.dart';
 import 'ui/booking/bookinghistory.dart';
 import 'ui/home/homepage.dart';
 import 'ui/inventory/AddNewPage.dart';
+import 'ui/jobcard/jobCard.dart';
 import 'ui/pickcity/pick_city.dart';
 import 'ui/TabView.dart';
 import 'ui/privacy/PrivacyPolicy.dart';
 import 'ui/revenue/revenue_stats.dart';
-import 'ui/services_request/removeService.dart';
+
 import 'ui/services_request/serviceManagement.dart';
 import 'ui/services_request/services_request.dart';
 import 'ui/terms/terms.dart';
@@ -83,8 +84,8 @@ class MyApp extends StatelessWidget {
           IndividualTrackPage.routeName: (context) => IndividualTrackPage(),
           ServiceManagementPage.routeName: (context) => ServiceManagementPage(),
           AddServicePage.routeName: (context) => AddServicePage(),
-          RemoveServicePage.routeName: (context) => RemoveServicePage(),
           ImageVerificationPage.routeName: (context) => ImageVerificationPage(),
+          JobCard.routeName: (context) => JobCard(),
         },
         // navigatorObservers: [NavigationHistoryObserver()],
 

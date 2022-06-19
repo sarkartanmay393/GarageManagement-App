@@ -19,12 +19,9 @@ class HelpPage extends StatefulWidget {
 }
 
 class _HelpPageState extends State<HelpPage> {
+  //
   final _key = GlobalKey<ScaffoldState>();
-
   Placemark pm = Placemark(locality: "Jalpaiguri");
-
-  var notificationsCount = 12;
-
   bool loadMore = false;
 
   @override
@@ -305,6 +302,9 @@ class _HelpPageState extends State<HelpPage> {
                     color: Colors.black,
                     fontWeight: FontWeight.w500,
                   ),
+            ),
+            const SizedBox(
+              height: 2,
             ),
             Text(
               "Thank you for contacting us. Please fill the following forms below to complete the process.",

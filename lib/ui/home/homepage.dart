@@ -3,6 +3,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
+import '../../helper/formBarMaker.dart';
 import '../../state/provider.dart';
 import '../menu/menu.dart';
 import '../notification/notifications.dart';
@@ -11,13 +12,20 @@ import './widgets/services.dart';
 import './widgets/categories.dart';
 import './widgets/homecard.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static const routeName = "HomePage";
   HomePage({Key? key}) : super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final _key = GlobalKey<ScaffoldState>();
+
   Placemark pm = Placemark(locality: "Jalpaiguri");
-  var notificationsCount = 12;
+
+  final _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +49,6 @@ class HomePage extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  // Navigator.of(context).popUntil(ModalRoute.withName("/"));
-                  // Navigator.of(context).popUntil(
-                  //     (route) => route.settings.name == "ScreenToPopBackTo");
                   pushNewScreenWithRouteSettings(
                     context,
                     settings:
@@ -52,9 +57,6 @@ class HomePage extends StatelessWidget {
                     withNavBar: true,
                     pageTransitionAnimation: PageTransitionAnimation.cupertino,
                   );
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(builder: (ctx) => Notifications()),
-                  // );
                 },
                 icon: InfoFlow.notificationCount != 0
                     ? const Icon(Icons.notifications_active_outlined)

@@ -10,12 +10,18 @@ import '../pickcity/pick_city.dart';
 import 'AddNewPage.dart';
 import 'widgets/InventoryCard.dart';
 
-class InventoryPage extends StatelessWidget {
+class InventoryPage extends StatefulWidget {
   static const routeName = "Inventory";
   InventoryPage({Key? key}) : super(key: key);
 
+  @override
+  State<InventoryPage> createState() => _InventoryPageState();
+}
+
+class _InventoryPageState extends State<InventoryPage> {
   //
   final _key = GlobalKey<ScaffoldState>();
+
   Placemark pm = Placemark(locality: "Jalpaiguri");
 
   Map<String, String> info = {

@@ -54,7 +54,7 @@ class HelpForm extends StatelessWidget {
             onPressed: () {},
             style: ElevatedButton.styleFrom(
               primary: Colors.red,
-              fixedSize: Size(size.width, 18),
+              fixedSize: Size(size.width * 0.95, size.height * 0.05),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),
               ),
@@ -68,7 +68,7 @@ class HelpForm extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          height: 12,
+          height: 18,
         ),
       ],
     );

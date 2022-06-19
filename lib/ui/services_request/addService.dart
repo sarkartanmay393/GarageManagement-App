@@ -159,10 +159,13 @@ class _AddServicePageState extends State<AddServicePage> {
               Text(
                 "Add Photos",
                 style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                      fontSize: 14,
+                      fontSize: 16,
                       color: Colors.black,
                       fontWeight: FontWeight.w500,
                     ),
+              ),
+              const SizedBox(
+                height: 4,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -178,6 +181,7 @@ class _AddServicePageState extends State<AddServicePage> {
                       width: 75,
                       decoration: BoxDecoration(
                         border: Border.all(width: 0.8),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: image1marker
                           ? Image.file(
@@ -198,6 +202,7 @@ class _AddServicePageState extends State<AddServicePage> {
                       width: 75,
                       decoration: BoxDecoration(
                         border: Border.all(width: 0.8),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: image1marker
                           ? Image.file(
@@ -218,6 +223,7 @@ class _AddServicePageState extends State<AddServicePage> {
                       width: 75,
                       decoration: BoxDecoration(
                         border: Border.all(width: 0.8),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: image1marker
                           ? Image.file(

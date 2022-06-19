@@ -7,6 +7,7 @@ import 'package:navigation_history_observer/navigation_history_observer.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
+import '../../helper/formBarMaker.dart';
 import '../../state/provider.dart';
 import '../menu/menu.dart';
 import '../notification/notifications.dart';
@@ -35,7 +36,7 @@ class _VanProfilePageState extends State<VanProfilePage> {
   }
 
   Map<String, String> ProfileInfo = {
-    "Driver Name": "",
+    "Driver Name": "Tanmay",
     "Driver Phone": "",
     "Owner Name": "",
     "Owner Phone": "",
@@ -243,10 +244,27 @@ class _VanProfilePageState extends State<VanProfilePage> {
                           height: size.width * 0.1,
                           width: size.height * 0.053,
                           child: Card(
+                            elevation: 0,
+                            color: Colors.black45,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: const BorderSide(
+                                color: Colors.black45,
+                                width: 1.2,
+                              ),
+                            ),
                             child: IconButton(
                               splashColor: Colors.red,
                               icon: const Icon(
                                 Icons.arrow_back_ios_new_outlined,
+                                color: Colors.white,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.white,
+                                    blurRadius: 12,
+                                    offset: Offset(1, 1),
+                                  ),
+                                ],
                               ),
                               iconSize: 12,
                               onPressed: setterState,
@@ -256,10 +274,15 @@ class _VanProfilePageState extends State<VanProfilePage> {
                         SizedBox(
                           width: size.width * 0.04,
                         ),
-                        const Text(
+                        Text(
                           "Fill details",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium!
+                              .copyWith(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
                         ),
                       ],
                     ),
@@ -270,227 +293,73 @@ class _VanProfilePageState extends State<VanProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         //
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: size.width * 0.05, bottom: 2),
-                          child: const Text(
-                            "Driver Name",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
                         Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.2),
-                          ),
                           margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 5,
+                            horizontal: 12,
+                            vertical: 2,
                           ),
-                          // padding: const EdgeInsets.symmetric(vertical: 16),
-                          height: size.height * 0.065,
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                              hintText: "Tanmay Sarkar",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 12,
-                              ),
-                            ),
-                            onSaved: (val) {
-                              if (val != null) {
-                                ProfileInfo['Driver Name'] = val;
-                              }
-                            },
-                            validator: (val) {
-                              return null;
-                            },
-                            initialValue: ProfileInfo["Driver Name"],
+                          child: FormBar.inputBarWithLabel(
+                            name: "Driver Name",
+                            context: context,
+                            onSaveStorage: ProfileInfo['Driver Name']!,
+                            initVal: ProfileInfo["Driver Name"]!,
+                            // hintText: "Tanmay Sarkar",
                           ),
                         ),
 
                         //
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 18,
-                            bottom: 2,
-                            top: 8,
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 2,
                           ),
-                          child: Text(
-                            "Driver Phone Number",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
+                          child: FormBar.inputBarWithLabel(
+                            name: "Driver Phone Number",
+                            context: context,
+                            onSaveStorage: ProfileInfo['Driver Phone']!,
+                            initVal: ProfileInfo['Driver Phone']!,
+                            // hintText: "Tanmay Sarkar",
                           ),
                         ),
                         Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.2),
-                          ),
                           margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 5,
+                            horizontal: 12,
+                            vertical: 2,
                           ),
-                          // padding: const EdgeInsets.symmetric(vertical: 16),
-                          height: size.height * 0.065,
-                          child: TextFormField(
-                            onSaved: (val) {
-                              if (val != null) {
-                                ProfileInfo['Driver Phone'] = val;
-                              }
-                            },
-                            validator: (_) {
-                              return null;
-                            },
-                            initialValue: ProfileInfo["Driver Phone"],
-                            decoration: const InputDecoration(
-                              hintText: "",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 12,
-                              ),
-                            ),
+                          child: FormBar.inputBarWithLabel(
+                            name: "Owner Name",
+                            context: context,
+                            onSaveStorage: ProfileInfo['Owner Name']!,
+                            initVal: ProfileInfo['Owner Name']!,
+                            // hintText: "Tanmay Sarkar",
                           ),
                         ),
 
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 18,
-                            bottom: 2,
-                            top: 8,
-                          ),
-                          child: Text(
-                            "Owner Name",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
                         Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.2),
-                          ),
                           margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 5,
+                            horizontal: 12,
+                            vertical: 2,
                           ),
-                          // padding: const EdgeInsets.symmetric(vertical: 16),
-                          height: size.height * 0.065,
-                          child: TextFormField(
-                            onSaved: (val) {
-                              if (val != null) {
-                                ProfileInfo['Owner Name'] = val;
-                              }
-                            },
-                            initialValue: ProfileInfo["Onwer Name"],
-                            keyboardType: TextInputType.name,
-                            decoration: const InputDecoration(
-                              hintText: "",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 12,
-                              ),
-                            ),
+                          child: FormBar.inputBarWithLabel(
+                            name: "Owner Phone Number",
+                            context: context,
+                            onSaveStorage: ProfileInfo['Owner Phone']!,
+                            initVal: ProfileInfo['Owner Phone']!,
+                            // hintText: "Tanmay Sarkar",
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 18,
-                            bottom: 2,
-                            top: 8,
-                          ),
-                          child: Text(
-                            "Owner Phone Number",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
+
                         Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.2),
-                          ),
                           margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 5,
+                            horizontal: 12,
+                            vertical: 2,
                           ),
-                          // padding: const EdgeInsets.symmetric(vertical: 16),
-                          height: size.height * 0.065,
-                          child: TextFormField(
-                            onSaved: (val) {
-                              if (val != null) {
-                                ProfileInfo['Owner Phone'] = val;
-                              }
-                            },
-                            validator: (_) {
-                              return null;
-                            },
-                            initialValue: ProfileInfo["Owner Phone"],
-                            decoration: const InputDecoration(
-                              hintText: "",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 12,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 18,
-                            bottom: 2,
-                            top: 8,
-                          ),
-                          child: Text(
-                            "Owner Driving License",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.2),
-                          ),
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 5,
-                          ),
-                          // padding: const EdgeInsets.symmetric(vertical: 16),
-                          height: size.height * 0.065,
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                              hintText: "",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 12,
-                              ),
-                            ),
-                            onSaved: (val) {
-                              if (val != null) {
-                                ProfileInfo['Owner License'] = val;
-                              }
-                            },
-                            validator: (val) {
-                              return null;
-                            },
-                            initialValue: ProfileInfo["Owner License"],
+                          child: FormBar.inputBarWithLabel(
+                            name: "Owner Driving License",
+                            context: context,
+                            onSaveStorage: ProfileInfo['Owner License']!,
+                            initVal: ProfileInfo['Owner License']!,
+                            // hintText: "Tanmay Sarkar",
                           ),
                         ),
 
@@ -529,6 +398,7 @@ class _VanProfilePageState extends State<VanProfilePage> {
                                   width: 75,
                                   decoration: BoxDecoration(
                                     border: Border.all(width: 0.8),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: image1marker
                                       ? Image.file(
@@ -549,6 +419,7 @@ class _VanProfilePageState extends State<VanProfilePage> {
                                   width: 75,
                                   decoration: BoxDecoration(
                                     border: Border.all(width: 0.8),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: image2marker
                                       ? Image.file(
@@ -569,6 +440,7 @@ class _VanProfilePageState extends State<VanProfilePage> {
                                   width: 75,
                                   decoration: BoxDecoration(
                                     border: Border.all(width: 0.8),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: image3marker
                                       ? Image.file(
@@ -613,6 +485,7 @@ class _VanProfilePageState extends State<VanProfilePage> {
                                 width: 75,
                                 decoration: BoxDecoration(
                                   border: Border.all(width: 0.8),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: const Icon(Icons.add),
                               ),
@@ -625,6 +498,7 @@ class _VanProfilePageState extends State<VanProfilePage> {
                                 width: 75,
                                 decoration: BoxDecoration(
                                   border: Border.all(width: 0.8),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: const Icon(Icons.add),
                               ),
@@ -637,6 +511,7 @@ class _VanProfilePageState extends State<VanProfilePage> {
                                 width: 75,
                                 decoration: BoxDecoration(
                                   border: Border.all(width: 0.8),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: const Icon(Icons.add),
                               ),
@@ -653,7 +528,10 @@ class _VanProfilePageState extends State<VanProfilePage> {
                     onPressed: FormSaver,
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.red),
-                      fixedSize: MaterialStateProperty.all(const Size(350, 12)),
+                      fixedSize: MaterialStateProperty.all(
+                        Size(size.width * 0.85, size.height * 0.05),
+                      ),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
                     child: const Text(
                       "Update",
@@ -663,7 +541,7 @@ class _VanProfilePageState extends State<VanProfilePage> {
                     ),
                   ),
                   const SizedBox(
-                    height: 8,
+                    height: 22,
                   ),
                 ],
               ),

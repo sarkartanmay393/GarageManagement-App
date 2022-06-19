@@ -1,3 +1,4 @@
+import 'package:bee/ui/jobcard/jobCard.dart';
 import 'package:bee/ui/verification/ImageVerification.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -73,7 +74,15 @@ class MenuButtons extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              pushNewScreenWithRouteSettings(
+                context,
+                settings: const RouteSettings(name: JobCard.routeName),
+                screen: JobCard(),
+                withNavBar: true,
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+              );
+            },
             style: ButtonStyle(
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 // splashFactory: NoSplash.splashFactory,

@@ -249,25 +249,34 @@ class cc_vehicle extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(
-            height: 2,
-          ),
-          Text(
-            "Completed",
-            style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                color: Colors.green, fontWeight: FontWeight.w500, fontSize: 15),
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.red),
-            ),
-            child: Text(
-              "View Invoice",
-              style: Theme.of(context)
-                  .textTheme
-                  .displaySmall!
-                  .copyWith(fontWeight: FontWeight.w500, fontSize: 9),
+          // const SizedBox(
+          //   height: 2,
+          // ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Completed",
+                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                      color: Colors.green,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15),
+                ),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.red),
+                  ),
+                  child: Text(
+                    "View Invoice",
+                    style: Theme.of(context)
+                        .textTheme
+                        .displaySmall!
+                        .copyWith(fontWeight: FontWeight.w500, fontSize: 9),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

@@ -386,7 +386,7 @@ class _SRCardState extends State<SRCard> {
                                   color: Colors.white,
                                 ),
                                 label: Text(
-                                  "Verify",
+                                  "Accept",
                                   style: Theme.of(context)
                                       .textTheme
                                       .displaySmall!

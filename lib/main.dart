@@ -12,7 +12,9 @@ import 'ui/auth/signup/signup.dart';
 import 'ui/booking/bookinghistory.dart';
 import 'ui/home/homepage.dart';
 import 'ui/inventory/AddNewPage.dart';
-import 'ui/jobcard/jobCard.dart';
+import 'ui/issues/issues.dart';
+import 'ui/issues/widgets/manual.dart';
+import 'ui/jobcard/jobcard.dart';
 import 'ui/pickcity/pick_city.dart';
 import 'ui/TabView.dart';
 import 'ui/privacy/PrivacyPolicy.dart';
@@ -85,7 +87,9 @@ class MyApp extends StatelessWidget {
           ServiceManagementPage.routeName: (context) => ServiceManagementPage(),
           AddServicePage.routeName: (context) => AddServicePage(),
           ImageVerificationPage.routeName: (context) => ImageVerificationPage(),
-          JobCard.routeName: (context) => JobCard(),
+          JobCardPage.routeName: (context) => JobCardPage(),
+          IssuesPage.routeName: (context) => const IssuesPage(),
+          ManualCardPage.routeName: (context) => ManualCardPage(),
         },
         // navigatorObservers: [NavigationHistoryObserver()],
 

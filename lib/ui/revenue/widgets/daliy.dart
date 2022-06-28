@@ -81,7 +81,7 @@ class Daily extends StatelessWidget {
             "Rs. 0",
             "Total Earning",
             const Icon(
-              Icons.attach_money_sharp,
+              Icons.currency_rupee_sharp,
               color: Colors.white,
             ),
             size,
@@ -95,7 +95,7 @@ class Daily extends StatelessWidget {
             "Rs. 0",
             "Total Commission",
             const Icon(
-              Icons.attach_money_sharp,
+              Icons.currency_rupee_sharp,
               color: Colors.white,
             ),
             size,
@@ -109,7 +109,7 @@ class Daily extends StatelessWidget {
             "Rs. 0",
             "Total Card Payment",
             const Icon(
-              Icons.attach_money_sharp,
+              Icons.currency_rupee_sharp,
               color: Colors.white,
             ),
             size,
@@ -123,7 +123,7 @@ class Daily extends StatelessWidget {
             "Rs. 0",
             "Total Cash Payment",
             const Icon(
-              Icons.attach_money_sharp,
+              Icons.currency_rupee_sharp,
               color: Colors.white,
             ),
             size,
@@ -137,7 +137,7 @@ class Daily extends StatelessWidget {
             "Rs. 0",
             "Total Amount Payable",
             const Icon(
-              Icons.attach_money_sharp,
+              Icons.currency_rupee_sharp,
               color: Colors.white,
             ),
             size,

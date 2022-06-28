@@ -1,6 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
+import '../../../completed/widgets/invoice.dart';
+
 class completed_card extends StatelessWidget {
   Size size;
   Map<String, String> info;
@@ -264,7 +266,13 @@ class completed_card extends StatelessWidget {
                       fontSize: 15),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => Invoice(size, info),
+                      ),
+                    );
+                  },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.red),
                   ),

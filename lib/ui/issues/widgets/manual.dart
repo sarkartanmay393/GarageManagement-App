@@ -4,12 +4,12 @@ import 'package:geocoding/geocoding.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
-import '../../helper/formBarMaker.dart';
-import '../notification/notifications.dart';
+import '../../../helper/formBarMaker.dart';
+import '../../notification/notifications.dart';
 
-class JobCardPage extends StatelessWidget {
-  static const routeName = 'JobCard';
-  JobCardPage({Key? key}) : super(key: key);
+class ManualCardPage extends StatelessWidget {
+  static const routeName = 'ManualCardPage';
+  ManualCardPage({Key? key}) : super(key: key);
 
   Map<String, String> info = {
     "title": "",
@@ -28,7 +28,7 @@ class JobCardPage extends StatelessWidget {
             backgroundColor: Colors.red,
             centerTitle: true,
             title: Text(
-              "Job Card",
+              "Add Manually",
               style: Theme.of(context).textTheme.displayMedium!.copyWith(
                     fontSize: 16,
                     color: Colors.white,

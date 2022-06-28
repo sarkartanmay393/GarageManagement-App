@@ -1,3 +1,4 @@
+import 'package:bee/ui/completed/widgets/invoice.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
@@ -264,7 +265,13 @@ class cc_vehicle extends StatelessWidget {
                       fontSize: 15),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => Invoice(size, info),
+                      ),
+                    );
+                  },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.red),
                   ),

@@ -1,4 +1,5 @@
 import 'package:bee/state/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,7 @@ class _RgstCheckState extends State<RgstCheck> {
   ];
   var userPref = "";
   var _choiceIndex = 0;
+  final _authInstance = FirebaseAuth.instance;
 
   Widget chipBuilder(String name, int index) {
     // builds each chip for selection.
@@ -50,31 +52,37 @@ class _RgstCheckState extends State<RgstCheck> {
     );
   }
 
-  void submitButton(BuildContext ctx) {
+  void submitButton(PhoneAuthCredential phCred, BuildContext ctx) async {
+    try {
+      final userCred = await _authInstance.signInWithCredential(phCred);
+    } catch (err) {
+      print(err);
+    }
+
     if (_choiceIndex == 0) {
       print("Towing Van");
       // Navigator.of(context)
       //     .popAndPushNamed(TabView.routeName, arguments: userPref);
-      pushNewScreenWithRouteSettings(
-        context,
-        settings: const RouteSettings(name: TabView.routeName),
-        screen: const TabView(),
-        withNavBar: true,
-        pageTransitionAnimation: PageTransitionAnimation.cupertino,
-      );
+      // pushNewScreenWithRouteSettings(
+      //   context,
+      //   settings: const RouteSettings(name: TabView.routeName),
+      //   screen: const TabView(),
+      //   withNavBar: true,
+      //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
+      // );
     } else {
       print("Garage");
-      var IF = Provider.of<InfoFlower>(ctx, listen: false);
-      IF.userTypeSetter("Garage");
-      // Navigator.of(context)
-      //     .popAndPushNamed(GarageTabView.routeName, arguments: userPref);
-      pushNewScreenWithRouteSettings(
-        context,
-        settings: const RouteSettings(name: TabView.routeName),
-        screen: const TabView(),
-        withNavBar: true,
-        pageTransitionAnimation: PageTransitionAnimation.cupertino,
-      );
+      // var IF = Provider.of<InfoFlower>(ctx, listen: false);
+      // IF.userTypeSetter("Garage");
+      // // Navigator.of(context)
+      // //     .popAndPushNamed(GarageTabView.routeName, arguments: userPref);
+      // pushNewScreenWithRouteSettings(
+      //   context,
+      //   settings: const RouteSettings(name: TabView.routeName),
+      //   screen: const TabView(),
+      //   withNavBar: true,
+      //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
+      // );
     }
     // print(userPref);
   }
@@ -82,7 +90,8 @@ class _RgstCheckState extends State<RgstCheck> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    //
+    final args =
+        ModalRoute.of(context)!.settings.arguments as PhoneAuthCredential;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -160,7 +169,9 @@ class _RgstCheckState extends State<RgstCheck> {
                   height: 25,
                 ),
                 ElevatedButton(
-                  onPressed: () => submitButton(context),
+                  onPressed: () {
+                    submitButton(args, context);
+                  },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
                       Theme.of(context).primaryColor,

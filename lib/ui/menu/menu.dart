@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -18,6 +19,7 @@ class _MenuState extends State<Menu> {
   bool isOnline = false;
   Location location = Location();
   String currentLocation = "";
+  final _authInstance = FirebaseAuth.instance;
 
   Future<void> changeLocationButton() async {
     String error;
@@ -121,6 +123,15 @@ class _MenuState extends State<Menu> {
               ),
             ),
             const MenuButtons(),
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                  onPressed: () {
+                    _authInstance.signOut();
+                  },
+                  child: Text("Log Out")),
+            )
           ],
         ));
   }

@@ -1,20 +1,117 @@
-import 'package:bee/state/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
   static const routeName = "login";
 
   LoginPage({Key? key}) : super(key: key);
-
+  final _otpController = TextEditingController();
   final _controller = TextEditingController();
   String _phoneNumber = "";
+  bool _isLoading = false;
 
-  void get_otp_button(BuildContext ctx) {
-    _phoneNumber = _controller.text;
+  final _auth = FirebaseAuth.instance;
+
+  void get_otp_button(String phoneNumber, BuildContext ctx) async {
+    await _auth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      verificationCompleted: (phCredentials) {
+        ScaffoldMessenger.of(ctx).showSnackBar(
+          const SnackBar(
+            duration: Duration(milliseconds: 2000),
+            content: SizedBox(
+                height: 16,
+                child: Center(child: Center(child: Text("Number Verified")))),
+            padding: EdgeInsets.symmetric(vertical: 8),
+          ),
+        );
+        _auth.signInWithCredential(phCredentials);
+      },
+      verificationFailed: (fbAuthException) {
+        var msg = "Some went wrong.";
+        if (fbAuthException.code == 'invalid-phone-number') {
+          msg = 'Phone number is not valid.';
+        }
+        ScaffoldMessenger.of(ctx).showSnackBar(
+          SnackBar(
+            duration: const Duration(milliseconds: 2000),
+            content: SizedBox(
+                height: 16, child: Center(child: Center(child: Text(msg)))),
+            padding: const EdgeInsets.symmetric(vertical: 8),
+          ),
+        );
+      },
+      codeSent: (verificationId, resentCode) {
+        ScaffoldMessenger.of(ctx).showSnackBar(
+          const SnackBar(
+            duration: Duration(milliseconds: 2000),
+            content: SizedBox(
+                height: 16,
+                child: Center(child: Center(child: Text("Code Sent")))),
+            padding: EdgeInsets.symmetric(vertical: 8),
+          ),
+        );
+
+        //
+        showModalBottomSheet(
+            context: ctx,
+            elevation: 2,
+            builder: (c) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text("Enter OTP"),
+                  TextField(
+                    keyboardType: TextInputType.visiblePassword,
+                    textInputAction: TextInputAction.done,
+                    controller: _otpController,
+                    onEditingComplete: () {},
+                  ),
+                  ElevatedButton(
+                    // key: _otpConfirmKey,
+                    onPressed: () async {
+                      final smscode = _otpController.text.trim();
+                      PhoneAuthCredential credential =
+                          PhoneAuthProvider.credential(
+                        verificationId: verificationId,
+                        smsCode: smscode,
+                      );
+                      UserCredential result =
+                          await _auth.signInWithCredential(credential);
+                      if (result.user != null) {
+                        Navigator.of(c).pop();
+                      } else {
+                        print("error otp type");
+                      }
+                      //
+                    },
+                    style: ElevatedButton.styleFrom(
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    child: const Text("Confirm"),
+                  )
+                ],
+              );
+            });
+        //
+      },
+      codeAutoRetrievalTimeout: (verificationId) {
+        ScaffoldMessenger.of(ctx).showSnackBar(
+          const SnackBar(
+            content:
+                SizedBox(height: 16, child: Center(child: Text("Timeout"))),
+            padding: EdgeInsets.symmetric(vertical: 8),
+          ),
+        );
+      },
+    );
+
     // Navigator.of(ctx).pushReplacementNamed(TabView.routeName);
-    var IF = Provider.of<InfoFlower>(ctx, listen: false);
-    IF.stateChanger();
+    // var IF = Provider.of<InfoFlower>(ctx, listen: false);
+    // IF.stateChanger();
   }
 
   @override
@@ -135,7 +232,11 @@ class LoginPage extends StatelessWidget {
               height: 5,
             ),
             ElevatedButton(
-              onPressed: () => get_otp_button(context),
+              onPressed: () {
+                String num = "+91${_controller.text.trim()}";
+                get_otp_button(num, context);
+                _isLoading = true;
+              },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
                   Theme.of(context).primaryColor,

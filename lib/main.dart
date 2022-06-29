@@ -1,7 +1,5 @@
-import 'package:bee/ui/completed/CompletedVehicle.dart';
-import 'package:bee/ui/services_request/addService.dart';
-import 'package:bee/ui/track/track.dart';
-import 'package:bee/ui/verification/ImageVerification.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +8,7 @@ import 'ui/auth/login/login.dart';
 import 'ui/auth/signup/rgstcheck.dart';
 import 'ui/auth/signup/signup.dart';
 import 'ui/booking/bookinghistory.dart';
+import 'ui/completed/CompletedVehicle.dart';
 import 'ui/home/homepage.dart';
 import 'ui/inventory/AddNewPage.dart';
 import 'ui/issues/issues.dart';
@@ -20,12 +19,17 @@ import 'ui/TabView.dart';
 import 'ui/privacy/PrivacyPolicy.dart';
 import 'ui/revenue/revenue_stats.dart';
 
+import 'ui/services_request/addService.dart';
 import 'ui/services_request/serviceManagement.dart';
 import 'ui/services_request/services_request.dart';
 import 'ui/terms/terms.dart';
 import 'ui/track/IndividualTrack.dart';
+import 'ui/track/track.dart';
+import 'ui/verification/ImageVerification.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -65,9 +69,16 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: Consumer<InfoFlower>(
-          builder: (ctx, IF, _) => IF.isLogin ? const TabView() : LoginPage(),
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (ctx, ss) {
+            if (ss.hasData) {
+              return TabView();
+            }
+            return LoginPage();
+          },
         ),
+
         routes: {
           LoginPage.routeName: (context) => LoginPage(),
           SignupPage.routeName: (context) => SignupPage(),

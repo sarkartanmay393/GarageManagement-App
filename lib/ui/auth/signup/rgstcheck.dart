@@ -52,39 +52,15 @@ class _RgstCheckState extends State<RgstCheck> {
     );
   }
 
-  void submitButton(PhoneAuthCredential phCred, BuildContext ctx) async {
-    try {
-      final userCred = await _authInstance.signInWithCredential(phCred);
-    } catch (err) {
-      print(err);
-    }
-
+  void submitButton(PhoneAuthCredential args, BuildContext ctx) async {
+    pushNewScreen(context, screen: TabView());
+//
     if (_choiceIndex == 0) {
       print("Towing Van");
-      // Navigator.of(context)
-      //     .popAndPushNamed(TabView.routeName, arguments: userPref);
-      // pushNewScreenWithRouteSettings(
-      //   context,
-      //   settings: const RouteSettings(name: TabView.routeName),
-      //   screen: const TabView(),
-      //   withNavBar: true,
-      //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
-      // );
     } else {
       print("Garage");
-      // var IF = Provider.of<InfoFlower>(ctx, listen: false);
-      // IF.userTypeSetter("Garage");
-      // // Navigator.of(context)
-      // //     .popAndPushNamed(GarageTabView.routeName, arguments: userPref);
-      // pushNewScreenWithRouteSettings(
-      //   context,
-      //   settings: const RouteSettings(name: TabView.routeName),
-      //   screen: const TabView(),
-      //   withNavBar: true,
-      //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
-      // );
     }
-    // print(userPref);
+//
   }
 
   @override

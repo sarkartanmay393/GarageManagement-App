@@ -1,16 +1,39 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   static const routeName = "login";
 
   LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final _otpController = TextEditingController();
+
   final _controller = TextEditingController();
+
   String _phoneNumber = "";
+
   bool _isLoading = false;
 
+  bool showOtpBar = false;
+  String verificationIdTemporary = "";
+
   final _auth = FirebaseAuth.instance;
+
+  void continueFurtherInLoginProcess(
+      String verificationId, String smscode) async {
+    // final smscode = _otpController.text.trim();
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+      verificationId: verificationId,
+      smsCode: smscode,
+    );
+    UserCredential result = await _auth.signInWithCredential(credential);
+    //
+  }
 
   void get_otp_button(String phoneNumber, BuildContext ctx) async {
     await _auth.verifyPhoneNumber(
@@ -51,51 +74,10 @@ class LoginPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 8),
           ),
         );
-
-        //
-        showModalBottomSheet(
-            context: ctx,
-            elevation: 2,
-            builder: (c) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("Enter OTP"),
-                  TextField(
-                    keyboardType: TextInputType.visiblePassword,
-                    textInputAction: TextInputAction.done,
-                    controller: _otpController,
-                    onEditingComplete: () {},
-                  ),
-                  ElevatedButton(
-                    // key: _otpConfirmKey,
-                    onPressed: () async {
-                      final smscode = _otpController.text.trim();
-                      PhoneAuthCredential credential =
-                          PhoneAuthProvider.credential(
-                        verificationId: verificationId,
-                        smsCode: smscode,
-                      );
-                      UserCredential result =
-                          await _auth.signInWithCredential(credential);
-                      if (result.user != null) {
-                        Navigator.of(c).pop();
-                      } else {
-                        print("error otp type");
-                      }
-                      //
-                    },
-                    style: ElevatedButton.styleFrom(
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                    child: const Text("Confirm"),
-                  )
-                ],
-              );
-            });
+        setState(() {
+          showOtpBar = true;
+          verificationIdTemporary = verificationId;
+        });
         //
       },
       codeAutoRetrievalTimeout: (verificationId) {
@@ -228,14 +210,51 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
+            if (showOtpBar)
+              Card(
+                margin: EdgeInsets.symmetric(
+                  vertical: size.height * 0.005,
+                  horizontal: size.width * 0.07,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(22),
+                ),
+                elevation: 2,
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
+                  child: Flexible(
+                    child: TextFormField(
+                      controller: _otpController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                        hintText: "Enter OTP",
+                      ),
+                      keyboardType: TextInputType.visiblePassword,
+                      textInputAction: TextInputAction.go,
+                      maxLength: null,
+                    ),
+                  ),
+                ),
+              ),
             const SizedBox(
               height: 5,
             ),
             ElevatedButton(
               onPressed: () {
-                String num = "+91${_controller.text.trim()}";
-                get_otp_button(num, context);
-                _isLoading = true;
+                if (showOtpBar) {
+                  continueFurtherInLoginProcess(
+                      verificationIdTemporary, _otpController.text.trim());
+                } else {
+                  String num = "+91${_controller.text.trim()}";
+                  get_otp_button(num, context);
+                  // _isLoading = true;
+                }
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
@@ -256,7 +275,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               child: Text(
-                "GET OTP",
+                showOtpBar ? "CONTINUE" : "GET OTP",
                 style: Theme.of(context).textTheme.displaySmall!.copyWith(
                       fontWeight: FontWeight.bold,
                       fontSize: 13,
@@ -287,7 +306,7 @@ class LoginPage extends StatelessWidget {
                     ),
               ),
             ),
-            const Spacer(),
+            Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

@@ -34,186 +34,146 @@ class _SignupPageState extends State<SignupPage> {
   final _numberController = TextEditingController();
   bool clickable = false; // for the confirm button
   final _otpConfirmKey = GlobalKey<State>(); // no use
-  var credential; // will hold user auth credentials.
+  PhoneAuthCredential credential = PhoneAuthProvider.credential(
+      verificationId: "", smsCode: ""); // will hold user auth credentials.
   final _auth = FirebaseAuth.instance;
-  List<bool> readonly = [false, true, true]; // used readonly funciton this how.
+  List<bool> readonly = [
+    false,
+    true,
+    true,
+    true
+  ]; // used readonly funciton this how.
+  bool resendPossible = false; // defines that currently resend is possible
+  //or not by taking the charge of clickablity.
+  String verificationIdTemporary = ""; // will hold veri. id for a small time.
+
+  void resend() {}
 
   void _otpVerification(String number) async {
     try {
       await _auth.verifyPhoneNumber(
         phoneNumber: number,
-        // timeout: const Duration(seconds: 30),
+        timeout: const Duration(seconds: 60),
         verificationCompleted: (phCredentials) {
+          credential = phCredentials;
+          setState(() {
+            readonly[0] = true;
+            readonly[1] = true;
+            readonly[2] = false;
+            readonly[3] = false;
+            clickable = true;
+          });
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               duration: Duration(milliseconds: 2000),
               content: SizedBox(
-                  height: 28,
-                  child: Center(child: Center(child: Text("Number Verified")))),
+                  height: 16, child: Center(child: Text("Number Verified"))),
               padding: EdgeInsets.symmetric(vertical: 8),
             ),
           );
-          credential = phCredentials;
-          readonly[0] = true;
-          readonly[1] = false;
-          readonly[2] = false;
-          clickable = true;
         },
         verificationFailed: (fbAuthException) {
-          var msg = "Some went wrong.";
+          var msg = "Verification Failed";
           if (fbAuthException.code == 'invalid-phone-number') {
-            msg = 'Phone number is not valid.';
+            msg = 'Phone number is not valid';
           }
+          setState(() {
+            readonly[0] = false;
+            readonly[1] = true;
+            readonly[2] = true;
+            readonly[3] = true;
+            clickable = false;
+          });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              duration: const Duration(milliseconds: 1000),
-              content: SizedBox(height: 28, child: Center(child: Text(msg))),
+              duration: const Duration(milliseconds: 2000),
+              content: SizedBox(height: 16, child: Center(child: Text(msg))),
               padding: const EdgeInsets.symmetric(vertical: 8),
             ),
           );
         },
         codeSent: (verificationId, forceResendingToken) {
+          verificationIdTemporary = verificationId;
+          setState(() {
+            readonly[0] = true;
+            readonly[1] = false;
+            readonly[2] = false;
+            readonly[3] = false;
+            clickable = true;
+          });
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content:
-                  SizedBox(height: 28, child: Center(child: Text("Code Sent"))),
+                  SizedBox(height: 16, child: Center(child: Text("Code Sent"))),
               duration: Duration(milliseconds: 2000),
               padding: EdgeInsets.symmetric(vertical: 8),
             ),
           );
-          // String smsCode = _otpController.text;
-          // PhoneAuthCredential temp_credential = PhoneAuthProvider.credential(
-          //     verificationId: verificationId, smsCode: smsCode);
-          // readonly[0] = false;
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   const SnackBar(
-          //     content: Center(child: Text("Enter OTP")),
-          //     duration: Duration(milliseconds: 200),
-          //     padding: EdgeInsets.symmetric(vertical: 8),
-          //   ),
-          // );
-          // String smsCode = "";
-          showModalBottomSheet(
-              context: context,
-              elevation: 2,
-              enableDrag: true,
-              builder: (c) {
-                return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 8),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text("Enter OTP"),
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      TextField(
-                        keyboardType: TextInputType.visiblePassword,
-                        textInputAction: TextInputAction.next,
-                        controller: _otpController,
-                        onEditingComplete: () {},
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      ElevatedButton(
-                        // key: _otpConfirmKey,
-                        onPressed: () async {
-                          final smscode = _otpController.text.trim();
-                          credential = PhoneAuthProvider.credential(
-                            verificationId: verificationId,
-                            smsCode: smscode,
-                          );
-                          // ignore: unnecessary_null_comparison
-                          if ((credential as PhoneAuthCredential) != null) {
-                            readonly[0] = true;
-                            readonly[1] = false;
-                            readonly[2] = false;
-                            clickable = true;
-                            Navigator.of(c).pop();
-                          } else {
-                            print("error otp type");
-                          }
-
-                          // UserCredential result =
-                          //     await _auth.signInWithCredential(credential);
-                          // if (result.user != null) {
-                          //   Navigator.of(c).pop();
-                          // } else {
-                          //   print("error otp type");
-                          // }
-                          //
-                        },
-                        style: ElevatedButton.styleFrom(
-                          elevation: 5,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 2, vertical: 2),
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                        child: const Text("Confirm"),
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                    ],
-                  ),
-                );
-              });
+          //
         },
         codeAutoRetrievalTimeout: (verificationId) {
-          verificationId = verificationId;
-          // print(verificationId);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text("Timeout"),
-              padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+              content:
+                  SizedBox(height: 16, child: Center(child: Text("Timeout"))),
+              duration: Duration(milliseconds: 2000),
+              padding: EdgeInsets.symmetric(vertical: 8),
             ),
           );
         },
       );
     } catch (err) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: SizedBox(
+              height: 16, child: Center(child: Text("Something went wrong"))),
+          duration: Duration(milliseconds: 2000),
+          padding: EdgeInsets.symmetric(vertical: 8),
+        ),
+      );
       print(err);
     }
   }
 
-  void confirmButton() async {
+  void continueButton(String verifyID, String smscode) async {
     // confirm button function.
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: SizedBox(
+              height: 16, child: Center(child: Text("Validation failed."))),
+          duration: Duration(milliseconds: 2000),
+          padding: EdgeInsets.symmetric(vertical: 8),
+        ),
+      );
     }
-
-    pushNewScreenWithRouteSettings(
-      context,
-      screen: const RgstCheck(),
-      settings: RouteSettings(
-        name: RgstCheck.routeName,
-        arguments: credential as PhoneAuthCredential,
-      ),
-    );
-
-    // UserCredential authResult;
-    // if (await _otpVerification(CreateInfo["number"]!)) {}
 
     try {
-      // authResult = await _auth.createUserWithEmailAndPassword(
-      // email: CreateInfo["email"]!, password: CreateInfo[""]);
-    } catch (err) {
-      return null;
-    }
+      credential = PhoneAuthProvider.credential(
+          verificationId: verificationIdTemporary, smsCode: smscode);
 
+      await _auth.signInWithCredential(credential);
+    } catch (err) {
+      _otpController.clear();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: SizedBox(
+              height: 38,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Text("Something went wrong"),
+                    Text("Type OTP Again."),
+                  ])),
+          duration: const Duration(milliseconds: 2000),
+          padding: const EdgeInsets.symmetric(vertical: 8),
+        ),
+      );
+    }
     print(CreateInfo);
-    // Navigator.of(context).pushNamed(RgstCheck.routeName);
   }
 
   @override
@@ -326,90 +286,87 @@ class _SignupPageState extends State<SignupPage> {
                               readOnly: readonly[0],
                               keyboardType: TextInputType.number,
                               maxLength: null,
-                              onEditingComplete: () {
+                              controller: _numberController,
+                              textInputAction: TextInputAction.send,
+                              onEditingComplete: () async {
                                 String num =
                                     "+91${_numberController.text.trim()}";
-                                print("func hitted");
                                 _otpVerification(num);
-                                print("func closed");
-                              }, // => _otpVerification,
-                              controller: _numberController,
-                              // onFieldSubmitted: (num) => _otpVerification,
-                              textInputAction: TextInputAction.send,
+                              }, // task otp verification starts here.
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                  // const SizedBox(
-                  //   height: 5,
-                  // ),
-                  // Card(
-                  //   margin: EdgeInsets.symmetric(
-                  //     vertical: size.height * 0.005,
-                  //     horizontal: size.width * 0.07,
-                  //   ),
-                  //   shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(22),
-                  //   ),
-                  //   elevation: 2,
-                  //   color: Colors.white,
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.symmetric(
-                  //       horizontal: 8,
-                  //       vertical: 2,
-                  //     ),
-                  //     child: Row(
-                  //       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       mainAxisSize: MainAxisSize.min,
-                  //       children: [
-                  //         // const SizedBox(
-                  //         //   width: 6,
-                  //         // ),
-                  //         Flexible(
-                  //           child: TextFormField(
-                  //             readOnly: readonly[0],
-                  //             decoration: const InputDecoration(
-                  //               border: InputBorder.none,
-                  //               hintText: "One Time Password",
-                  //               hintStyle: TextStyle(
-                  //                   fontSize: 14, fontWeight: FontWeight.w500),
-                  //               contentPadding: EdgeInsets.only(
-                  //                 left: 14,
-                  //               ),
-                  //             ),
-                  //             controller: _otpController,
-                  //             keyboardType: TextInputType.number,
-                  //             maxLength: null,
-                  //           ),
-                  //         ),
-                  //         TextButton(
-                  //           onPressed: () {},
-                  //           style: ButtonStyle(
-                  //             splashFactory: InkSparkle
-                  //                 .constantTurbulenceSeedSplashFactory,
-                  //             // surfaceTintColor: MaterialStateProperty.all(Colors.red),
-                  //             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  //             minimumSize:
-                  //                 MaterialStateProperty.all(const Size(0, 5)),
-                  //           ),
-                  //           child: Text(
-                  //             "Resend OTP",
-                  //             style: Theme.of(context)
-                  //                 .textTheme
-                  //                 .displaySmall!
-                  //                 .copyWith(
-                  //                   color: Colors.black,
-                  //                   fontSize: 11,
-                  //                   fontWeight: FontWeight.w500,
-                  //                 ),
-                  //           ),
-                  //         )
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Card(
+                    margin: EdgeInsets.symmetric(
+                      vertical: size.height * 0.005,
+                      horizontal: size.width * 0.07,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22),
+                    ),
+                    elevation: 2,
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
+                      child: Row(
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // const SizedBox(
+                          //   width: 6,
+                          // ),
+                          Flexible(
+                            child: TextFormField(
+                              readOnly: readonly[1],
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "One Time Password",
+                                hintStyle: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w500),
+                                contentPadding: EdgeInsets.only(
+                                  left: 14,
+                                ),
+                              ),
+                              controller: _otpController,
+                              keyboardType: TextInputType.number,
+                              maxLength: null,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: resendPossible ? resend : null,
+                            style: ButtonStyle(
+                              splashFactory: InkSparkle
+                                  .constantTurbulenceSeedSplashFactory,
+                              // surfaceTintColor: MaterialStateProperty.all(Colors.red),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              minimumSize:
+                                  MaterialStateProperty.all(const Size(0, 5)),
+                            ),
+                            child: Text(
+                              "Resend OTP",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displaySmall!
+                                  .copyWith(
+                                    color: Colors.black,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                   const SizedBox(
                     height: 5,
                   ),
@@ -447,7 +404,7 @@ class _SignupPageState extends State<SignupPage> {
                             left: 14,
                           ),
                         ),
-                        readOnly: readonly[1],
+                        readOnly: readonly[2],
                         keyboardType: TextInputType.name,
                         maxLength: null,
                       ),
@@ -483,7 +440,7 @@ class _SignupPageState extends State<SignupPage> {
                           }
                           return null;
                         },
-                        readOnly: readonly[1],
+                        readOnly: readonly[3],
                         decoration: const InputDecoration(
                           hintText: "Email",
                           hintStyle: TextStyle(
@@ -505,7 +462,15 @@ class _SignupPageState extends State<SignupPage> {
               height: 5,
             ),
             ElevatedButton(
-              onPressed: clickable ? confirmButton : null,
+              onPressed: clickable
+                  ? () {
+                      String tmp = "";
+                      if (_otpController.text.trim().length == 6) {
+                        tmp = _otpController.text.trim();
+                      }
+                      continueButton(verificationIdTemporary, tmp);
+                    }
+                  : null,
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
                   Theme.of(context).primaryColor,
@@ -525,7 +490,7 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
               child: Text(
-                "CONFIRM",
+                "CONTINUE",
                 style: Theme.of(context).textTheme.displaySmall!.copyWith(
                       fontWeight: FontWeight.bold,
                       fontSize: 13,

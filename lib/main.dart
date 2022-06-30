@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (ctx, ss) {
             if (ss.hasData) {
-              return TabView();
+              return const TabView();
             }
             return LoginPage();
           },

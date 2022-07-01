@@ -33,18 +33,18 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  Map<String, String> ProfileInfo = {
-    "Garage Name": "Sukanto Garage",
-    "Person Name": "",
-    "Gender": "Male",
-    "Birthday": "23/12/2002",
-    "Email": "sukantoyo@tanmay.com",
-    "Phone": "7834729223",
-    "Garage Registetration Number": "",
-    "Garage Address": "",
-    "State": "",
-    "City": "",
-  };
+  // Map<String, String> ProfileInfo = {
+  //   "Garage Name": "",
+  //   "Person Name": "",
+  //   "Gender": "",
+  //   "Birthday": "",
+  //   "Email": "",
+  //   "Phone": "",
+  //   "Garage Registetration Number": "",
+  //   "Garage Address": "",
+  //   "State": "",
+  //   "City": "",
+  // };
 
   final _picker = ImagePicker();
 
@@ -119,8 +119,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    var InfoFlow = Provider.of<InfoFlower>(context);
-
+    var infoFlow = Provider.of<InfoFlower>(context);
+    final ProfileInfo = infoFlow.profileInformationsGR;
     return Scaffold(
       key: _key,
       appBar: PreferredSize(
@@ -154,7 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   //   MaterialPageRoute(builder: (ctx) => Notifications()),
                   // );
                 },
-                icon: InfoFlow.notificationCount != 0
+                icon: infoFlow.notificationCount != 0
                     ? const Icon(Icons.notifications_active_outlined)
                     : const Icon(Icons.notifications_none_outlined),
                 color: Colors.white,

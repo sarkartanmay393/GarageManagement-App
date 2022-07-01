@@ -53,13 +53,24 @@ class _RgstCheckState extends State<RgstCheck> {
   }
 
   void submitButton() async {
-    pushNewScreen(context, screen: const TabView());
+    pushNewScreen(
+      context,
+      screen: const TabView(),
+    );
 //
+    var infoFlow = Provider.of<InfoFlower>(context, listen: false);
     if (_choiceIndex == 0) {
-      print("Towing Van");
+      debugPrint("Towing Van");
+      infoFlow.profileInformationsTV["profilePreference"] = "Towing Van";
+      infoFlow.profilePreference = "Towing Van";
+      infoFlow.profileInformationsGR = {};
     } else {
-      print("Garage");
+      debugPrint("Garage");
+      infoFlow.profileInformationsGR["profilePreference"] = "Garage";
+      infoFlow.profilePreference = "Garage";
+      infoFlow.profileInformationsTV = {};
     }
+
 //
   }
 

@@ -35,6 +35,35 @@ class InfoFlower with ChangeNotifier {
     JobCard(title: "Qwert Jioasdf", description: "description", id: "ajsdf"),
     JobCard(title: "Qwert Jioasdf", description: "description", id: "ajsdf"),
   ];
+  Map<String, String> profileInformationsTV = {
+    "Driver Name": "",
+    "Driver Phone": "",
+    "Owner Name": "",
+    "Owner Phone": "",
+    "Owner License": "",
+    "Gender": "",
+    "Birthday": "",
+    "Email": "",
+    "profilePreference": ""
+  };
+  Map<String, String> profileInformationsGR = {
+    "Garage Name": "",
+    "Person Name": "",
+    "Gender": "",
+    "Birthday": "",
+    "Email": "",
+    "Phone": "",
+    "Garage Registetration Number": "",
+    "Garage Address": "",
+    "State": "",
+    "City": "",
+    "profilePreference": ""
+  };
+
+  String profilePreference = "";
+  // get profilePrefGetter {
+  //   return profilePreference;
+  // }
 
   void addJobCard(String title, String description) {
     jobcards.add(
@@ -54,7 +83,7 @@ class InfoFlower with ChangeNotifier {
 
   bool get isLogin {
     return _isLogin;
-  }
+  } // instead SharedPreference used. Don't know why 🫠
 
   int get notificationCount {
     return _notificationsCount;

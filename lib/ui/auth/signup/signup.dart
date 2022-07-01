@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Shared Preference for isLoggedIn bool.
 
+import '../../../state/provider.dart';
 import 'rgstcheck.dart';
 
 // First page in signup process.
@@ -200,13 +202,26 @@ class _SignupPageState extends State<SignupPage> {
     // confirm button function.
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      pushNewScreen(context, screen: const RgstCheck());
+      pushNewScreen(
+        context,
+        screen: const RgstCheck(),
+      );
     }
   }
 
   @override
   void dispose() {
     super.dispose();
+    var infoFlow = Provider.of<InfoFlower>(context, listen: false);
+    if (CreateInfo["email"]!.isNotEmpty) {
+      infoFlow.profileInformationsTV["Email"] = CreateInfo["email"]!;
+      infoFlow.profileInformationsTV["Driver Phone"] = CreateInfo["number"]!;
+      infoFlow.profileInformationsTV["Driver Name"] = CreateInfo["name"]!;
+
+      infoFlow.profileInformationsGR["Email"] = CreateInfo["email"]!;
+      infoFlow.profileInformationsGR["Phone"] = CreateInfo["number"]!;
+      infoFlow.profileInformationsGR["Person Name"] = CreateInfo["name"]!;
+    }
     _numberController.dispose();
     _otpController.dispose();
   }

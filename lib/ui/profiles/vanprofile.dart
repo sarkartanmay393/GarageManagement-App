@@ -35,16 +35,16 @@ class _VanProfilePageState extends State<VanProfilePage> {
     });
   }
 
-  Map<String, String> ProfileInfo = {
-    "Driver Name": "Tanmay",
-    "Driver Phone": "",
-    "Owner Name": "",
-    "Owner Phone": "",
-    "Owner License": "",
-    "Gender": "",
-    "Birthday": "",
-    "Email": "dumydata@tanmay.com",
-  };
+  // Map<String, String> ProfileInfo = {
+  //   "Driver Name": "",
+  //   "Driver Phone": "",
+  //   "Owner Name": "",
+  //   "Owner Phone": "",
+  //   "Owner License": "",
+  //   "Gender": "",
+  //   "Birthday": "",
+  //   "Email": "",
+  // };
 
   final _picker = ImagePicker();
 
@@ -143,7 +143,8 @@ class _VanProfilePageState extends State<VanProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    var InfoFlow = Provider.of<InfoFlower>(context);
+    var infoFlow = Provider.of<InfoFlower>(context);
+    final ProfileInfo = infoFlow.profileInformationsTV;
 
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -179,7 +180,7 @@ class _VanProfilePageState extends State<VanProfilePage> {
                   //   MaterialPageRoute(builder: (ctx) => Notifications()),
                   // );
                 },
-                icon: InfoFlow.notificationCount != 0
+                icon: infoFlow.notificationCount != 0
                     ? const Icon(Icons.notifications_active_outlined)
                     : const Icon(Icons.notifications_none_outlined),
                 color: Colors.white,

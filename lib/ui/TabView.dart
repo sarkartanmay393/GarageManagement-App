@@ -67,7 +67,8 @@ class _TabView extends State<TabView> {
 
   @override
   Widget build(BuildContext context) {
-    var IF = Provider.of<InfoFlower>(context, listen: false);
+    var infoFlow = Provider.of<InfoFlower>(context, listen: false);
+
     return PersistentTabView(
       context,
       controller: _controller,
@@ -75,7 +76,9 @@ class _TabView extends State<TabView> {
         HomePage(), // 0
         HelpPage(), // 1
         InventoryPage(), // 2
-        IF.userType.index == 0 ? const ProfilePage() : const VanProfilePage()
+        infoFlow.profilePreference == "Towing Van"
+            ? const ProfilePage()
+            : const VanProfilePage()
       ],
       items: [
         PersistentBottomNavBarItem(

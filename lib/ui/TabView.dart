@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,13 @@ class TabView extends StatefulWidget {
 }
 
 class _TabView extends State<TabView> {
+  final _firebaseAuthInstance = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    _firebaseAuthInstance.currentUser!.reload();
+    super.initState();
+  }
   // NavigationHistoryObserver navHistory = NavigationHistoryObserver();
 
   // final _key = GlobalKey<ScaffoldState>();
@@ -54,6 +62,7 @@ class _TabView extends State<TabView> {
   // }
 
   // var notificationCount = 10;
+
   final _controller = PersistentTabController(initialIndex: 0);
 
   @override

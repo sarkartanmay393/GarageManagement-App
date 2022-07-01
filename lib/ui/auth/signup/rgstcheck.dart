@@ -16,13 +16,13 @@ class RgstCheck extends StatefulWidget {
 }
 
 class _RgstCheckState extends State<RgstCheck> {
+  final _authInstance = FirebaseAuth.instance;
   final List<String> _choices = [
     "Towing Van",
     "Garage",
   ];
   var userPref = "";
   var _choiceIndex = 0;
-  final _authInstance = FirebaseAuth.instance;
 
   Widget chipBuilder(String name, int index) {
     // builds each chip for selection.
@@ -52,8 +52,8 @@ class _RgstCheckState extends State<RgstCheck> {
     );
   }
 
-  void submitButton(PhoneAuthCredential args, BuildContext ctx) async {
-    pushNewScreen(context, screen: TabView());
+  void submitButton() async {
+    pushNewScreen(context, screen: const TabView());
 //
     if (_choiceIndex == 0) {
       print("Towing Van");
@@ -66,8 +66,6 @@ class _RgstCheckState extends State<RgstCheck> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final args =
-        ModalRoute.of(context)!.settings.arguments as PhoneAuthCredential;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -146,7 +144,7 @@ class _RgstCheckState extends State<RgstCheck> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    submitButton(args, context);
+                    submitButton();
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(

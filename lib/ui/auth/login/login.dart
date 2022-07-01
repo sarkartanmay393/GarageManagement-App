@@ -3,42 +3,67 @@ import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "login";
-
-  LoginPage({Key? key}) : super(key: key);
-
+  const LoginPage({Key? key}) : super(key: key);
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
   final _otpController = TextEditingController();
-
   final _controller = TextEditingController();
 
-  String _phoneNumber = "";
+  Color termsTextColor = Colors.grey.shade600; // didnot work, how I thought.
 
+  bool readonly = true;
   bool _isLoading = false;
-
-  bool showOtpBar = false;
+  bool resendPossible = false;
   String verificationIdTemporary = "";
 
   final _auth = FirebaseAuth.instance;
 
+  void resend() {}
+
   void continueFurtherInLoginProcess(
       String verificationId, String smscode) async {
+    if (verificationId.isEmpty) {
+      return;
+    }
+    setState(() {
+      _isLoading = true;
+    });
     // final smscode = _otpController.text.trim();
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: verificationId,
       smsCode: smscode,
     );
-    UserCredential result = await _auth.signInWithCredential(credential);
+    try {
+      await _auth.signInWithCredential(credential);
+    } catch (err) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(milliseconds: 2000),
+          content: SizedBox(
+              height: 16,
+              child: Center(child: Center(child: Text(err.toString())))),
+          padding: const EdgeInsets.symmetric(vertical: 8),
+        ),
+      );
+    }
+    setState(() {
+      _isLoading = false;
+    });
     //
   }
 
   void get_otp_button(String phoneNumber, BuildContext ctx) async {
+    setState(() {
+      _isLoading = true;
+    });
     await _auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       verificationCompleted: (phCredentials) {
+        ScaffoldMessenger.of(ctx).clearSnackBars();
         ScaffoldMessenger.of(ctx).showSnackBar(
           const SnackBar(
             duration: Duration(milliseconds: 2000),
@@ -48,6 +73,9 @@ class _LoginPageState extends State<LoginPage> {
             padding: EdgeInsets.symmetric(vertical: 8),
           ),
         );
+        setState(() {
+          _isLoading = false;
+        });
         _auth.signInWithCredential(phCredentials);
       },
       verificationFailed: (fbAuthException) {
@@ -55,16 +83,33 @@ class _LoginPageState extends State<LoginPage> {
         if (fbAuthException.code == 'invalid-phone-number') {
           msg = 'Phone number is not valid.';
         }
+        setState(() {
+          _isLoading = false;
+          readonly = true;
+        });
+        ScaffoldMessenger.of(ctx).clearSnackBars();
         ScaffoldMessenger.of(ctx).showSnackBar(
           SnackBar(
             duration: const Duration(milliseconds: 2000),
             content: SizedBox(
-                height: 16, child: Center(child: Center(child: Text(msg)))),
+              height: 16,
+              child: Center(
+                child: Center(
+                  child: Text(msg.length < 22 ? msg.substring(0, 22) : msg),
+                ),
+              ),
+            ),
             padding: const EdgeInsets.symmetric(vertical: 8),
           ),
         );
       },
       codeSent: (verificationId, resentCode) {
+        setState(() {
+          _isLoading = false;
+          verificationIdTemporary = verificationId;
+          readonly = false;
+        });
+        ScaffoldMessenger.of(ctx).clearSnackBars();
         ScaffoldMessenger.of(ctx).showSnackBar(
           const SnackBar(
             duration: Duration(milliseconds: 2000),
@@ -74,13 +119,15 @@ class _LoginPageState extends State<LoginPage> {
             padding: EdgeInsets.symmetric(vertical: 8),
           ),
         );
-        setState(() {
-          showOtpBar = true;
-          verificationIdTemporary = verificationId;
-        });
+
         //
       },
       codeAutoRetrievalTimeout: (verificationId) {
+        setState(() {
+          _isLoading = false;
+          readonly = true;
+        });
+        ScaffoldMessenger.of(ctx).clearSnackBars();
         ScaffoldMessenger.of(ctx).showSnackBar(
           const SnackBar(
             content:
@@ -90,10 +137,13 @@ class _LoginPageState extends State<LoginPage> {
         );
       },
     );
+  }
 
-    // Navigator.of(ctx).pushReplacementNamed(TabView.routeName);
-    // var IF = Provider.of<InfoFlower>(ctx, listen: false);
-    // IF.stateChanger();
+  @override
+  void dispose() {
+    _controller.dispose();
+    _otpController.dispose();
+    super.dispose();
   }
 
   @override
@@ -151,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
             ),
             SizedBox(
-              height: size.height * 0.08,
+              height: size.height * 0.06,
             ),
             Container(
               alignment: Alignment.centerLeft,
@@ -203,6 +253,18 @@ class _LoginPageState extends State<LoginPage> {
                           prefixText: "+91  ",
                         ),
                         keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.send,
+                        onChanged: (_) async {
+                          if (_controller.text.trim().length == 10) {
+                            String num = _controller.text.trim();
+                            get_otp_button("+91$num", context);
+                          }
+                        },
+                        onFieldSubmitted: (String num) async {
+                          if (num.trim().length == 10) {
+                            get_otp_button("+91$num", context);
+                          }
+                        },
                         maxLength: null,
                       ),
                     ),
@@ -210,51 +272,95 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            if (showOtpBar)
-              Card(
-                margin: EdgeInsets.symmetric(
-                  vertical: size.height * 0.005,
-                  horizontal: size.width * 0.07,
+            SizedBox(
+              height: size.height * 0.01,
+            ),
+            Card(
+              margin: EdgeInsets.symmetric(
+                vertical: size.height * 0.005,
+                horizontal: size.width * 0.07,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(22),
+              ),
+              elevation: 2,
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 2,
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(22),
-                ),
-                elevation: 2,
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 2,
-                  ),
-                  child: Flexible(
-                    child: TextFormField(
-                      controller: _otpController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                        hintText: "Enter OTP",
+                child: Row(
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: TextFormField(
+                        readOnly: readonly,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Enter OTP",
+                          hintStyle: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: readonly
+                                  ? Colors.grey.shade400
+                                  : Colors.grey.shade700),
+                          contentPadding: const EdgeInsets.only(
+                            left: 14,
+                          ),
+                        ),
+                        controller: _otpController,
+                        keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.done,
+                        onChanged: (_) async {
+                          if (_otpController.text.trim().length == 6) {
+                            continueFurtherInLoginProcess(
+                              verificationIdTemporary,
+                              _otpController.text.trim(),
+                            );
+                          }
+                        },
+                        onFieldSubmitted: (val) {
+                          if (val.trim().length == 6) {
+                            continueFurtherInLoginProcess(
+                                verificationIdTemporary, val.trim());
+                          }
+                        },
+                        maxLength: null,
                       ),
-                      keyboardType: TextInputType.visiblePassword,
-                      textInputAction: TextInputAction.go,
-                      maxLength: null,
                     ),
-                  ),
+                    TextButton(
+                      onPressed: resendPossible ? resend : null,
+                      style: ButtonStyle(
+                        splashFactory:
+                            InkSparkle.constantTurbulenceSeedSplashFactory,
+                        // surfaceTintColor: MaterialStateProperty.all(Colors.red),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        minimumSize:
+                            MaterialStateProperty.all(const Size(0, 5)),
+                      ),
+                      child: Text(
+                        "Resend OTP",
+                        style:
+                            Theme.of(context).textTheme.displaySmall!.copyWith(
+                                  color: Colors.black,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                      ),
+                    )
+                  ],
                 ),
               ),
-            const SizedBox(
-              height: 5,
+            ),
+            SizedBox(
+              height: size.height * 0.01,
             ),
             ElevatedButton(
               onPressed: () {
-                if (showOtpBar) {
-                  continueFurtherInLoginProcess(
-                      verificationIdTemporary, _otpController.text.trim());
-                } else {
-                  String num = "+91${_controller.text.trim()}";
-                  get_otp_button(num, context);
-                  // _isLoading = true;
-                }
+                continueFurtherInLoginProcess(
+                    verificationIdTemporary, _otpController.text.trim());
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
@@ -274,17 +380,29 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              child: Text(
-                showOtpBar ? "CONTINUE" : "GET OTP",
-                style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
+              child: _isLoading
+                  ? SizedBox(
+                      height: size.height * 0.04,
+                      width: size.width * 0.04,
+                      child: const FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3.2,
+                          color: Colors.white,
+                        ),
+                      ),
+                    )
+                  : Text(
+                      "CONTINUE",
+                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
                     ),
-              ),
             ),
             Padding(
-              padding:
-                  const EdgeInsets.only(left: 22, right: 22, top: 5, bottom: 3),
+              padding: const EdgeInsets.only(
+                  left: 22, right: 22, top: 10, bottom: 3),
               child: Text(
                 "By signing in you agree to our",
                 style: Theme.of(context).textTheme.displaySmall!.copyWith(
@@ -296,17 +414,29 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 22),
-              child: Text(
-                "Terms of Service & Privacy Policy",
-                style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                      color: Colors.grey.shade600,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      decoration: TextDecoration.underline,
-                    ),
+              child: InkWell(
+                // splashColor: Colors.red,
+                // onHover: (val) {
+                //   setState(() {
+                //     termsTextColor = Colors.red;
+                //   });
+                // },
+                onTap: () {},
+                child: Text(
+                  "Terms of Service & Privacy Policy",
+                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                        color: termsTextColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        decoration: TextDecoration.underline,
+                      ),
+                ),
               ),
             ),
             Spacer(),
+            // SizedBox(
+            //   height: size.height * (showOtpBar ? 0.22 : 0.26),
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

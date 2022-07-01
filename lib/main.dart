@@ -30,11 +30,13 @@ import 'ui/verification/ImageVerification.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  final auth = FirebaseAuth.instance;
+  runApp(MyApp(auth));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  FirebaseAuth auth;
+  MyApp(this.auth, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,18 +72,18 @@ class MyApp extends StatelessWidget {
           ),
         ),
         home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
+          stream: auth.authStateChanges(),
           builder: (ctx, ss) {
             if (ss.hasData) {
               return const TabView();
             }
-            return LoginPage();
+            return const LoginPage();
           },
         ),
 
         routes: {
-          LoginPage.routeName: (context) => LoginPage(),
-          SignupPage.routeName: (context) => SignupPage(),
+          LoginPage.routeName: (context) => const LoginPage(),
+          SignupPage.routeName: (context) => const SignupPage(),
           RgstCheck.routeName: (context) => const RgstCheck(),
           TabView.routeName: (context) => const TabView(),
           HomePage.routeName: (context) => HomePage(),
@@ -97,11 +99,13 @@ class MyApp extends StatelessWidget {
           IndividualTrackPage.routeName: (context) => IndividualTrackPage(),
           ServiceManagementPage.routeName: (context) => ServiceManagementPage(),
           AddServicePage.routeName: (context) => AddServicePage(),
+          // ignore: prefer_const_constructors
           ImageVerificationPage.routeName: (context) => ImageVerificationPage(),
           JobCardPage.routeName: (context) => JobCardPage(),
           IssuesPage.routeName: (context) => const IssuesPage(),
           ManualCardPage.routeName: (context) => ManualCardPage(),
         },
+
         // navigatorObservers: [NavigationHistoryObserver()],
 
         debugShowCheckedModeBanner: false,

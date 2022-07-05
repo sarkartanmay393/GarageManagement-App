@@ -31,12 +31,14 @@ class FormBar {
           ),
           padding: const EdgeInsets.only(left: 8),
           child: TextFormField(
-            onSaved: (val) => onSaveStorage = val!,
+            onSaved: (val) {
+              onSaveStorage = val!;
+            },
             validator: (val) {
               return null;
             },
             readOnly: readOnlyRef != null ? true : false,
-            initialValue: initVal,
+            initialValue: onSaveStorage,
             autofocus: autoFocusRef != null ? true : false,
             keyboardType: keyboardTypeRef,
             decoration: InputDecoration(

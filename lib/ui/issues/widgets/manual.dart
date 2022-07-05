@@ -90,13 +90,17 @@ class ManualCardPage extends StatelessWidget {
               height: 200,
               padding: const EdgeInsets.only(left: 8),
               child: TextFormField(
+                // minLines: 2,
                 onSaved: (val) => info['description'] = val!,
                 validator: (val) {
                   return null;
                 },
+                maxLines: null,
                 initialValue: info['description'],
                 keyboardType: TextInputType.multiline,
+                expands: true,
                 decoration: InputDecoration(
+                  // isCollapsed: true,
                   border: InputBorder.none,
                   hintText: "Enter Description",
                   hintStyle:

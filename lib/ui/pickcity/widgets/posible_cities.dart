@@ -1,11 +1,16 @@
+import 'package:bee/state/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PossibleCities extends StatelessWidget {
-  const PossibleCities({Key? key}) : super(key: key);
+  PossibleCities({Key? key}) : super(key: key);
+
+  List<City> availbleCities = [];
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    availbleCities = Provider.of<InfoFlower>(context, listen: false).cities;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       height: size.height - 350,
@@ -16,7 +21,10 @@ class PossibleCities extends StatelessWidget {
         ),
         itemBuilder: (_, i) => Card(
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              Provider.of<InfoFlower>(context, listen: false)
+                  .manualLocationSet();
+            },
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
@@ -25,17 +33,17 @@ class PossibleCities extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
+                  SizedBox(
                     height: 45,
-                    child: Image.network("src"),
+                    child: Image.network(availbleCities[i].imgLink),
                   ),
-                  Text("Dhupguri"),
+                  Text(availbleCities[i].name),
                 ],
               ),
             ),
           ),
         ),
-        itemCount: 12,
+        itemCount: availbleCities.length,
       ),
     );
   }

@@ -1,14 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:navigation_history_observer/navigation_history_observer.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-import '../../helper/formBarMaker.dart';
+
 import '../../state/provider.dart';
+import '../auth/login/login.dart';
 import '../menu/menu.dart';
 import '../notification/notifications.dart';
 import '../pickcity/pick_city.dart';
@@ -24,8 +24,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  NavigationHistoryObserver navHistory = NavigationHistoryObserver();
+  final _authInstance = FirebaseAuth.instance;
   bool currentEditState = false;
+  bool _isLoading = false;
 
   void setterState() {
     setState(() {
@@ -33,17 +34,17 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  // Map<String, String> ProfileInfo = {
-  //   "Garage Name": "",
-  //   "Person Name": "",
-  //   "Gender": "",
-  //   "Birthday": "",
-  //   "Email": "",
-  //   "Phone": "",
-  //   "Garage Registetration Number": "",
-  //   "Garage Address": "",
-  //   "State": "",
-  //   "City": "",
+  // Map<String, String> infoFlow.profileInformationsGR = {
+  String GarageName = "";
+  String PersonName = "";
+  String Gender = "";
+  String Birthday = "";
+  String Email = "";
+  String Phone = "";
+  String GarageRegistetrationNumber = "";
+  String GarageAddress = "";
+  String State = "";
+  String City = "";
   // };
 
   final _picker = ImagePicker();
@@ -104,632 +105,821 @@ class _ProfilePageState extends State<ProfilePage> {
 
   final _formKey = GlobalKey<FormState>();
 
-  void FormSaver() {
+  void formSaver() {
     // _formKey.currentState?.validate();
-    _formKey.currentState?.save();
+    _formKey.currentState!.save();
+
+    // push the new values in InfoFlow provider.
+    var providerInstance = Provider.of<InfoFlower>(context, listen: false);
+    providerInstance.addValueTowingVan(key: "GarageName", val: GarageName);
+    providerInstance.addValueTowingVan(key: "PersonName", val: PersonName);
+    providerInstance.addValueTowingVan(key: "Gender", val: Gender);
+    providerInstance.addValueTowingVan(key: "Birthday", val: Birthday);
+    providerInstance.addValueTowingVan(key: "Email", val: Email);
+    providerInstance.addValueTowingVan(key: "Phone", val: Phone);
+    providerInstance.addValueTowingVan(
+        key: "GarageRegistetrationNumber", val: GarageRegistetrationNumber);
+    providerInstance.addValueTowingVan(
+        key: "GarageAddress", val: GarageAddress);
+    providerInstance.addValueTowingVan(key: "State", val: State);
+    providerInstance.addValueTowingVan(key: "City", val: City);
+    //
+
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: SizedBox(
+          height: 22,
+          child: Center(
+            child: Text(
+              "Details Updated",
+              style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                  ),
+            ),
+          ),
+        ),
+        elevation: 0,
+        duration: const Duration(milliseconds: 1500),
+      ),
+    );
+    // showing snackbar code.
     setState(() {
       setterState();
     });
   }
 
   final _key = GlobalKey<ScaffoldState>();
-  Placemark pm = Placemark(locality: "Jalpaiguri");
-  var notificationsCount = 12;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    var infoFlow = Provider.of<InfoFlower>(context);
-    final ProfileInfo = infoFlow.profileInformationsGR;
-    return Scaffold(
-      key: _key,
-      appBar: PreferredSize(
-        preferredSize: Size(double.infinity, size.height * 0.07),
-        child: AppBar(
-          backgroundColor: Colors.red,
-          title: Row(
-            children: [
-              Text(
-                "BEE",
-                style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
+    // var infoFlow = Provider.of<InfoFlower>(context);
+    return FutureBuilder(
+      future: Future.delayed(const Duration(milliseconds: 100), () async {
+        // push the new values in InfoFlow provider.
+        var providerInstance = Provider.of<InfoFlower>(context, listen: false);
+        if (providerInstance.profileInfoTowingVan("GarageName").length > 1) {
+          GarageName = providerInstance.profileInfoTowingVan("GarageName");
+        }
+        if (providerInstance.profileInfoTowingVan("PersonName").length > 1) {
+          PersonName = providerInstance.profileInfoTowingVan("PersonName");
+        }
+        if (providerInstance.profileInfoTowingVan("Gender").length > 1) {
+          Gender = providerInstance.profileInfoTowingVan("Gender");
+        }
+        if (providerInstance.profileInfoTowingVan("Birthday").length > 1) {
+          Birthday = providerInstance.profileInfoTowingVan("Birthday");
+        }
+        if (providerInstance.profileInfoTowingVan("Email").length > 1) {
+          Email = providerInstance.profileInfoTowingVan("Email");
+        }
+        if (providerInstance.profileInfoTowingVan("Phone").length > 1) {
+          Phone = providerInstance.profileInfoTowingVan("Phone");
+        }
+        if (providerInstance.profileInfoTowingVan("Birthday").length > 1) {
+          Birthday = providerInstance.profileInfoTowingVan("Birthday");
+        }
+        if (providerInstance
+                .profileInfoTowingVan("GarageRegistetrationNumber")
+                .length >
+            1) {
+          GarageRegistetrationNumber = providerInstance
+              .profileInfoTowingVan("GarageRegistetrationNumber");
+        }
+        if (providerInstance.profileInfoTowingVan("GarageAddress").length > 1) {
+          GarageAddress =
+              providerInstance.profileInfoTowingVan("GarageAddress");
+        }
+        if (providerInstance.profileInfoTowingVan("City").length > 1) {
+          City = providerInstance.profileInfoTowingVan("City");
+        }
+        if (providerInstance.profileInfoTowingVan("State").length > 1) {
+          State = providerInstance.profileInfoTowingVan("State");
+        } //
+      }),
+      builder: (ctx, ss) => ss.connectionState == ConnectionState.waiting
+          ? const Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 3.5,
+                semanticsLabel: "Waiting for Location",
               ),
-              IconButton(
-                onPressed: () {
-                  // Navigator.of(context).popUntil(ModalRoute.withName("/"));
-                  // Navigator.of(context).popUntil(
-                  //     (route) => route.settings.name == "ScreenToPopBackTo");
-                  pushNewScreenWithRouteSettings(
-                    context,
-                    settings:
-                        const RouteSettings(name: Notifications.routeName),
-                    screen: const Notifications(),
-                    withNavBar: true,
-                    pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                  );
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(builder: (ctx) => Notifications()),
-                  // );
-                },
-                icon: infoFlow.notificationCount != 0
-                    ? const Icon(Icons.notifications_active_outlined)
-                    : const Icon(Icons.notifications_none_outlined),
-                color: Colors.white,
-                iconSize: 20,
-                tooltip: "Notifications",
-              ),
-            ],
-          ),
-          leading: IconButton(
-            onPressed: () {
-              _key.currentState!.openDrawer();
-            },
-            icon: const Icon(
-              Icons.menu_rounded,
-              color: Colors.white,
-            ),
-          ),
-          actions: [
-            TextButton.icon(
-              onPressed: () {
-                pushNewScreenWithRouteSettings(
-                  context,
-                  settings: const RouteSettings(name: PickCity.routeName),
-                  screen: const PickCity(),
-                  withNavBar: true,
-                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                );
-                // Navigator.of(context).pushNamed(PickCity.routeName);
-              },
-              icon: const Icon(
-                Icons.maps_home_work,
-                size: 12,
-                color: Colors.white,
-              ),
-              label: Text(
-                "${pm.locality}",
-                style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-              ),
-              style: const ButtonStyle(
-                  // fixedSize: MaterialStateProperty.all(Size(32, 2)),
+            )
+          : Scaffold(
+              key: _key,
+              appBar: PreferredSize(
+                preferredSize: Size(double.infinity, size.height * 0.07),
+                child: AppBar(
+                  backgroundColor: Colors.red,
+                  title: Row(
+                    children: [
+                      Text(
+                        "BEE",
+                        style:
+                            Theme.of(context).textTheme.displayMedium!.copyWith(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                      ),
+                      Consumer<InfoFlower>(
+                        builder: (ctx, infoFlow, _) => IconButton(
+                          onPressed: () {
+                            // Navigator.of(context).popUntil(ModalRoute.withName("/"));
+                            // Navigator.of(context).popUntil(
+                            //     (route) => route.settings.name == "ScreenToPopBackTo");
+                            pushNewScreenWithRouteSettings(
+                              context,
+                              settings: const RouteSettings(
+                                  name: Notifications.routeName),
+                              screen: const Notifications(),
+                              withNavBar: true,
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino,
+                            );
+                            // Navigator.of(context).push(
+                            //   MaterialPageRoute(builder: (ctx) => Notifications()),
+                            // );
+                          },
+                          icon: infoFlow.notificationCount != 0
+                              ? const Icon(Icons.notifications_active_outlined)
+                              : const Icon(Icons.notifications_none_outlined),
+                          color: Colors.white,
+                          iconSize: 20,
+                          tooltip: "Notifications",
+                        ),
+                      ),
+                    ],
                   ),
-            ),
-          ],
-        ),
-      ),
-      drawer: Menu(),
-      body: (currentEditState)
-          ? SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: size.width * 0.05,
-                      vertical: size.height * 0.02,
+                  leading: IconButton(
+                    onPressed: () {
+                      _key.currentState!.openDrawer();
+                    },
+                    icon: const Icon(
+                      Icons.menu_rounded,
+                      color: Colors.white,
                     ),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          height: size.width * 0.1,
-                          width: size.height * 0.053,
-                          child: Card(
-                            elevation: 0,
-                            color: Colors.black45,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: const BorderSide(
-                                color: Colors.black45,
-                                width: 1.2,
-                              ),
-                            ),
-                            child: IconButton(
-                              splashColor: Colors.red,
-                              icon: const Icon(
-                                Icons.arrow_back_ios_new_outlined,
-                                color: Colors.white,
-                                shadows: [
-                                  Shadow(
-                                    color: Colors.white,
-                                    blurRadius: 12,
-                                    offset: Offset(1, 1),
-                                  ),
-                                ],
-                              ),
-                              iconSize: 12,
-                              onPressed: setterState,
-                            ),
-                          ),
+                  ),
+                  actions: [
+                    Consumer<InfoFlower>(
+                      builder: (ctx, infoFlow, _) => TextButton.icon(
+                        onPressed: () {
+                          pushNewScreenWithRouteSettings(
+                            context,
+                            settings:
+                                const RouteSettings(name: PickCity.routeName),
+                            screen: const PickCity(),
+                            withNavBar: true,
+                            pageTransitionAnimation:
+                                PageTransitionAnimation.cupertino,
+                          );
+                          // Navigator.of(context).pushNamed(PickCity.routeName);
+                        },
+                        icon: const Icon(
+                          Icons.maps_home_work,
+                          size: 12,
+                          color: Colors.white,
                         ),
-                        SizedBox(
-                          width: size.width * 0.04,
-                        ),
-                        Text(
-                          "Fill details",
+                        label: Text(
+                          infoFlow.currentLocation.locality!,
                           style: Theme.of(context)
                               .textTheme
-                              .displayMedium!
+                              .displaySmall!
                               .copyWith(
-                                color: Colors.black,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w500,
                               ),
                         ),
-                      ],
-                    ),
-                  ),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        //
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 2,
-                          ),
-                          child: FormBar.inputBarWithLabel(
-                            name: "Full Name",
-                            context: context,
-                            onSaveStorage: ProfileInfo["Person Name"]!,
-                            initVal: ProfileInfo["Person Name"]!,
-                            // hintText: "Tanmay Sarkar",
-                          ),
-                        ),
-
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 2,
-                          ),
-                          child: FormBar.inputBarWithLabel(
-                            name: "Phone Number",
-                            context: context,
-                            onSaveStorage: ProfileInfo["Phone"]!,
-                            initVal: ProfileInfo["Phone"]!,
-                            // hintText: "Tanmay Sarkar",
-                          ),
-                        ),
-
-                        //
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 2,
-                          ),
-                          child: FormBar.inputBarWithLabel(
-                            name: "Email",
-                            context: context,
-                            onSaveStorage: ProfileInfo["Email"]!,
-                            initVal: ProfileInfo["Email"]!,
-                          ),
-                        ),
-                        //
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 2,
-                          ),
-                          child: FormBar.inputBarWithLabel(
-                            name: "Garage Name",
-                            context: context,
-                            onSaveStorage: ProfileInfo["Garage Name"]!,
-                            initVal: ProfileInfo["Garage Name"]!,
-                          ),
-                        ),
-                        //
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 2,
-                          ),
-                          child: FormBar.inputBarWithLabel(
-                            name: "Garage Registetration Number",
-                            context: context,
-                            onSaveStorage:
-                                ProfileInfo["Garage Registetration Number"]!,
-                            initVal:
-                                ProfileInfo["Garage Registetration Number"]!,
-                          ),
-                        ),
-                        //
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 2,
-                          ),
-                          child: FormBar.inputBarWithLabel(
-                            name: "Garage Address",
-                            context: context,
-                            onSaveStorage: ProfileInfo["Garage Address"]!,
-                            initVal: ProfileInfo["Garage Address"]!,
-                          ),
-                        ),
-                        //
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 2,
-                          ),
-                          child: FormBar.inputBarWithLabel(
-                            name: "State",
-                            context: context,
-                            onSaveStorage: ProfileInfo["State"]!,
-                            initVal: ProfileInfo["State"]!,
-                          ),
-                        ),
-                        //
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 2,
-                          ),
-                          child: FormBar.inputBarWithLabel(
-                            name: "City",
-                            context: context,
-                            onSaveStorage: ProfileInfo["City"]!,
-                            initVal: ProfileInfo["City"]!,
-                          ),
-                        ),
-
-                        // Image Inputs
-
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 18,
-                            bottom: 2,
-                            top: 8,
-                          ),
-                          child: Text(
-                            "Add Garage Image",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        // image row
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 10,
-                            top: 5,
-                          ),
-                          child: Row(
-                            children: [
-                              InkWell(
-                                onTap: selectImage1,
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 2,
-                                    horizontal: 5,
-                                  ),
-                                  height: 75,
-                                  width: 75,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(width: 0.8),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: image1marker
-                                      ? Image.file(
-                                          image1!,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : const Icon(Icons.add),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: selectImage2,
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 2,
-                                    horizontal: 5,
-                                  ),
-                                  height: 75,
-                                  width: 75,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(width: 0.8),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: image2marker
-                                      ? Image.file(
-                                          image2!,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : const Icon(Icons.add),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: selectImage3,
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 2,
-                                    horizontal: 5,
-                                  ),
-                                  height: 75,
-                                  width: 75,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(width: 0.8),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: image3marker
-                                      ? Image.file(
-                                          image1!,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : const Icon(Icons.add),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // extras
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 18,
-                            bottom: 2,
-                            top: 8,
-                          ),
-                          child: Text(
-                            "Add Documents",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 10,
-                            top: 5,
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.symmetric(
-                                  vertical: 2,
-                                  horizontal: 5,
-                                ),
-                                height: 75,
-                                width: 75,
-                                decoration: BoxDecoration(
-                                  border: Border.all(width: 0.8),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: const Icon(Icons.add),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(
-                                  vertical: 2,
-                                  horizontal: 5,
-                                ),
-                                height: 75,
-                                width: 75,
-                                decoration: BoxDecoration(
-                                  border: Border.all(width: 0.8),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: const Icon(Icons.add),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(
-                                  vertical: 2,
-                                  horizontal: 5,
-                                ),
-                                height: 75,
-                                width: 75,
-                                decoration: BoxDecoration(
-                                  border: Border.all(width: 0.8),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: const Icon(Icons.add),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  ElevatedButton(
-                    onPressed: FormSaver,
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.red),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      fixedSize: MaterialStateProperty.all(Size(
-                        size.width * 0.85,
-                        size.height * 0.05,
-                      )),
-                    ),
-                    child: const Text(
-                      "Update",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 22,
-                  ),
-                ],
-              ),
-            )
-          : Column(
-              children: [
-                TopContainer(
-                  profileImageSelecter: profileImageSelecter,
-                  profileImage: profileImage,
-                ),
-                Column(
-                  //padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-                  children: [
-                    ListTile(
-                      leading: const Icon(Icons.car_crash_outlined),
-                      title: const Text(
-                        "Garage Name",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      trailing: InkWell(
-                        onTap: setterState,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              ProfileInfo['Garage Name']!,
-                            ),
-                            const Icon(Icons.navigate_next_outlined)
-                          ],
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.question_mark_rounded),
-                      title: const Text(
-                        "Gender",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      trailing: InkWell(
-                        onTap: setterState,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              ProfileInfo['Gender']!,
-                            ),
-                            const Icon(Icons.navigate_next_outlined)
-                          ],
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.date_range_outlined),
-                      title: const Text(
-                        "Birthdate",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      trailing: InkWell(
-                        onTap: setterState,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              ProfileInfo['Birthday']!,
-                            ),
-                            const Icon(Icons.navigate_next_outlined)
-                          ],
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.email_outlined),
-                      title: const Text(
-                        "Email",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      trailing: InkWell(
-                        onTap: setterState,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              ProfileInfo['Email']!,
-                            ),
-                            const Icon(Icons.navigate_next_outlined)
-                          ],
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.phone_callback_outlined),
-                      title: const Text(
-                        "Phone Number",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      trailing: InkWell(
-                        onTap: setterState,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              ProfileInfo['Phone']!,
-                            ),
-                            const Icon(Icons.navigate_next_outlined)
-                          ],
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: TextButton.icon(
-                        label: const Text(
-                          "Edit",
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
-                        onPressed: setterState,
-                        icon: const Icon(
-                          Icons.edit_outlined,
-                          color: Colors.black,
-                        ),
                         style: const ButtonStyle(
-                            tapTargetSize: MaterialTapTargetSize.padded),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 18,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(
-                          vertical: 2,
-                          horizontal: 18,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        width: double.infinity,
-                        height: 50,
-                        child: TextButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.logout_outlined,
-                            color: Colors.red,
-                          ),
-                          label: const Text(
-                            "Logout",
-                            style: TextStyle(color: Colors.red),
-                          ),
-                        ),
+                            // fixedSize: MaterialStateProperty.all(Size(32, 2)),
+                            ),
                       ),
                     ),
                   ],
                 ),
-              ],
+              ),
+              drawer: const Menu(),
+              body: (currentEditState)
+                  ? SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.05,
+                              vertical: size.height * 0.02,
+                            ),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  height: size.width * 0.1,
+                                  width: size.height * 0.053,
+                                  child: Card(
+                                    elevation: 0,
+                                    color: Colors.black45,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: const BorderSide(
+                                        color: Colors.black45,
+                                        width: 1.2,
+                                      ),
+                                    ),
+                                    child: IconButton(
+                                      splashColor: Colors.red,
+                                      icon: const Icon(
+                                        Icons.arrow_back_ios_new_outlined,
+                                        color: Colors.white,
+                                        shadows: [
+                                          Shadow(
+                                            color: Colors.white,
+                                            blurRadius: 12,
+                                            offset: Offset(1, 1),
+                                          ),
+                                        ],
+                                      ),
+                                      iconSize: 12,
+                                      onPressed: setterState,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: size.width * 0.04,
+                                ),
+                                Text(
+                                  "Fill details",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayMedium!
+                                      .copyWith(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Form(
+                            key: _formKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                //
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 2,
+                                  ),
+                                  child: inputBarWithLabel(
+                                    context: context,
+                                    initVal: PersonName,
+                                    name: "Full Name",
+                                    onSaved: (String value) {
+                                      PersonName = value;
+                                    },
+                                  ),
+                                ),
+
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 2,
+                                  ),
+                                  child: inputBarWithLabel(
+                                    context: context,
+                                    initVal: Phone,
+                                    name: "Phone Number",
+                                    onSaved: (String value) {
+                                      Phone = value;
+                                    },
+                                  ),
+                                ),
+
+                                //
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 2,
+                                  ),
+                                  child: inputBarWithLabel(
+                                    context: context,
+                                    initVal: Email,
+                                    name: "Email Address",
+                                    onSaved: (String value) {
+                                      Email = value;
+                                    },
+                                  ),
+                                ),
+                                //
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 2,
+                                  ),
+                                  child: inputBarWithLabel(
+                                    context: context,
+                                    initVal: GarageName,
+                                    name: "Garage Name",
+                                    onSaved: (String value) {
+                                      GarageName = value;
+                                    },
+                                  ),
+                                ),
+                                //
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 2,
+                                  ),
+                                  child: inputBarWithLabel(
+                                    context: context,
+                                    initVal: GarageRegistetrationNumber,
+                                    name: "Garage Registetration Number",
+                                    onSaved: (String value) {
+                                      GarageRegistetrationNumber = value;
+                                    },
+                                  ),
+                                ),
+                                //
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 2,
+                                  ),
+                                  child: inputBarWithLabel(
+                                    context: context,
+                                    initVal: GarageAddress,
+                                    name: "Garage Address",
+                                    onSaved: (String value) {
+                                      GarageAddress = value;
+                                    },
+                                  ),
+                                ),
+                                //
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 2,
+                                  ),
+                                  child: inputBarWithLabel(
+                                    context: context,
+                                    initVal: State,
+                                    name: "State",
+                                    onSaved: (String value) {
+                                      State = value;
+                                    },
+                                  ),
+                                ),
+                                //
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 2,
+                                  ),
+                                  child: inputBarWithLabel(
+                                    context: context,
+                                    initVal: City,
+                                    name: "City",
+                                    onSaved: (String value) {
+                                      City = value;
+                                    },
+                                  ),
+                                ),
+
+                                // Image Inputs
+
+                                const Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 18,
+                                    bottom: 2,
+                                    top: 8,
+                                  ),
+                                  child: Text(
+                                    "Add Garage Image",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                // image row
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 10,
+                                    top: 5,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: selectImage1,
+                                        child: Container(
+                                          margin: const EdgeInsets.symmetric(
+                                            vertical: 2,
+                                            horizontal: 5,
+                                          ),
+                                          height: 75,
+                                          width: 75,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(width: 0.8),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: image1marker
+                                              ? Image.file(
+                                                  image1!,
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : const Icon(Icons.add),
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: selectImage2,
+                                        child: Container(
+                                          margin: const EdgeInsets.symmetric(
+                                            vertical: 2,
+                                            horizontal: 5,
+                                          ),
+                                          height: 75,
+                                          width: 75,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(width: 0.8),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: image2marker
+                                              ? Image.file(
+                                                  image2!,
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : const Icon(Icons.add),
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: selectImage3,
+                                        child: Container(
+                                          margin: const EdgeInsets.symmetric(
+                                            vertical: 2,
+                                            horizontal: 5,
+                                          ),
+                                          height: 75,
+                                          width: 75,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(width: 0.8),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: image3marker
+                                              ? Image.file(
+                                                  image1!,
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : const Icon(Icons.add),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                // extras
+                                const Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 18,
+                                    bottom: 2,
+                                    top: 8,
+                                  ),
+                                  child: Text(
+                                    "Add Documents",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 10,
+                                    top: 5,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          vertical: 2,
+                                          horizontal: 5,
+                                        ),
+                                        height: 75,
+                                        width: 75,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(width: 0.8),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: const Icon(Icons.add),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          vertical: 2,
+                                          horizontal: 5,
+                                        ),
+                                        height: 75,
+                                        width: 75,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(width: 0.8),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: const Icon(Icons.add),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          vertical: 2,
+                                          horizontal: 5,
+                                        ),
+                                        height: 75,
+                                        width: 75,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(width: 0.8),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: const Icon(Icons.add),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          ElevatedButton(
+                            onPressed: formSaver,
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.red),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              fixedSize: MaterialStateProperty.all(Size(
+                                size.width * 0.85,
+                                size.height * 0.05,
+                              )),
+                            ),
+                            child: const Text(
+                              "Update",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 22,
+                          ),
+                        ],
+                      ),
+                    )
+                  : Column(
+                      children: [
+                        TopContainer(
+                          profileImageSelecter: profileImageSelecter,
+                          profileImage: profileImage,
+                        ),
+                        Column(
+                          //padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                          children: [
+                            ListTile(
+                              leading: const Icon(Icons.car_crash_outlined),
+                              title: const Text(
+                                "Garage Name",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              trailing: InkWell(
+                                onTap: setterState,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      GarageName,
+                                    ),
+                                    const Icon(Icons.navigate_next_outlined)
+                                  ],
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.question_mark_rounded),
+                              title: const Text(
+                                "Gender",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              trailing: InkWell(
+                                onTap: setterState,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      Gender,
+                                    ),
+                                    const Icon(Icons.navigate_next_outlined)
+                                  ],
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.date_range_outlined),
+                              title: const Text(
+                                "Birthdate",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              trailing: InkWell(
+                                onTap: setterState,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      Birthday,
+                                    ),
+                                    const Icon(Icons.navigate_next_outlined)
+                                  ],
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.email_outlined),
+                              title: const Text(
+                                "Email",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              trailing: InkWell(
+                                onTap: setterState,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      Email,
+                                    ),
+                                    const Icon(Icons.navigate_next_outlined)
+                                  ],
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              leading:
+                                  const Icon(Icons.phone_callback_outlined),
+                              title: const Text(
+                                "Phone Number",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              trailing: InkWell(
+                                onTap: setterState,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      Phone,
+                                    ),
+                                    const Icon(Icons.navigate_next_outlined)
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Center(
+                              child: TextButton.icon(
+                                label: const Text(
+                                  "Edit",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                onPressed: setterState,
+                                icon: const Icon(
+                                  Icons.edit_outlined,
+                                  color: Colors.black,
+                                ),
+                                style: const ButtonStyle(
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.padded),
+                              ),
+                            ),
+                            SizedBox(
+                              height: size.height * 0.015,
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                setState(() {
+                                  _isLoading = true;
+                                });
+                                _authInstance.signOut();
+                                //.then((value) {
+                                //Navigator.of(context).pushNamed(LoginPage.routeName);
+                                //});
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 2,
+                                  horizontal: 18,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 1),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                width: double.infinity,
+                                height: 50,
+                                child: TextButton.icon(
+                                  onPressed: () async {
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+                                    _authInstance.signOut().then(
+                                          (value) => pushNewScreen(context,
+                                              screen: const LoginPage()),
+                                        );
+                                    //.then((value) {
+                                    //Navigator.of(context).pushNamed(LoginPage.routeName);
+                                    //});
+                                  },
+                                  icon: const Icon(
+                                    Icons.logout_outlined,
+                                    color: Colors.red,
+                                  ),
+                                  label: const Text(
+                                    "Logout",
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
             ),
+    );
+  }
+
+  Widget inputBarWithLabel({
+    required String name,
+    required BuildContext context,
+    required Function onSaved,
+    required String initVal,
+    bool? readOnlyRef,
+    bool? autoFocusRef,
+    TextInputType? keyboardTypeRef,
+  }) {
+    return Wrap(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4.0),
+          child: Text(
+            name,
+            style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                  fontSize: 15,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 8, bottom: 12, right: 8),
+          decoration: BoxDecoration(
+            border: Border.all(width: 0.2),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.only(left: 8),
+          child: TextFormField(
+            onSaved: (val) => onSaved(val),
+            validator: (val) {
+              return null;
+            },
+            readOnly: readOnlyRef != null ? true : false,
+            initialValue: initVal,
+            autofocus: autoFocusRef != null ? true : false,
+            keyboardType: keyboardTypeRef,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: "Enter $name",
+              hintStyle: Theme.of(context).textTheme.displayMedium!.copyWith(
+                    fontSize: 14,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w500,
+                  ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

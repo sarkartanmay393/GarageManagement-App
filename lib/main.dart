@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'state/provider.dart';
+import './firebase_options.dart';
+import './state/provider.dart';
 import 'ui/auth/login/login.dart';
 import 'ui/auth/signup/rgstcheck.dart';
 import 'ui/auth/signup/signup.dart';
@@ -29,23 +30,19 @@ import 'ui/verification/ImageVerification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  final auth = FirebaseAuth.instance;
-  runApp(MyApp(auth));
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  FirebaseAuth auth;
-  MyApp(this.auth, {Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => InfoFlower(),
-        ),
-      ],
+    return ChangeNotifierProvider.value(
+      value: InfoFlower(),
       child: MaterialApp(
         title: 'BEE',
         theme: ThemeData(
@@ -72,7 +69,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         home: StreamBuilder(
-          stream: auth.authStateChanges(),
+          stream: FirebaseAuth.instance.authStateChanges(),
           builder: (ctx, ss) {
             if (ss.hasData) {
               return const TabView();

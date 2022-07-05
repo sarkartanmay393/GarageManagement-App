@@ -94,6 +94,8 @@ class JobCardPage extends StatelessWidget {
                 validator: (val) {
                   return null;
                 },
+                maxLines: null,
+                expands: true,
                 initialValue: info['description'],
                 keyboardType: TextInputType.multiline,
                 decoration: InputDecoration(

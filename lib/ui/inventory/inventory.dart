@@ -106,12 +106,14 @@ class _InventoryPageState extends State<InventoryPage> {
                 size: 12,
                 color: Colors.white,
               ),
-              label: Text(
-                "${pm.locality}",
-                style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
+              label: Consumer<InfoFlower>(
+                builder: (ctx, infoFlow, _) => Text(
+                  "${infoFlow.currentLocation.locality}",
+                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                ),
               ),
               style: const ButtonStyle(
                   // fixedSize: MaterialStateProperty.all(Size(32, 2)),

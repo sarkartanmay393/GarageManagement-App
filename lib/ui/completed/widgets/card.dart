@@ -20,7 +20,7 @@ class cc_vehicle extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: 22,
+            height: (size.height * 0.26) * 0.12,
             padding: const EdgeInsets.only(
               top: 5,
               left: 5,
@@ -67,14 +67,14 @@ class cc_vehicle extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-            height: 5,
+          SizedBox(
+            height: (size.height * 0.26) * 0.02,
           ),
           DottedBorder(
             color: Colors.black87,
             strokeWidth: 0.2,
             child: Container(
-              height: 22,
+              height: (size.height * 0.26) * 0.12,
               padding: const EdgeInsets.only(
                 top: 5,
                 left: 5,
@@ -120,8 +120,8 @@ class cc_vehicle extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 2,
+          SizedBox(
+            height: (size.height * 0.26) * 0.01,
           ),
           Row(
             children: [
@@ -130,7 +130,7 @@ class cc_vehicle extends StatelessWidget {
                 strokeWidth: 0.8,
                 child: Container(
                   padding: const EdgeInsets.all(2.5),
-                  height: 60,
+                  height: (size.height * 0.26) * 0.3,
                   width: 90,
                   // color: Colors.black12,
                   child: Column(
@@ -144,13 +144,13 @@ class cc_vehicle extends StatelessWidget {
                                   fontWeight: FontWeight.w500,
                                 ),
                       ),
-                      const SizedBox(
-                        height: 2.5,
+                      SizedBox(
+                        height: (size.height * 0.26) * 0.01,
                       ),
                       Row(
                         children: [
                           SizedBox(
-                            height: 35,
+                            height: ((size.height * 0.26) * 0.3) * 0.6,
                             width: 45,
                             child: Image.network(info["vehicalImage"]!,
                                 fit: BoxFit.fill),
@@ -201,8 +201,7 @@ class cc_vehicle extends StatelessWidget {
                   color: Colors.black12,
                   strokeWidth: 0.8,
                   child: SizedBox(
-                    height: 60,
-                    // width: 90,
+                    height: (size.height * 0.26) * 0.3, // width: 90,
                     child: Column(
                       children: [
                         Text(
@@ -217,8 +216,8 @@ class cc_vehicle extends StatelessWidget {
                               ),
                         ),
                         const Divider(height: 1),
-                        const SizedBox(
-                          height: 2,
+                        SizedBox(
+                          height: (size.height * 0.26) * 0.01,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

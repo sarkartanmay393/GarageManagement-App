@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../helper/formBarMaker.dart';
 import 'widgets/detect_city.dart';
 import 'widgets/posible_cities.dart';
 
@@ -70,42 +71,67 @@ class _PickCityState extends State<PickCity> {
         ),
       ),
       body: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         child: Column(
           children: [
             if (doSearch)
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                decoration: BoxDecoration(
-                  border: Border.all(width: 0.2),
-                ),
-                height: size.height * 0.05,
-                child: Row(
-                  children: [
-                    SizedBox(
-                        width: size.width * 0.815,
-                        child: const TextField(
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Container(
+                  margin: const EdgeInsets.only(
+                      top: 8, bottom: 2, right: 8, left: 8),
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 0.2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: size.width * 0.8,
+                        child: TextFormField(
+                          keyboardType: TextInputType.streetAddress,
+                          // readOnly: readOnlyRef != null ? true : false,
+                          // initialValue: initVal,
+                          // autofocus: autoFocusRef != null ? true : false,
                           decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Search Here",
-                              contentPadding: EdgeInsets.all(5)),
-                        )),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.search),
-                    ),
-                  ],
+                            border: InputBorder.none,
+                            hintText: "Search Here",
+                            hintStyle: Theme.of(context)
+                                .textTheme
+                                .displayMedium!
+                                .copyWith(
+                                  fontSize: 14,
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: IconButton(
+                          tooltip: "Search",
+                          onPressed: () {},
+                          icon: const Icon(Icons.search),
+                          iconSize: 18,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            const DetectCity(),
+            DetectCity(),
             Container(
               alignment: AlignmentDirectional.center,
               margin: const EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 6,
               ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.grey.shade300,
+              ),
               height: 36,
-              color: Colors.grey.shade300,
               child: Text(
                 "Cities we serve",
                 style: Theme.of(context).textTheme.displayMedium!.copyWith(
@@ -115,7 +141,7 @@ class _PickCityState extends State<PickCity> {
                     ),
               ),
             ),
-            const PossibleCities(),
+            PossibleCities(),
           ],
         ),
       ),

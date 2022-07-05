@@ -101,7 +101,7 @@ class _SignupPageState extends State<SignupPage> {
       await _auth.verifyPhoneNumber(
         phoneNumber: number,
         timeout: const Duration(seconds: 60),
-        verificationCompleted: (phCredentials) {
+        verificationCompleted: (phCredentials) async {
           credential = phCredentials;
           setState(() {
             readonly[0] = true;
@@ -121,7 +121,7 @@ class _SignupPageState extends State<SignupPage> {
           // more work needed for auto verification.
           // not done yet.
         },
-        verificationFailed: (fbAuthException) {
+        verificationFailed: (fbAuthException) async {
           var msg = "Verification Failed";
           if (fbAuthException.code == 'invalid-phone-number') {
             msg = 'Phone number is not valid';
@@ -142,7 +142,7 @@ class _SignupPageState extends State<SignupPage> {
             ),
           );
         },
-        codeSent: (verificationId, forceResendingToken) {
+        codeSent: (verificationId, forceResendingToken) async {
           verificationIdTemporary = verificationId;
           setState(() {
             readonly[0] = true;
@@ -162,7 +162,7 @@ class _SignupPageState extends State<SignupPage> {
           );
           //
         },
-        codeAutoRetrievalTimeout: (verificationId) {
+        codeAutoRetrievalTimeout: (verificationId) async {
           setState(() {
             readonly[0] = false;
             readonly[1] = true;
@@ -202,6 +202,19 @@ class _SignupPageState extends State<SignupPage> {
     // confirm button function.
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      debugPrint(CreateInfo.toString());
+      var infoFlow = Provider.of<InfoFlower>(context, listen: false);
+      if (CreateInfo["email"]!.isNotEmpty) {
+        infoFlow.addValueTowingVan(key: "Email", val: CreateInfo["email"]!);
+        infoFlow.addValueTowingVan(
+            key: "Driver Phone", val: CreateInfo["number"]!);
+        infoFlow.addValueTowingVan(
+            key: "Driver Name", val: CreateInfo["name"]!);
+
+        infoFlow.addValueGarage(key: "Email", val: CreateInfo["email"]!);
+        infoFlow.addValueGarage(key: "Phone", val: CreateInfo["number"]!);
+        infoFlow.addValueGarage(key: "Person Name", val: CreateInfo["name"]!);
+      }
       pushNewScreen(
         context,
         screen: const RgstCheck(),
@@ -212,16 +225,6 @@ class _SignupPageState extends State<SignupPage> {
   @override
   void dispose() {
     super.dispose();
-    var infoFlow = Provider.of<InfoFlower>(context, listen: false);
-    if (CreateInfo["email"]!.isNotEmpty) {
-      infoFlow.profileInformationsTV["Email"] = CreateInfo["email"]!;
-      infoFlow.profileInformationsTV["Driver Phone"] = CreateInfo["number"]!;
-      infoFlow.profileInformationsTV["Driver Name"] = CreateInfo["name"]!;
-
-      infoFlow.profileInformationsGR["Email"] = CreateInfo["email"]!;
-      infoFlow.profileInformationsGR["Phone"] = CreateInfo["number"]!;
-      infoFlow.profileInformationsGR["Person Name"] = CreateInfo["name"]!;
-    }
     _numberController.dispose();
     _otpController.dispose();
   }
@@ -229,421 +232,447 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    var refArgsFromLoginScreen = ModalRoute.of(context)!.settings.arguments;
+    if (refArgsFromLoginScreen != null && refArgsFromLoginScreen == true) {
+      // setState(() {
+      resendPossible = false;
+      readonly[0] = true;
+      readonly[1] = true;
+      readonly[2] = false;
+      readonly[3] = false;
+      clickable = true;
+    }
+    // });
+    // ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   const SnackBar(
+    //     content: SizedBox(
+    //         height: 16, child: Center(child: Text("Number Verified"))),
+    //     duration: Duration(milliseconds: 2000),
+    //     padding: EdgeInsets.symmetric(vertical: 8),
+    //   ),
+    // );
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        width: size.width,
-        height: size.height,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Theme.of(context).primaryColor, Colors.white],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            stops: const [0.5, 0],
+      body: SingleChildScrollView(
+        child: Container(
+          width: size.width,
+          height: size.height,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Theme.of(context).primaryColor, Colors.white],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              stops: const [0.5, 0],
+            ),
           ),
-        ),
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: size.height * 0.12,
-            ),
-            Text(
-              "BEE",
-              style: Theme.of(context).textTheme.displayLarge,
-            ),
-            Text(
-              "We Keep Your Engine",
-              style: Theme.of(context)
-                  .textTheme
-                  .displayMedium!
-                  .copyWith(fontSize: 12, fontWeight: FontWeight.w500),
-            ),
-            Text(
-              "Running",
-              style: Theme.of(context)
-                  .textTheme
-                  .displayMedium!
-                  .copyWith(fontSize: 12, fontWeight: FontWeight.w500),
-            ),
-            SizedBox(
-              height: size.height * 0.08,
-            ),
-            Text(
-              "Create a New Account !",
-              style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 0.3,
-                    // shadows: [
-                    //   Shadow(),
-                    // ],
-                  ),
-            ),
-            SizedBox(
-              height: size.height * 0.04,
-            ),
-            Form(
-              key: _formKey,
-              child: Wrap(
-                children: [
-                  Card(
-                    margin: EdgeInsets.symmetric(
-                      vertical: size.height * 0.005,
-                      horizontal: size.width * 0.07,
+          child: Column(
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: size.height * 0.12,
+              ),
+              Text(
+                "BEE",
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+              Text(
+                "We Keep Your Engine",
+                style: Theme.of(context)
+                    .textTheme
+                    .displayMedium!
+                    .copyWith(fontSize: 12, fontWeight: FontWeight.w500),
+              ),
+              Text(
+                "Running",
+                style: Theme.of(context)
+                    .textTheme
+                    .displayMedium!
+                    .copyWith(fontSize: 12, fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                height: size.height * 0.08,
+              ),
+              Text(
+                "Create a New Account !",
+                style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.3,
+                      // shadows: [
+                      //   Shadow(),
+                      // ],
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                    elevation: 2,
-                    color: Colors.white,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 0.45),
-                          child: SizedBox(
-                            height: 1,
-                            width: size.width * 0.8,
-                            child: _numberLoading
-                                ? const LinearProgressIndicator()
-                                : null,
-                          ),
-                        ), // not working.
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 2,
-                          ),
-                          child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const CircleAvatar(
-                                backgroundImage: AssetImage(
-                                  "icons/flags/png/in.png",
-                                  package: "country_icons",
-                                ),
-                                radius: 16,
-                              ),
-                              const SizedBox(
-                                width: 6,
-                              ),
-                              Flexible(
-                                child: TextFormField(
-                                  onSaved: (val) {
-                                    if (val != null) CreateInfo['number'] = val;
-                                  },
-                                  decoration: const InputDecoration(
-                                    // hintText: "Phone",
-                                    // hintStyle: TextStyle(
-                                    //     fontSize: 14, fontWeight: FontWeight.w500),
-                                    contentPadding: EdgeInsets.only(
-                                      left: 14,
-                                    ),
-                                    border: InputBorder.none,
-                                    prefixText: "+91  ",
-                                  ),
-                                  readOnly: readonly[0],
-                                  keyboardType: TextInputType.number,
-                                  maxLength: null,
-                                  controller: _numberController,
-                                  textInputAction: TextInputAction.send,
-                                  onChanged: (_) async {
-                                    if (_numberController.text.trim().length ==
-                                        10) {
-                                      String num =
-                                          _numberController.text.trim();
-                                      _numVerify("+91$num");
-                                    }
-                                  },
-                                  onFieldSubmitted: (String num) async {
-                                    if (num.trim().length == 10) {
-                                      _numVerify("+91$num");
-                                    }
-                                  },
-                                  // task otp verification starts here.
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Card(
-                    margin: EdgeInsets.symmetric(
-                      vertical: size.height * 0.005,
-                      horizontal: size.width * 0.07,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                    elevation: 2,
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 2,
+              ),
+              SizedBox(
+                height: size.height * 0.04,
+              ),
+              Form(
+                key: _formKey,
+                child: Wrap(
+                  children: [
+                    Card(
+                      margin: EdgeInsets.symmetric(
+                        vertical: size.height * 0.005,
+                        horizontal: size.width * 0.07,
                       ),
-                      child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.min,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      elevation: 2,
+                      color: Colors.white,
+                      child: Column(
                         children: [
-                          Flexible(
-                            child: TextFormField(
-                              readOnly: readonly[1],
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "One Time Password",
-                                hintStyle: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: readonly[1]
-                                        ? Colors.grey.shade400
-                                        : Colors.grey.shade700),
-                                contentPadding: const EdgeInsets.only(
-                                  left: 14,
-                                ),
-                              ),
-                              controller: _otpController,
-                              keyboardType: TextInputType.number,
-                              textInputAction: TextInputAction.done,
-                              onChanged: (_) async {
-                                if (_otpController.text.trim().length == 6) {
-                                  _verifyOtp(_otpController.text.trim());
-                                } else {
-                                  // _formKey.currentState!.validate();
-                                }
-                              },
-                              maxLength: null,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 0.45),
+                            child: SizedBox(
+                              height: 1,
+                              width: size.width * 0.8,
+                              child: _numberLoading
+                                  ? const LinearProgressIndicator()
+                                  : null,
                             ),
-                          ),
-                          TextButton(
-                            onPressed: resendPossible ? resend : null,
-                            style: ButtonStyle(
-                              splashFactory: InkSparkle
-                                  .constantTurbulenceSeedSplashFactory,
-                              // surfaceTintColor: MaterialStateProperty.all(Colors.red),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              minimumSize:
-                                  MaterialStateProperty.all(const Size(0, 5)),
+                          ), // not working.
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 2,
                             ),
-                            child: Text(
-                              "Resend OTP",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displaySmall!
-                                  .copyWith(
-                                    color: Colors.black,
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w500,
+                            child: Row(
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const CircleAvatar(
+                                  backgroundImage: AssetImage(
+                                    "icons/flags/png/in.png",
+                                    package: "country_icons",
                                   ),
+                                  radius: 16,
+                                ),
+                                const SizedBox(
+                                  width: 6,
+                                ),
+                                Flexible(
+                                  child: TextFormField(
+                                    onSaved: (val) {
+                                      if (val != null)
+                                        CreateInfo['number'] = val;
+                                    },
+                                    decoration: const InputDecoration(
+                                      // hintText: "Phone",
+                                      // hintStyle: TextStyle(
+                                      //     fontSize: 14, fontWeight: FontWeight.w500),
+                                      contentPadding: EdgeInsets.only(
+                                        left: 14,
+                                      ),
+                                      border: InputBorder.none,
+                                      prefixText: "+91  ",
+                                    ),
+                                    readOnly: readonly[0],
+                                    keyboardType: TextInputType.number,
+                                    maxLength: null,
+                                    controller: _numberController,
+                                    textInputAction: TextInputAction.send,
+                                    onChanged: (_) async {
+                                      if (_numberController.text
+                                              .trim()
+                                              .length ==
+                                          10) {
+                                        String num =
+                                            _numberController.text.trim();
+                                        _numVerify("+91$num");
+                                      }
+                                    },
+                                    onFieldSubmitted: (String num) async {
+                                      if (num.trim().length == 10) {
+                                        _numVerify("+91$num");
+                                      }
+                                    },
+                                    // task otp verification starts here.
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
                     ),
+                    SizedBox(
+                      height: size.height * 0.01,
+                    ),
+                    Card(
+                      margin: EdgeInsets.symmetric(
+                        vertical: size.height * 0.005,
+                        horizontal: size.width * 0.07,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      elevation: 2,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
+                        child: Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: TextFormField(
+                                readOnly: readonly[1],
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "One Time Password",
+                                  hintStyle: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: readonly[1]
+                                          ? Colors.grey.shade400
+                                          : Colors.grey.shade700),
+                                  contentPadding: const EdgeInsets.only(
+                                    left: 14,
+                                  ),
+                                ),
+                                controller: _otpController,
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.done,
+                                onChanged: (_) async {
+                                  if (_otpController.text.trim().length == 6) {
+                                    _verifyOtp(_otpController.text.trim());
+                                  } else {
+                                    // _formKey.currentState!.validate();
+                                  }
+                                },
+                                maxLength: null,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: resendPossible ? resend : null,
+                              style: ButtonStyle(
+                                splashFactory: InkSparkle
+                                    .constantTurbulenceSeedSplashFactory,
+                                // surfaceTintColor: MaterialStateProperty.all(Colors.red),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                minimumSize:
+                                    MaterialStateProperty.all(const Size(0, 5)),
+                              ),
+                              child: Text(
+                                "Resend OTP",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displaySmall!
+                                    .copyWith(
+                                      color: Colors.black,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.01,
+                    ),
+                    Card(
+                      margin: EdgeInsets.symmetric(
+                        vertical: size.height * 0.005,
+                        horizontal: size.width * 0.07,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      elevation: 2,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
+                        child: TextFormField(
+                          onSaved: (val) {
+                            if (val != null) CreateInfo['name'] = val;
+                          },
+                          validator: (val) {
+                            // if (val) {
+                            //   return "Enter valid email.";
+                            // }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Name",
+                            hintStyle: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: readonly[2]
+                                    ? Colors.grey.shade400
+                                    : Colors.grey.shade700),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14,
+                            ),
+                          ),
+                          readOnly: readonly[2],
+                          keyboardType: TextInputType.name,
+                          textInputAction: TextInputAction.next,
+                          maxLength: null,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Card(
+                      margin: EdgeInsets.symmetric(
+                        vertical: size.height * 0.005,
+                        horizontal: size.width * 0.07,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      elevation: 2,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
+                        child: TextFormField(
+                          onSaved: (val) {
+                            if (val != null) CreateInfo['email'] = val;
+                          },
+                          validator: (val) {
+                            if (!RegExp(
+                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(val!)) {
+                              return "Enter valid email.";
+                            }
+                            return null;
+                          },
+                          readOnly: readonly[3],
+                          decoration: InputDecoration(
+                            hintText: "Email",
+                            hintStyle: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: readonly[3]
+                                    ? Colors.grey.shade400
+                                    : Colors.grey.shade700),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14,
+                            ),
+                            border: InputBorder.none,
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.done,
+                          maxLength: null,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              ElevatedButton(
+                onPressed: clickable ? continueButton : null,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    Theme.of(context).primaryColor,
+                  ),
+                  minimumSize: MaterialStateProperty.all(
+                    Size(size.width * 0.8, size.height * 0.05),
+                  ),
+                  maximumSize: MaterialStateProperty.all(
+                    Size(size.width * 0.9, size.height * 0.08),
+                  ),
+                  elevation: MaterialStateProperty.all(6),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      side: const BorderSide(color: Colors.red),
+                    ),
+                  ),
+                ),
+                child: Text(
+                  "CONTINUE",
+                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: clickable ? Colors.white : Colors.white54,
+                        fontSize: 13,
+                      ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 22, right: 22, top: 10, bottom: 3),
+                child: Text(
+                  "By signing in you agree to our",
+                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                        color: Colors.grey.shade600,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: Text(
+                  "Terms of Service & Privacy Policy",
+                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                        color: Colors.grey.shade600,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        decoration: TextDecoration.underline,
+                      ),
+                ),
+              ),
+              Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // SizedBox(
+                  //   width: size.width * 0.25,
+                  // ),
+                  Text(
+                    "Don’t have an account?",
+                    style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed("login");
+                    },
+                    style: ButtonStyle(
+                      splashFactory:
+                          InkSparkle.constantTurbulenceSeedSplashFactory,
+                      // surfaceTintColor: MaterialStateProperty.all(Colors.red),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      minimumSize: MaterialStateProperty.all(const Size(0, 5)),
+                    ),
+                    child: Text(
+                      "Login",
+                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                            color: Colors.red,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
                   ),
                   SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Card(
-                    margin: EdgeInsets.symmetric(
-                      vertical: size.height * 0.005,
-                      horizontal: size.width * 0.07,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                    elevation: 2,
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 2,
-                      ),
-                      child: TextFormField(
-                        onSaved: (val) {
-                          if (val != null) CreateInfo['name'] = val;
-                        },
-                        validator: (val) {
-                          // if (val) {
-                          //   return "Enter valid email.";
-                          // }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Name",
-                          hintStyle: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: readonly[2]
-                                  ? Colors.grey.shade400
-                                  : Colors.grey.shade700),
-                          contentPadding: const EdgeInsets.only(
-                            left: 14,
-                          ),
-                        ),
-                        readOnly: readonly[2],
-                        keyboardType: TextInputType.name,
-                        textInputAction: TextInputAction.next,
-                        maxLength: null,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Card(
-                    margin: EdgeInsets.symmetric(
-                      vertical: size.height * 0.005,
-                      horizontal: size.width * 0.07,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                    elevation: 2,
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 2,
-                      ),
-                      child: TextFormField(
-                        onSaved: (val) {
-                          if (val != null) CreateInfo['email'] = val;
-                        },
-                        validator: (val) {
-                          if (!RegExp(
-                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                              .hasMatch(val!)) {
-                            return "Enter valid email.";
-                          }
-                          return null;
-                        },
-                        readOnly: readonly[3],
-                        decoration: InputDecoration(
-                          hintText: "Email",
-                          hintStyle: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: readonly[3]
-                                  ? Colors.grey.shade400
-                                  : Colors.grey.shade700),
-                          contentPadding: const EdgeInsets.only(
-                            left: 14,
-                          ),
-                          border: InputBorder.none,
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.done,
-                        maxLength: null,
-                      ),
-                    ),
+                    height: size.height * 0.06,
                   ),
                 ],
               ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            ElevatedButton(
-              onPressed: clickable ? continueButton : null,
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                  Theme.of(context).primaryColor,
-                ),
-                minimumSize: MaterialStateProperty.all(
-                  Size(size.width * 0.8, size.height * 0.05),
-                ),
-                maximumSize: MaterialStateProperty.all(
-                  Size(size.width * 0.9, size.height * 0.08),
-                ),
-                elevation: MaterialStateProperty.all(6),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    side: const BorderSide(color: Colors.red),
-                  ),
-                ),
-              ),
-              child: Text(
-                "CONTINUE",
-                style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: clickable ? Colors.white : Colors.white54,
-                      fontSize: 13,
-                    ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 22, right: 22, top: 10, bottom: 3),
-              child: Text(
-                "By signing in you agree to our",
-                style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                      color: Colors.grey.shade600,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 22),
-              child: Text(
-                "Terms of Service & Privacy Policy",
-                style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                      color: Colors.grey.shade600,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      decoration: TextDecoration.underline,
-                    ),
-              ),
-            ),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // SizedBox(
-                //   width: size.width * 0.25,
-                // ),
-                Text(
-                  "Don’t have an account?",
-                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed("login");
-                  },
-                  style: ButtonStyle(
-                    splashFactory:
-                        InkSparkle.constantTurbulenceSeedSplashFactory,
-                    // surfaceTintColor: MaterialStateProperty.all(Colors.red),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    minimumSize: MaterialStateProperty.all(const Size(0, 5)),
-                  ),
-                  child: Text(
-                    "Login",
-                    style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                          color: Colors.red,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                        ),
-                  ),
-                ),
-                SizedBox(
-                  height: size.height * 0.06,
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

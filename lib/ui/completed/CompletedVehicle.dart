@@ -80,7 +80,10 @@ class CompletedVehicle extends StatelessWidget {
         ),
       ),
       body: ListView.builder(
-        itemBuilder: (_, i) => cc_vehicle(size, info),
+        itemBuilder: (_, i) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: cc_vehicle(size, info),
+        ),
         itemCount: 12,
       ),
     );

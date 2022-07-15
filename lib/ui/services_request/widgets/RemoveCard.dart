@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../state/provider.dart';
+
 enum Option {
   None,
   Remove,
@@ -8,7 +10,7 @@ enum Option {
 
 class RemoveCard extends StatefulWidget {
   Size size;
-  Map<String, String> ServiceInfo;
+  Services ServiceInfo;
   RemoveCard(this.size, this.ServiceInfo, {Key? key}) : super(key: key);
 
   @override
@@ -43,7 +45,7 @@ class _RemoveCardState extends State<RemoveCard> {
               ),
               image: DecorationImage(
                 fit: BoxFit.fitHeight,
-                image: NetworkImage(widget.ServiceInfo['imageLink']!),
+                image: NetworkImage(widget.ServiceInfo.photos[0]),
               ),
             ),
           ),
@@ -61,7 +63,7 @@ class _RemoveCardState extends State<RemoveCard> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.ServiceInfo['name']!,
+                                widget.ServiceInfo.name,
                                 style: Theme.of(context)
                                     .textTheme
                                     .displayMedium!
@@ -77,7 +79,7 @@ class _RemoveCardState extends State<RemoveCard> {
                               Row(
                                 children: [
                                   Text(
-                                    "Rs. ${widget.ServiceInfo['price']!}",
+                                    "Rs. ${widget.ServiceInfo.actualPrice}",
                                     style: Theme.of(context)
                                         .textTheme
                                         .displayMedium!
@@ -93,7 +95,7 @@ class _RemoveCardState extends State<RemoveCard> {
                                     width: 12,
                                   ),
                                   Text(
-                                    "Rs. ${widget.ServiceInfo['discountedPrice']!}",
+                                    "Rs. ${widget.ServiceInfo.discountedPrice}",
                                     style: Theme.of(context)
                                         .textTheme
                                         .displayMedium!
@@ -107,7 +109,7 @@ class _RemoveCardState extends State<RemoveCard> {
                               ),
                             ],
                           ),
-                          const Spacer(),
+                          Spacer(),
                           CircleAvatar(
                             minRadius: 26,
                             maxRadius: 30,
@@ -119,14 +121,15 @@ class _RemoveCardState extends State<RemoveCard> {
                                     Icons.timer_outlined,
                                   ),
                                   Text(
-                                    widget.ServiceInfo['timeTakes']!,
+                                    widget.ServiceInfo.timeToComplete,
                                     style: Theme.of(context)
                                         .textTheme
                                         .displaySmall!
                                         .copyWith(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 9),
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 9,
+                                        ),
                                   )
                                 ],
                               ),
@@ -146,7 +149,7 @@ class _RemoveCardState extends State<RemoveCard> {
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3),
                     itemBuilder: (_, i) => Text(
-                      widget.ServiceInfo['features']!,
+                      widget.ServiceInfo.specification,
                       style: Theme.of(context).textTheme.displaySmall!.copyWith(
                           color: Colors.black,
                           fontWeight: FontWeight.w500,

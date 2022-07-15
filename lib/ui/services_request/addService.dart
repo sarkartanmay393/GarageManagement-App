@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
@@ -20,8 +19,6 @@ class AddServicePage extends StatefulWidget {
 
 class _AddServicePageState extends State<AddServicePage> {
   final _key = GlobalKey<ScaffoldState>();
-
-  Placemark pm = Placemark(locality: "Jalpaiguri");
 
   final _picker = ImagePicker();
 
@@ -101,7 +98,7 @@ class _AddServicePageState extends State<AddServicePage> {
                 color: Colors.white,
               ),
               label: Text(
-                "${pm.locality}",
+                InfoFlow.currentLocation.locality!,
                 style: Theme.of(context).textTheme.displaySmall!.copyWith(
                       fontSize: 10,
                       fontWeight: FontWeight.w500,

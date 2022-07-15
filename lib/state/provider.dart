@@ -27,6 +27,26 @@ class City {
   City({required this.name, required this.imgLink});
 }
 
+class Services {
+  String id;
+  String name;
+  String category;
+  String specification;
+  String timeToComplete;
+  String actualPrice;
+  String discountedPrice;
+  List<String> photos;
+  Services(
+      {required this.id,
+      required this.name,
+      required this.category,
+      required this.actualPrice,
+      required this.discountedPrice,
+      required this.photos,
+      required this.specification,
+      required this.timeToComplete});
+}
+
 class InfoFlower with ChangeNotifier {
   // Declared variables and datas .
   var _isLogin = false;
@@ -73,13 +93,26 @@ class InfoFlower with ChangeNotifier {
     false,
   ];
 
-  Placemark _currentLocation = Placemark();
+  Placemark _currentLocation = Placemark(locality: "\n");
 
   List<City> _cities = [
     City(
       name: "Dhupguri",
       imgLink:
           "https://st.indiarailinfo.com/kjfdsuiemjvcya24/0/9/6/6/4755966/0/img1357copy2114570.jpg",
+    ),
+  ];
+
+  List<Services> _services = [
+    Services(
+      id: DateTime.now().toIso8601String(),
+      name: "Complete Checkup",
+      category: "",
+      specification: "",
+      timeToComplete: "3 Hours",
+      actualPrice: "999",
+      discountedPrice: "499",
+      photos: ["imgLink", "imgLink"],
     ),
   ];
 
@@ -123,6 +156,10 @@ class InfoFlower with ChangeNotifier {
 
   List<City> get cities {
     return [..._cities];
+  }
+
+  List<Services> get getServices {
+    return [..._services];
   }
 
   // Setting info to datas.
@@ -196,10 +233,15 @@ class InfoFlower with ChangeNotifier {
     notifyListeners();
   } // Removes a job card by id.
 
+  bool possibleToFetch = true;
   Future<void> fetchAndSetLocation() async {
+    // if (possibleToFetch) {
     _currentLocation = await CurrentLocation.getLocation();
+    possibleToFetch = false;
     debugPrint("Location fetched and setted.");
     notifyListeners();
+    // }
+    // debugPrint("Location is fetched once.");
   }
 
   void clearOneInfoDatabase(String point) {
@@ -219,5 +261,16 @@ class InfoFlower with ChangeNotifier {
     // need to complete.
     notifyListeners();
   }
+
+  void addService(Services srv) {
+    _services.add(srv);
+    notifyListeners();
+  }
+
+  void removeService(String id) {
+    _services.removeWhere((element) => element.id == id);
+    notifyListeners();
+  }
+
 //
 }

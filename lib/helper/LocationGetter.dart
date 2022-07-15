@@ -6,8 +6,9 @@ import 'package:geocoding/geocoding.dart' as geo;
 class CurrentLocation {
   static Future<geo.Placemark> getLocation() async {
     String error;
+
     try {
-      LocationData currentPostion = await Location.instance.getLocation();
+      LocationData currentPostion = await Location().getLocation();
       List<geo.Placemark> placemarks = await geo.placemarkFromCoordinates(
           currentPostion.latitude!, currentPostion.longitude!);
       geo.Placemark place = placemarks[0];
@@ -24,6 +25,7 @@ class CurrentLocation {
     } catch (err) {
       debugPrint(err.toString());
     }
+
     return geo.Placemark();
   }
 }

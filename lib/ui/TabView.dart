@@ -67,62 +67,63 @@ class _TabView extends State<TabView> {
 
   @override
   Widget build(BuildContext context) {
-    var infoFlow = Provider.of<InfoFlower>(context, listen: false);
-    return PersistentTabView(
-      context,
-      controller: _controller,
-      screens: [
-        HomePage(), // 0
-        HelpPage(), // 1
-        InventoryPage(), // 2
-        infoFlow.userType.index == 1
-            ? const ProfilePage()
-            : const VanProfilePage()
-      ],
-      items: [
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.home_outlined),
-          title: "Home",
+    return Consumer<InfoFlower>(
+      builder: (ctx, infoFlow, _) => PersistentTabView(
+        context,
+        controller: _controller,
+        screens: [
+          HomePage(), // 0
+          HelpPage(), // 1
+          InventoryPage(), // 2
+          infoFlow.userType.index == 1
+              ? const ProfilePage()
+              : const VanProfilePage()
+        ],
+        items: [
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.home_outlined),
+            title: "Home",
+          ),
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.help_center_outlined),
+            title: "Get Help",
+          ),
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.inventory_2_outlined),
+            title: "Inventory",
+          ),
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.account_circle_outlined),
+            title: "Account",
+          ),
+        ],
+        confineInSafeArea: true,
+        // backgroundColor: Colors.white, // Default is Colors.white.
+        handleAndroidBackButtonPress: true, // Default is true.
+        resizeToAvoidBottomInset:
+            true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+        stateManagement: true, // Default is true.
+        hideNavigationBarWhenKeyboardShows:
+            true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
+        decoration: NavBarDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          colorBehindNavBar: Colors.white,
         ),
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.help_center_outlined),
-          title: "Get Help",
+        popAllScreensOnTapOfSelectedTab: true,
+        popActionScreens: PopActionScreensType.all,
+        itemAnimationProperties: const ItemAnimationProperties(
+          // Navigation Bar's items animation properties.
+          duration: Duration(milliseconds: 200),
+          curve: Curves.ease,
         ),
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.inventory_2_outlined),
-          title: "Inventory",
+        screenTransitionAnimation: const ScreenTransitionAnimation(
+          // Screen transition animation on change of selected tab.
+          animateTabTransition: true,
+          curve: Curves.ease,
+          duration: Duration(milliseconds: 200),
         ),
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.account_circle_outlined),
-          title: "Account",
-        ),
-      ],
-      confineInSafeArea: true,
-      // backgroundColor: Colors.white, // Default is Colors.white.
-      handleAndroidBackButtonPress: true, // Default is true.
-      resizeToAvoidBottomInset:
-          true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-      stateManagement: true, // Default is true.
-      hideNavigationBarWhenKeyboardShows:
-          true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
-      decoration: NavBarDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        colorBehindNavBar: Colors.white,
+        navBarStyle: NavBarStyle.style3,
       ),
-      popAllScreensOnTapOfSelectedTab: true,
-      popActionScreens: PopActionScreensType.all,
-      itemAnimationProperties: const ItemAnimationProperties(
-        // Navigation Bar's items animation properties.
-        duration: Duration(milliseconds: 200),
-        curve: Curves.ease,
-      ),
-      screenTransitionAnimation: const ScreenTransitionAnimation(
-        // Screen transition animation on change of selected tab.
-        animateTabTransition: true,
-        curve: Curves.ease,
-        duration: Duration(milliseconds: 200),
-      ),
-      navBarStyle: NavBarStyle.style3,
     );
   }
 }

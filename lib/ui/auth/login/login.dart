@@ -186,6 +186,8 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 height: size.height * 0.15,
               ),
+
+              
               Text(
                 "BEE",
                 style: Theme.of(context).textTheme.displayLarge,

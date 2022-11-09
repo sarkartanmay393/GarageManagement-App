@@ -1,0 +1,29 @@
+name: APK generate with Flutter and Publish Release
+
+on:
+  push:
+      branches: ["main"]
+
+permissions:
+  contents: read
+  packages: write
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Clone git repository
+        uses: actions/checkout@v3
+        
+      - name: Install Flutter
+        run: sudo snap install flutter --classic
+        
+      - name: Check Flutter Path
+        run: flutter sdk-path
+        
+      - name: Build APK
+        run: flutter build apk --split-per-abi
+     
+      - name: LS
+        run: ls -al

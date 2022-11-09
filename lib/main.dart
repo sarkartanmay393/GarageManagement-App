@@ -14,7 +14,7 @@ import 'ui/home/homepage.dart';
 import 'ui/inventory/AddNewPage.dart';
 import 'ui/issues/issues.dart';
 import 'ui/issues/widgets/manual.dart';
-import 'ui/jobcard/jobcard.dart';
+import 'ui/jobcard/jobCard.dart';
 import 'ui/pickcity/pick_city.dart';
 import 'ui/TabView.dart';
 import 'ui/privacy/PrivacyPolicy.dart';

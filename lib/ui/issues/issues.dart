@@ -4,7 +4,7 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import '../../state/provider.dart';
 import '../notification/notifications.dart';
-import '../jobcard/jobcard.dart';
+import '../jobcard/jobCard.dart';
 import 'widgets/manual.dart';
 
 class IssuesPage extends StatefulWidget {
